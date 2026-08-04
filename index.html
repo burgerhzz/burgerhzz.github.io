@@ -174,7 +174,34 @@
   .faq details[open] summary::before { content: "\2212"; }
   .faq p { margin: 0 0 18px 24px; font-size: 14px; color: var(--smoke); max-width: 66ch; }
 
-  /* ── 環境音開關 ── */
+  /* ── 進站閘門 ──
+     瀏覽器規定音訊必須由使用者手勢啟動，這道閘門的點擊就是那個手勢。
+     進去之後音樂直接開始，體感等同自動播放。 */
+  .gate {
+    position: fixed; inset: 0; z-index: 99; background: var(--char);
+    display: grid; place-items: center; text-align: center; padding: 24px;
+    transition: opacity .6s ease;
+  }
+  .gate.out { opacity: 0; pointer-events: none; }
+  .gate .logo { font-size: clamp(28px, 7vw, 46px); margin-bottom: 10px; }
+  .gate .m { display: block; margin-bottom: 40px; }
+  .gate button {
+    font-family: var(--mono); font-size: 13px; letter-spacing: .2em; font-weight: 700;
+    text-transform: uppercase; background: var(--lamp); color: var(--char);
+    border: 1px solid var(--lamp); padding: 16px 34px; cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .gate button:hover { background: transparent; color: var(--lamp); }
+  .gate .quiet {
+    display: block; margin: 18px auto 0; background: none; border: 0;
+    color: var(--smoke-dim); font-size: 11px; letter-spacing: .12em; padding: 6px;
+  }
+  .gate .quiet:hover { color: var(--smoke); background: none; }
+  .gate .note { margin-top: 34px; font-size: 11px; color: var(--smoke-dim);
+                font-family: var(--mono); letter-spacing: .08em; }
+  body.locked { overflow: hidden; }
+
+  /* ── 配樂開關 ── */
   .sfx {
     font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
     text-transform: uppercase; color: var(--smoke); background: none;
@@ -203,6 +230,16 @@
 </style>
 </head>
 <body>
+<div class="gate" id="gate">
+  <div>
+    <div class="logo">BURGER<b>HZZ</b></div>
+    <span class="m">剪接師的深夜補給站 · EST. 2026</span>
+    <button id="enter">▸ 點此進入</button>
+    <button class="quiet" id="enterQuiet">靜音進入</button>
+    <p class="note">進入後播放深夜配樂 · 右上角可隨時關閉</p>
+  </div>
+</div>
+
 <div class="ticker"><span>
   ▮ 買斷制 ▪ 沒有訂閱 ▪ 終身更新 ▪ 付款後立即下載 ▪ MAC 版 ▪ PREMIERE PRO 2020 以上 &nbsp;&nbsp;
   ▮ 買斷制 ▪ 沒有訂閱 ▪ 終身更新 ▪ 付款後立即下載 ▪ MAC 版 ▪ PREMIERE PRO 2020 以上 &nbsp;&nbsp;
@@ -213,7 +250,7 @@
     <div class="logo">BURGER<b>HZZ</b></div>
     <div class="m">剪接師的深夜補給站 · EST. 2026</div>
     <button class="sfx" id="sfx" aria-pressed="false">
-      <i></i><span id="sfxLabel">梅雨 · 關</span>
+      <i></i><span id="sfxLabel">配樂 · 關</span>
     </button>
   </div>
 </div>
@@ -238,9 +275,9 @@
     </div>
 
     <p class="tune">
-      深夜配樂靈感來自張震嶽 ayal komod 的
-      <a href="https://www.youtube.com/watch?v=RND2XzJEBR8" target="_blank" rel="noopener">〈梅雨季〉</a>——
-      右上角那顆開關是同樣的雨天，本站即時合成的版本。
+      正在播放的是本站即時合成的 city pop —— 電鋼琴九和弦、切分貝斯、92 BPM。
+      靈感來自張震嶽 ayal komod 的
+      <a href="https://www.youtube.com/watch?v=RND2XzJEBR8" target="_blank" rel="noopener">〈梅雨季〉</a>。
     </p>
   </header>
 
@@ -379,102 +416,166 @@
     </p>
   </footer>
 </div>
-
 <script>
-/* 梅雨環境音 —— 用 Web Audio 即時合成，不載任何音檔。
+/* 深夜 City Pop —— Web Audio 即時合成，不載任何音檔。
  *
- * 兩層：雨（白噪音過帶通濾波，濾波頻率緩慢漂移模擬雨勢起伏）
- *      + 和聲鋪底（每 11 秒換一個和弦，長淡入淡出）
+ * 92 BPM，四小節循環 Cmaj9 → Am9 → Dm9 → G13（I-vi-ii-V 加九音，
+ * city pop 最典型的和聲語彙）。三個聲部：
+ *   電鋼琴  正弦波 + 兩倍頻略失諧的泛音，過 tremolo 做出 Rhodes 的顫音
+ *   貝斯    三角波過低通，切分在第 3 拍後半，這是 city pop 的律動來源
+ *   腳踏鈸  短促白噪音過高通，八分音符，音量壓很低只做時間感
  *
- * 一律預設關閉：瀏覽器本來就擋自動播放，而且沒人喜歡一開網頁就有聲音。
+ * 排程用 lookahead：setInterval 每 60ms 檢查，把未來 0.25 秒內該響的音
+ * 先排進 AudioContext 的時間軸。直接用 setTimeout 觸發會因為主執行緒
+ * 被版面繪製卡住而抖動。
  */
 (function () {
   var btn = document.getElementById('sfx');
   var label = document.getElementById('sfxLabel');
-  var ctx = null, master = null, timer = null, on = false;
+  var ctx = null, master = null, trem = null, noise = null, timer = null;
+  var nextTime = 0, step = 0, playing = false;
 
-  // 小調三和弦進行，慢速循環，帶點濕悶的感覺
-  var CHORDS = [
-    [146.83, 174.61, 220.00],   // Dm
-    [130.81, 155.56, 196.00],   // Cm
-    [116.54, 146.83, 174.61],   // Bb
-    [130.81, 164.81, 196.00]    // C
+  var BPM = 92, BEAT = 60 / BPM, EIGHTH = BEAT / 2;
+
+  // MIDI 音高。九和弦的張力音是 city pop 聽起來「都會、微甜」的來源
+  var PROG = [
+    { ch: [60, 64, 67, 71, 74], bass: 36, fifth: 43 },  // Cmaj9
+    { ch: [57, 60, 64, 67, 71], bass: 33, fifth: 40 },  // Am9
+    { ch: [62, 65, 69, 72, 76], bass: 38, fifth: 45 },  // Dm9
+    { ch: [55, 59, 65, 69, 76], bass: 31, fifth: 38 }   // G13
   ];
-  var chordIndex = 0;
 
-  function makeRain() {
-    // 2 秒的白噪音循環，長度取質數秒數以外的值不影響，重點是夠長聽不出接縫
-    var len = ctx.sampleRate * 2;
-    var buf = ctx.createBuffer(1, len, ctx.sampleRate);
-    var d = buf.getChannelData(0);
-    for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  function hz(m) { return 440 * Math.pow(2, (m - 69) / 12); }
 
-    var src = ctx.createBufferSource();
-    src.buffer = buf; src.loop = true;
-
-    var bp = ctx.createBiquadFilter();
-    bp.type = 'bandpass'; bp.frequency.value = 1400; bp.Q.value = 0.55;
-
+  function rhodes(t, f, dur, vel) {
+    var o1 = ctx.createOscillator(), o2 = ctx.createOscillator();
+    var g = ctx.createGain(), g2 = ctx.createGain();
     var lp = ctx.createBiquadFilter();
-    lp.type = 'lowpass'; lp.frequency.value = 5200;
+    o1.type = 'sine'; o1.frequency.value = f;
+    o2.type = 'sine'; o2.frequency.value = f * 2.006;   // 略微失諧，泛音才不會死板
+    g2.gain.value = 0.16;
+    lp.type = 'lowpass'; lp.frequency.value = 2400;
 
-    var g = ctx.createGain(); g.gain.value = 0.055;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vel, t + 0.014);
+    g.gain.exponentialRampToValueAtTime(vel * 0.3, t + 0.55);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
 
-    // 讓濾波頻率緩慢漂移，雨聲才不會像一片死掉的噪音
-    var lfo = ctx.createOscillator(); lfo.frequency.value = 0.07;
-    var lfoGain = ctx.createGain(); lfoGain.gain.value = 420;
-    lfo.connect(lfoGain).connect(bp.frequency);
-
-    src.connect(bp).connect(lp).connect(g).connect(master);
-    src.start(); lfo.start();
+    o1.connect(g); o2.connect(g2); g2.connect(g);
+    g.connect(lp); lp.connect(trem);
+    o1.start(t); o2.start(t);
+    o1.stop(t + dur + 0.05); o2.stop(t + dur + 0.05);
   }
 
-  function playChord() {
-    var notes = CHORDS[chordIndex++ % CHORDS.length];
-    var t = ctx.currentTime;
-    notes.forEach(function (f, i) {
-      var osc = ctx.createOscillator();
-      osc.type = i === 0 ? 'sine' : 'triangle';
-      osc.frequency.value = f;
+  function bass(t, f, dur) {
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    var lp = ctx.createBiquadFilter();
+    o.type = 'triangle'; o.frequency.value = f;
+    lp.type = 'lowpass'; lp.frequency.value = 460;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.20, t + 0.025);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(lp); lp.connect(g); g.connect(master);
+    o.start(t); o.stop(t + dur + 0.05);
+  }
 
-      var g = ctx.createGain();
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(0.028 / (i + 1), t + 4);   // 長淡入
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 12);           // 長淡出
+  function hat(t, vel) {
+    var s = ctx.createBufferSource(), g = ctx.createGain();
+    var hp = ctx.createBiquadFilter();
+    s.buffer = noise;
+    hp.type = 'highpass'; hp.frequency.value = 7800;
+    g.gain.setValueAtTime(vel, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.045);
+    s.connect(hp); hp.connect(g); g.connect(master);
+    s.start(t); s.stop(t + 0.06);
+  }
 
-      osc.connect(g).connect(master);
-      osc.start(t); osc.stop(t + 12.5);
-    });
+  function schedule() {
+    while (nextTime < ctx.currentTime + 0.25) {
+      var i = step % 32;                 // 4 小節 × 8 個八分音符
+      var P = PROG[Math.floor(i / 8)];
+      var e = i % 8;
+
+      if (e === 0) {                     // 第 1 拍：和弦落下
+        P.ch.forEach(function (m, k) { rhodes(nextTime, hz(m), BEAT * 3.6, 0.055 - k * 0.004); });
+        bass(nextTime, hz(P.bass), BEAT * 0.9);
+      }
+      if (e === 3) {                     // 第 2 拍後半：切分的和弦點綴
+        P.ch.slice(1).forEach(function (m, k) { rhodes(nextTime, hz(m), BEAT * 1.1, 0.030 - k * 0.003); });
+      }
+      if (e === 5) bass(nextTime, hz(P.fifth), BEAT * 0.55);   // 第 3 拍後半，律動的關鍵
+      if (e === 6) bass(nextTime, hz(P.bass + 12), BEAT * 0.4);
+
+      hat(nextTime, e % 2 === 0 ? 0.016 : 0.009);
+
+      nextTime += EIGHTH;
+      step++;
+    }
+  }
+
+  function makeNoise() {
+    var len = Math.floor(ctx.sampleRate * 0.1);
+    noise = ctx.createBuffer(1, len, ctx.sampleRate);
+    var d = noise.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+  }
+
+  function build() {
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    master = ctx.createGain(); master.gain.value = 0;
+    master.connect(ctx.destination);
+
+    // Rhodes 的招牌顫音：5.4Hz 的 LFO 調變增益
+    trem = ctx.createGain(); trem.gain.value = 1;
+    var lfo = ctx.createOscillator(); lfo.frequency.value = 5.4;
+    var lfoG = ctx.createGain(); lfoG.gain.value = 0.14;
+    lfo.connect(lfoG); lfoG.connect(trem.gain);
+    trem.connect(master); lfo.start();
+
+    makeNoise();
   }
 
   function start() {
-    ctx = new (window.AudioContext || window.webkitAudioContext)();
-    master = ctx.createGain();
-    master.gain.value = 0;
-    master.connect(ctx.destination);
-    master.gain.linearRampToValueAtTime(0.9, ctx.currentTime + 2.5);  // 淡入，不要突然出聲
-
-    makeRain();
-    playChord();
-    timer = setInterval(playChord, 11000);
+    if (!ctx) build();
+    ctx.resume();                                     // 閘門的點擊就是這裡要的手勢
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), ctx.currentTime);
+    master.gain.linearRampToValueAtTime(0.85, ctx.currentTime + 2);
+    if (!playing) {
+      nextTime = ctx.currentTime + 0.15;
+      timer = setInterval(schedule, 60);
+      playing = true;
+    }
+    btn.setAttribute('aria-pressed', 'true');
+    label.textContent = '配樂 · 開';
   }
 
   function stop() {
-    clearInterval(timer); timer = null;
-    var c = ctx;
-    master.gain.cancelScheduledValues(c.currentTime);
-    master.gain.setValueAtTime(master.gain.value, c.currentTime);
-    master.gain.linearRampToValueAtTime(0, c.currentTime + 1.2);
-    setTimeout(function () { c.close(); }, 1500);
-    ctx = null; master = null; chordIndex = 0;
+    if (!ctx) return;
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
+    master.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.8);
+    clearInterval(timer); timer = null; playing = false;
+    btn.setAttribute('aria-pressed', 'false');
+    label.textContent = '配樂 · 關';
   }
 
   btn.addEventListener('click', function () {
-    on = !on;
-    btn.setAttribute('aria-pressed', String(on));
-    label.textContent = on ? '梅雨 · 開' : '梅雨 · 關';
-    if (on) start(); else stop();
+    if (btn.getAttribute('aria-pressed') === 'true') stop(); else start();
   });
+
+  /* ── 進站閘門 ── */
+  var gate = document.getElementById('gate');
+  document.body.classList.add('locked');
+
+  function open(withSound) {
+    if (withSound) start();
+    gate.classList.add('out');
+    document.body.classList.remove('locked');
+    setTimeout(function () { gate.style.display = 'none'; }, 650);
+  }
+  document.getElementById('enter').addEventListener('click', function () { open(true); });
+  document.getElementById('enterQuiet').addEventListener('click', function () { open(false); });
 })();
 </script>
 </body>
