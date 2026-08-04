@@ -7,7 +7,6 @@
 <meta name="theme-color" content="#0A0A08">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%8D%94</text></svg>">
-<link rel="preconnect" href="https://www.youtube-nocookie.com">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="BURGERHZZ">
@@ -175,28 +174,27 @@
   .faq details[open] summary::before { content: "\2212"; }
   .faq p { margin: 0 0 18px 24px; font-size: 14px; color: var(--smoke); max-width: 66ch; }
 
-  /* ── 深夜配樂 ── */
-  .np {
-    display: grid; grid-template-columns: minmax(0, 360px) 1fr; gap: 24px;
-    align-items: center; margin-top: 46px;
-    background: var(--char-2); border: 1px solid var(--line); padding: 20px;
+  /* ── 環境音開關 ── */
+  .sfx {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--smoke); background: none;
+    border: 1px solid var(--line); padding: 5px 11px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: color .15s, border-color .15s;
   }
-  @media (max-width: 700px) { .np { grid-template-columns: 1fr; } }
-  .np .screen { position: relative; aspect-ratio: 16 / 9; background: #000; }
-  .np iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-  .np h3 { margin: 0 0 4px; font-size: 17px; letter-spacing: .04em; }
-  .np .by { margin: 0; font-size: 13.5px; color: var(--smoke); }
-  .np .by a { color: var(--smoke); text-decoration: underline; text-underline-offset: 3px; }
-  .np .by a:hover { color: var(--lamp); }
-  .np .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 16px; }
-  .np button {
-    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-    background: var(--lamp); color: var(--char); border: 1px solid var(--lamp);
-    padding: 8px 14px; cursor: pointer; transition: background .15s, color .15s;
+  .sfx:hover { color: var(--lamp); border-color: var(--smoke-dim); }
+  .sfx[aria-pressed="true"] { color: var(--lamp); border-color: var(--lamp); }
+  .sfx i {
+    width: 6px; height: 6px; background: var(--smoke-dim);
+    border-radius: 50%; font-style: normal; flex: none;
   }
-  .np button:hover { background: transparent; color: var(--lamp); }
-  .np button[data-state="on"] { background: transparent; color: var(--smoke); border-color: var(--line); }
-  .np .note { font-size: 11px; color: var(--smoke-dim); font-family: var(--mono); letter-spacing: .06em; }
+  .sfx[aria-pressed="true"] i { background: var(--lamp); animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .25; } }
+  @media (prefers-reduced-motion: reduce) { .sfx[aria-pressed="true"] i { animation: none; } }
+
+  .tune { margin-top: 28px; font-size: 13px; color: var(--smoke-dim); max-width: 58ch; }
+  .tune a { color: var(--smoke); text-decoration: underline; text-underline-offset: 3px; }
+  .tune a:hover { color: var(--lamp); }
 
   footer { padding: 40px 0 60px; font-size: 12px; color: var(--smoke-dim); }
   footer p { margin: 0 0 10px; max-width: 78ch; }
@@ -214,7 +212,9 @@
   <div class="top">
     <div class="logo">BURGER<b>HZZ</b></div>
     <div class="m">剪接師的深夜補給站 · EST. 2026</div>
-    <div class="m">供應中 [2]</div>
+    <button class="sfx" id="sfx" aria-pressed="false">
+      <i></i><span id="sfxLabel">梅雨 · 關</span>
+    </button>
   </div>
 </div>
 
@@ -237,28 +237,11 @@
       <div><b>2020+</b><span class="m">支援版本</span></div>
     </div>
 
-    <div class="np">
-      <div class="screen">
-        <iframe
-          id="mv"
-          src="https://www.youtube-nocookie.com/embed/RND2XzJEBR8?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=RND2XzJEBR8&amp;playsinline=1&amp;rel=0&amp;modestbranding=1&amp;enablejsapi=1"
-          title="張震嶽 ayal komod【梅雨季 Rainy Season】Official Music Video"
-          allow="autoplay; encrypted-media; picture-in-picture"
-          allowfullscreen></iframe>
-      </div>
-      <div>
-        <div class="m">▮ 深夜配樂 · 播放中</div>
-        <h3>梅雨季 Rainy Season</h3>
-        <p class="by">
-          張震嶽 ayal komod ·
-          <a href="https://www.youtube.com/watch?v=RND2XzJEBR8" target="_blank" rel="noopener">滾石唱片 ROCK RECORDS 官方 MV</a>
-        </p>
-        <div class="row">
-          <button id="snd" data-state="off">▸ 開啟聲音</button>
-          <span class="note">瀏覽器規定自動播放必須靜音</span>
-        </div>
-      </div>
-    </div>
+    <p class="tune">
+      深夜配樂靈感來自張震嶽 ayal komod 的
+      <a href="https://www.youtube.com/watch?v=RND2XzJEBR8" target="_blank" rel="noopener">〈梅雨季〉</a>——
+      右上角那顆開關是同樣的雨天，本站即時合成的版本。
+    </p>
   </header>
 
   <section>
@@ -391,41 +374,106 @@
       本站與 ADOBE、TIKTOK、META、GOOGLE 均無隸屬關係。<br>
       PREMIERE PRO 為 ADOBE INC. 之商標；TIKTOK、INSTAGRAM、YOUTUBE 為其各自所有者之商標。<br>
       各平台介面示意圖僅供構圖參考用途。<br>
-      配樂〈梅雨季〉為張震嶽 ayal komod 作品，版權屬滾石唱片 ROCK RECORDS，<br>
-      經由 YOUTUBE 官方嵌入播放器播放，本站與該演出者及唱片公司無合作關係。
+      環境音為本站即時合成之原創音訊，未使用任何第三方錄音。<br>
+      文中提及之〈梅雨季〉僅為外部連結，本站與該演出者及唱片公司無合作關係。
     </p>
   </footer>
 </div>
 
 <script>
-/* 開啟聲音。
- * 瀏覽器一律擋「有聲音的自動播放」，所以嵌入時只能 mute=1 自動播放，
- * 再由使用者這一次點擊解除靜音——這是唯一可行的路徑，不是可以繞過的設定。
+/* 梅雨環境音 —— 用 Web Audio 即時合成，不載任何音檔。
+ *
+ * 兩層：雨（白噪音過帶通濾波，濾波頻率緩慢漂移模擬雨勢起伏）
+ *      + 和聲鋪底（每 11 秒換一個和弦，長淡入淡出）
+ *
+ * 一律預設關閉：瀏覽器本來就擋自動播放，而且沒人喜歡一開網頁就有聲音。
  */
 (function () {
-  var f = document.getElementById('mv');
-  var b = document.getElementById('snd');
-  if (!f || !b) return;
+  var btn = document.getElementById('sfx');
+  var label = document.getElementById('sfxLabel');
+  var ctx = null, master = null, timer = null, on = false;
 
-  function cmd(func, args) {
-    f.contentWindow.postMessage(JSON.stringify({
-      event: 'command', func: func, args: args || []
-    }), 'https://www.youtube-nocookie.com');
+  // 小調三和弦進行，慢速循環，帶點濕悶的感覺
+  var CHORDS = [
+    [146.83, 174.61, 220.00],   // Dm
+    [130.81, 155.56, 196.00],   // Cm
+    [116.54, 146.83, 174.61],   // Bb
+    [130.81, 164.81, 196.00]    // C
+  ];
+  var chordIndex = 0;
+
+  function makeRain() {
+    // 2 秒的白噪音循環，長度取質數秒數以外的值不影響，重點是夠長聽不出接縫
+    var len = ctx.sampleRate * 2;
+    var buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    var d = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+
+    var src = ctx.createBufferSource();
+    src.buffer = buf; src.loop = true;
+
+    var bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass'; bp.frequency.value = 1400; bp.Q.value = 0.55;
+
+    var lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 5200;
+
+    var g = ctx.createGain(); g.gain.value = 0.055;
+
+    // 讓濾波頻率緩慢漂移，雨聲才不會像一片死掉的噪音
+    var lfo = ctx.createOscillator(); lfo.frequency.value = 0.07;
+    var lfoGain = ctx.createGain(); lfoGain.gain.value = 420;
+    lfo.connect(lfoGain).connect(bp.frequency);
+
+    src.connect(bp).connect(lp).connect(g).connect(master);
+    src.start(); lfo.start();
   }
 
-  b.addEventListener('click', function () {
-    var on = b.dataset.state === 'on';
-    if (on) {
-      cmd('mute');
-      b.dataset.state = 'off';
-      b.textContent = '▸ 開啟聲音';
-    } else {
-      cmd('unMute');
-      cmd('setVolume', [55]);
-      cmd('playVideo');
-      b.dataset.state = 'on';
-      b.textContent = '▪ 靜音';
-    }
+  function playChord() {
+    var notes = CHORDS[chordIndex++ % CHORDS.length];
+    var t = ctx.currentTime;
+    notes.forEach(function (f, i) {
+      var osc = ctx.createOscillator();
+      osc.type = i === 0 ? 'sine' : 'triangle';
+      osc.frequency.value = f;
+
+      var g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.028 / (i + 1), t + 4);   // 長淡入
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 12);           // 長淡出
+
+      osc.connect(g).connect(master);
+      osc.start(t); osc.stop(t + 12.5);
+    });
+  }
+
+  function start() {
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    master = ctx.createGain();
+    master.gain.value = 0;
+    master.connect(ctx.destination);
+    master.gain.linearRampToValueAtTime(0.9, ctx.currentTime + 2.5);  // 淡入，不要突然出聲
+
+    makeRain();
+    playChord();
+    timer = setInterval(playChord, 11000);
+  }
+
+  function stop() {
+    clearInterval(timer); timer = null;
+    var c = ctx;
+    master.gain.cancelScheduledValues(c.currentTime);
+    master.gain.setValueAtTime(master.gain.value, c.currentTime);
+    master.gain.linearRampToValueAtTime(0, c.currentTime + 1.2);
+    setTimeout(function () { c.close(); }, 1500);
+    ctx = null; master = null; chordIndex = 0;
+  }
+
+  btn.addEventListener('click', function () {
+    on = !on;
+    btn.setAttribute('aria-pressed', String(on));
+    label.textContent = on ? '梅雨 · 開' : '梅雨 · 關';
+    if (on) start(); else stop();
   });
 })();
 </script>
