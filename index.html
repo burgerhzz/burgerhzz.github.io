@@ -4,281 +4,286 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="兩個 Premiere Pro 面板：burgerGuide 短影音安全區疊圖、burgerbo YouTube 直接進時間軸。買斷制，無訂閱，終身更新。">
-<meta name="theme-color" content="#0A0A08">
+<meta name="theme-color" content="#060707">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%8D%94</text></svg>">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap">
+
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="BURGERHZZ">
-<meta property="og:title" content="BURGERHZZ — 剪接師的深夜補給站">
+<meta property="og:title" content="BURGERHZZ — 剪接師的地下補給站">
 <meta property="og:description" content="兩個 Premiere Pro 面板：burgerGuide 短影音安全區疊圖、burgerbo YouTube 直接進時間軸。買斷制，無訂閱，終身更新。">
 <meta property="og:url" content="https://burgerhzz.github.io/">
 <meta property="og:locale" content="zh_TW">
 <meta name="twitter:card" content="summary">
 <link rel="canonical" href="https://burgerhzz.github.io/">
-<title>BURGERHZZ — 剪接師的深夜補給站</title>
+<title>BURGERHZZ — 剪接師的地下補給站</title>
 <style>
+  /* 色票與字型取自 plugdealer.shop 的設計系統，刻意保持一致。
+     全站單一等寬字、直角、1px 細框，霓虹綠當主要動作色。 */
   :root {
-    --char:      #0A0A08;
-    --char-2:    #121110;
-    --char-3:    #1B1917;
-    --line:      #2A2724;
-    --paper:     #E8E2D4;
-    --smoke:     #8C8574;
-    --smoke-dim: #625C4F;
-    --lamp:      #FFB000;
-    --sauce:     #FF3B1F;
-    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
-    --sans: "Helvetica Neue", -apple-system, BlinkMacSystemFont, "PingFang TC", sans-serif;
+    --bg:     #060707;
+    --panel:  #0a0d0b;
+    --panel2: #070908;
+    --line:   #1c2621;
+    --line2:  #111713;
+    --ink:    #cfe7d4;
+    --dim:    #5d7a66;
+    --dimmer: #33463a;
+    --grn:    #3dff73;
+    --grn2:   #9dffb8;
+    --grndk:  #0f3d20;
+    --blu:    #4553ff;
+    --blu2:   #cfd6ff;
+    --red:    #ff3b3b;
+    --amb:    #ffb648;
+    --font: 'IBM Plex Mono', 'Cascadia Mono', ui-monospace, Consolas, 'Courier New', monospace;
   }
-  /* 霓虹夜市是刻意的單一主題 —— 明亮版本會毀掉整個氛圍，
-     所以兩種 data-theme 都鎖同一組 token，切換不會拆掉設計。 */
+  /* 地下電台的視覺世界是刻意的單一主題，切換淺色會整個垮掉 */
   :root[data-theme="light"], :root[data-theme="dark"] { color-scheme: dark; }
 
   * { box-sizing: border-box; }
   body {
-    margin: 0; background: var(--char); color: var(--paper);
-    font-family: var(--sans); font-size: 15px; line-height: 1.65;
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--font); font-size: 14px; line-height: 1.6;
+    text-transform: uppercase; letter-spacing: .04em;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
-  @media (max-width: 380px) {
-    .wrap { padding: 0 16px; }
-    .ticket { padding: 20px; }
-    .combo { padding: 24px; }
-  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 22px; }
+  @media (max-width: 380px) { .wrap { padding: 0 14px; } }
 
-  h1, h2, h3, .m { font-family: var(--mono); text-transform: uppercase; }
-  .m { letter-spacing: .14em; font-size: 11px; color: var(--smoke); }
   a { color: inherit; }
-  :focus-visible { outline: 2px solid var(--lamp); outline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--grn); outline-offset: 2px; }
+  .lo { text-transform: none; }               /* 中文段落不做大寫轉換 */
 
   /* ── 跑馬燈 ── */
   .ticker {
-    border-bottom: 1px solid var(--line); background: var(--char-2);
-    overflow: hidden; white-space: nowrap; padding: 9px 0;
-    font-family: var(--mono); font-size: 11px; letter-spacing: .16em;
-    text-transform: uppercase; color: var(--lamp);
+    background: var(--panel2); border-bottom: 1px solid var(--line);
+    overflow: hidden; white-space: nowrap; padding: 8px 0;
+    font-size: 11px; letter-spacing: .18em; color: var(--grn);
   }
-  .ticker span { display: inline-block; padding-right: 3rem; animation: slide 42s linear infinite; }
+  .ticker span { display: inline-block; padding-right: 2.5rem; animation: slide 40s linear infinite; }
   @keyframes slide { to { transform: translateX(-50%); } }
   @media (prefers-reduced-motion: reduce) { .ticker span { animation: none; } }
 
-  /* ── 頂部 ── */
+  /* ── 頂部列 ── */
   .top {
-    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
-    padding: 20px 0; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 14px 0; border-bottom: 1px solid var(--line);
   }
-  .logo { font-family: var(--mono); font-size: 17px; font-weight: 700; letter-spacing: .2em; }
-  .logo b { color: var(--lamp); font-weight: 700; }
-  .top .m { margin-left: auto; }
+  .brand { font-size: 15px; font-weight: 700; letter-spacing: .22em; }
+  .brand b { color: var(--grn); }
+  .ver { font-size: 10px; color: var(--dim); letter-spacing: .18em; }
+  .top .spacer { flex: 1; }
+
+  .chip {
+    font-size: 10px; letter-spacing: .16em; color: var(--dim);
+    background: none; border: 1px solid var(--line); padding: 6px 11px;
+    cursor: pointer; font-family: var(--font); text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 7px;
+  }
+  .chip:hover { color: var(--grn); border-color: var(--dimmer); }
+  .chip[aria-pressed="true"] { color: var(--grn); border-color: var(--grndk); background: var(--grndk); }
+  .chip i { width: 5px; height: 5px; background: var(--dimmer); flex: none; }
+  .chip[aria-pressed="true"] i { background: var(--grn); animation: blip 1.8s steps(2) infinite; }
+  @keyframes blip { 50% { opacity: .2; } }
+  @media (prefers-reduced-motion: reduce) { .chip[aria-pressed="true"] i { animation: none; } }
 
   /* ── HERO ── */
-  .hero { padding: 76px 0 64px; border-bottom: 1px solid var(--line); }
+  .hero { padding: 62px 0 52px; border-bottom: 1px solid var(--line); }
+  .eyebrow { font-size: 11px; letter-spacing: .22em; color: var(--dim); }
   .hero h1 {
-    margin: 18px 0 0; font-size: clamp(38px, 8.5vw, 88px); line-height: .94;
-    letter-spacing: -.03em; font-weight: 700; text-wrap: balance;
+    margin: 20px 0 0; font-size: clamp(34px, 7.4vw, 68px); line-height: 1.04;
+    letter-spacing: .02em; font-weight: 700; text-wrap: balance;
   }
-  .hero h1 em { font-style: normal; color: var(--lamp); }
-  .hero p {
-    margin: 26px 0 0; max-width: 60ch; font-size: 17px; color: var(--paper);
+  .hero h1 em { font-style: normal; color: var(--grn); }
+  .hero .lede {
+    margin: 24px 0 0; max-width: 56ch; font-size: 13px; color: var(--dim);
+    letter-spacing: .02em; line-height: 1.85;
   }
-  .hero p.sub { color: var(--smoke); font-size: 15px; max-width: 62ch; }
 
   .stats {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(128px, 100%), 1fr));
-    gap: 1px; background: var(--line); border: 1px solid var(--line);
-    margin-top: 46px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(126px, 100%), 1fr));
+    gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 42px;
   }
-  .stats div { background: var(--char); padding: 18px 20px; }
+  .stats div { background: var(--bg); padding: 16px 18px; }
   .stats b {
-    display: block; font-family: var(--mono); font-size: 24px;
-    color: var(--lamp); letter-spacing: -.02em; font-variant-numeric: tabular-nums;
+    display: block; font-size: 25px; color: var(--grn); font-weight: 700;
+    letter-spacing: 0; font-variant-numeric: tabular-nums;
   }
+  .stats span { font-size: 10px; letter-spacing: .16em; color: var(--dim); }
 
-  /* ── 商品 ── */
-  section { padding: 68px 0; border-bottom: 1px solid var(--line); }
-  .head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 34px; }
-  .head h2 { margin: 0; font-size: 15px; letter-spacing: .18em; font-weight: 700; }
-  .head hr { flex: 1; border: 0; border-top: 1px dashed var(--line); }
+  /* ── 區塊標題 ── */
+  section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+  .head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 28px; }
+  .head h2 { margin: 0; font-size: 13px; letter-spacing: .22em; font-weight: 700; }
+  .head h2::before { content: "// "; color: var(--grn); }
+  .head .n { font-size: 11px; color: var(--dim); }
+  .head hr { flex: 1; border: 0; border-top: 1px solid var(--line); }
 
-  .menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 20px; }
-
-  .ticket {
-    background: var(--char-2); border: 1px solid var(--line);
-    padding: 26px; display: flex; flex-direction: column; gap: 16px;
-    position: relative; transition: border-color .15s, transform .15s;
+  /* ── 商品卡 ── */
+  .menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 16px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    padding: 24px; display: flex; flex-direction: column; gap: 14px; position: relative;
+    transition: border-color .12s;
   }
-  .ticket:hover { border-color: var(--smoke-dim); transform: translateY(-2px); }
-  .ticket .tag {
-    position: absolute; top: -1px; right: 20px;
-    font-family: var(--mono); font-size: 10px; letter-spacing: .14em;
-    background: var(--lamp); color: var(--char); padding: 3px 9px; font-weight: 700;
+  .card:hover { border-color: var(--dimmer); }
+  .card .flag {
+    position: absolute; top: 0; right: 18px;
+    font-size: 9px; letter-spacing: .18em; font-weight: 700;
+    background: var(--grn); color: var(--bg); padding: 3px 8px;
   }
-  .ticket h3 { margin: 0; font-size: 21px; letter-spacing: .04em; font-weight: 700; }
-  .ticket h3 + .m { margin-top: -12px; }
-  .ticket .desc { margin: 0; font-size: 14px; color: var(--smoke); }
+  .card h3 { margin: 0; font-size: 19px; letter-spacing: .1em; font-weight: 700; }
+  .card .kind { font-size: 10px; letter-spacing: .16em; color: var(--blu2); margin-top: -10px; }
+  .card .desc { margin: 0; font-size: 12.5px; color: var(--dim); text-transform: none; line-height: 1.8; }
 
-  .feat { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; font-size: 13.5px; }
-  .feat li { display: flex; gap: 10px; align-items: baseline; }
-  .feat li::before { content: "▸"; color: var(--lamp); font-family: var(--mono); font-size: 11px; }
+  .feat { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 11.5px; }
+  .feat li { display: flex; gap: 9px; text-transform: none; letter-spacing: 0; color: var(--ink); }
+  .feat li::before { content: "▸"; color: var(--grn); flex: none; }
 
-  .price { display: flex; align-items: baseline; gap: 10px; margin-top: auto; padding-top: 14px; }
-  .price b {
-    font-family: var(--mono); font-size: 30px; letter-spacing: -.02em;
-    font-variant-numeric: tabular-nums;
+  .price { display: flex; align-items: baseline; gap: 9px; margin-top: auto; padding-top: 12px; }
+  .price b { font-size: 27px; font-weight: 700; color: var(--amb); font-variant-numeric: tabular-nums; }
+  .price s { font-size: 12px; color: var(--dimmer); }
+  .price .save { font-size: 10px; letter-spacing: .14em; color: var(--red); }
+
+  .buy {
+    display: block; text-align: center; text-decoration: none; cursor: pointer;
+    font-family: var(--font); font-size: 11px; letter-spacing: .2em; font-weight: 700;
+    text-transform: uppercase; padding: 13px;
+    background: var(--grn); color: var(--bg); border: 1px solid var(--grn);
+    transition: background .12s, color .12s;
   }
-  .price s { color: var(--smoke-dim); font-family: var(--mono); font-size: 14px; }
-  .price .off { color: var(--sauce); font-family: var(--mono); font-size: 11px; letter-spacing: .1em; }
-
-  .btn {
-    display: block; text-align: center; text-decoration: none;
-    font-family: var(--mono); font-size: 12px; letter-spacing: .16em; font-weight: 700;
-    padding: 14px; background: var(--lamp); color: var(--char);
-    border: 1px solid var(--lamp); transition: background .15s, color .15s;
-  }
-  .btn:hover { background: transparent; color: var(--lamp); }
-  .btn.ghost { background: transparent; color: var(--paper); border-color: var(--line); }
-  .btn.ghost:hover { border-color: var(--lamp); color: var(--lamp); }
+  .buy:hover { background: transparent; color: var(--grn); }
 
   /* ── 套餐 ── */
   .combo {
-    background: var(--char-3); border: 1px solid var(--lamp);
-    padding: 34px; margin-top: 20px;
-    display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: center;
+    background: var(--panel2); border: 1px solid var(--grndk); margin-top: 16px; padding: 28px;
+    display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center;
   }
-  .combo h3 { margin: 0 0 6px; font-size: 25px; letter-spacing: .04em; }
-  .combo .in { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 14px; font-size: 13.5px; }
-  .combo .in span::before { content: "▸ "; color: var(--lamp); font-family: var(--mono); }
-  .combo .buy { text-align: right; }
-  @media (max-width: 640px) {
+  .combo h3 { margin: 6px 0 0; font-size: 23px; letter-spacing: .1em; }
+  .combo .in { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; font-size: 11px; color: var(--dim); }
+  .combo .in span::before { content: "▸ "; color: var(--grn); }
+  .combo .right { text-align: right; }
+  .combo .right .price { justify-content: flex-end; }
+  .combo .right .save { font-size: 10px; letter-spacing: .14em; color: var(--red); margin-bottom: 12px; }
+  @media (max-width: 660px) {
     .combo { grid-template-columns: 1fr; }
-    .combo .buy { text-align: left; }
+    .combo .right { text-align: left; }
+    .combo .right .price { justify-content: flex-start; }
   }
 
   /* ── 立場 ── */
-  .creed { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 26px; }
-  .creed h3 { margin: 0 0 8px; font-size: 13px; letter-spacing: .14em; color: var(--lamp); }
-  .creed p { margin: 0; font-size: 14px; color: var(--smoke); }
+  .creed { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(215px, 100%), 1fr)); gap: 22px; }
+  .creed h3 { margin: 0 0 7px; font-size: 11px; letter-spacing: .18em; color: var(--grn); }
+  .creed p { margin: 0; font-size: 12.5px; color: var(--dim); text-transform: none; line-height: 1.8; }
 
   /* ── FAQ ── */
-  .faq { display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .faq { border-top: 1px solid var(--line); }
   .faq details { border-bottom: 1px solid var(--line); }
   .faq summary {
-    cursor: pointer; padding: 17px 0; font-family: var(--mono);
-    font-size: 13px; letter-spacing: .06em; list-style: none;
-    display: flex; gap: 12px; align-items: baseline;
+    cursor: pointer; padding: 15px 0; font-size: 12px; letter-spacing: .1em;
+    list-style: none; display: flex; gap: 11px; align-items: baseline;
   }
   .faq summary::-webkit-details-marker { display: none; }
-  .faq summary::before { content: "+"; color: var(--lamp); font-size: 14px; }
+  .faq summary::before { content: "+"; color: var(--grn); }
   .faq details[open] summary::before { content: "\2212"; }
-  .faq p { margin: 0 0 18px 24px; font-size: 14px; color: var(--smoke); max-width: 66ch; }
+  .faq p {
+    margin: 0 0 16px 22px; font-size: 12.5px; color: var(--dim);
+    text-transform: none; max-width: 64ch; line-height: 1.85;
+  }
+
+  /* ── 狀態列與頁尾 ── */
+  .sys {
+    display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 14px 0;
+    border-bottom: 1px solid var(--line); font-size: 10px;
+    letter-spacing: .16em; color: var(--dimmer);
+  }
+  .sys b { color: var(--grn); font-weight: 400; }
+  footer { padding: 30px 0 52px; font-size: 10px; letter-spacing: .1em; color: var(--dimmer); line-height: 2; }
+  footer p { margin: 0 0 8px; max-width: 84ch; }
 
   /* ── 進站閘門 ──
      瀏覽器規定音訊必須由使用者手勢啟動，這道閘門的點擊就是那個手勢。
-     進去之後音樂直接開始，體感等同自動播放。 */
+     進去之後配樂立刻開始，體感等同自動播放。 */
   .gate {
-    position: fixed; inset: 0; z-index: 99; background: var(--char);
-    display: grid; place-items: center; text-align: center; padding: 24px;
-    transition: opacity .6s ease;
+    position: fixed; inset: 0; z-index: 99; background: var(--bg);
+    display: grid; place-items: center; text-align: center; padding: 22px;
+    transition: opacity .5s ease;
   }
   .gate.out { opacity: 0; pointer-events: none; }
-  .gate .logo { font-size: clamp(28px, 7vw, 46px); margin-bottom: 10px; }
-  .gate .m { display: block; margin-bottom: 40px; }
-  .gate button {
-    font-family: var(--mono); font-size: 13px; letter-spacing: .2em; font-weight: 700;
-    text-transform: uppercase; background: var(--lamp); color: var(--char);
-    border: 1px solid var(--lamp); padding: 16px 34px; cursor: pointer;
-    transition: background .15s, color .15s;
+  .gate .brand { font-size: clamp(26px, 6.6vw, 42px); margin-bottom: 8px; }
+  .gate .sub { font-size: 10px; letter-spacing: .22em; color: var(--dim); margin-bottom: 38px; }
+  .gate .enter {
+    font-family: var(--font); font-size: 12px; letter-spacing: .24em; font-weight: 700;
+    text-transform: uppercase; background: var(--grn); color: var(--bg);
+    border: 1px solid var(--grn); padding: 15px 32px; cursor: pointer;
+    transition: background .12s, color .12s;
   }
-  .gate button:hover { background: transparent; color: var(--lamp); }
+  .gate .enter:hover { background: transparent; color: var(--grn); }
   .gate .quiet {
-    display: block; margin: 18px auto 0; background: none; border: 0;
-    color: var(--smoke-dim); font-size: 11px; letter-spacing: .12em; padding: 6px;
+    display: block; margin: 16px auto 0; background: none; border: 0; cursor: pointer;
+    font-family: var(--font); color: var(--dimmer); font-size: 10px;
+    letter-spacing: .16em; text-transform: uppercase; padding: 6px;
   }
-  .gate .quiet:hover { color: var(--smoke); background: none; }
-  .gate .note { margin-top: 34px; font-size: 11px; color: var(--smoke-dim);
-                font-family: var(--mono); letter-spacing: .08em; }
+  .gate .quiet:hover { color: var(--dim); }
+  .gate .note { margin-top: 32px; font-size: 9.5px; letter-spacing: .14em; color: var(--dimmer); }
   body.locked { overflow: hidden; }
-
-  /* ── 配樂開關 ── */
-  .sfx {
-    font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
-    text-transform: uppercase; color: var(--smoke); background: none;
-    border: 1px solid var(--line); padding: 5px 11px; cursor: pointer;
-    display: inline-flex; align-items: center; gap: 8px;
-    transition: color .15s, border-color .15s;
-  }
-  .sfx:hover { color: var(--lamp); border-color: var(--smoke-dim); }
-  .sfx[aria-pressed="true"] { color: var(--lamp); border-color: var(--lamp); }
-  .sfx i {
-    width: 6px; height: 6px; background: var(--smoke-dim);
-    border-radius: 50%; font-style: normal; flex: none;
-  }
-  .sfx[aria-pressed="true"] i { background: var(--lamp); animation: pulse 2.4s ease-in-out infinite; }
-  @keyframes pulse { 50% { opacity: .25; } }
-  @media (prefers-reduced-motion: reduce) { .sfx[aria-pressed="true"] i { animation: none; } }
-
-  footer { padding: 40px 0 60px; font-size: 12px; color: var(--smoke-dim); }
-  footer p { margin: 0 0 10px; max-width: 78ch; }
-  .legal { font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; line-height: 1.9; }
-
 </style>
 </head>
 <body>
 <div class="gate" id="gate">
   <div>
-    <div class="logo">BURGER<b>HZZ</b></div>
-    <span class="m">剪接師的深夜補給站 · EST. 2026</span>
-    <button id="enter">▸ 點此進入</button>
+    <div class="brand">BURGER<b>HZZ</b></div>
+    <div class="sub">▮ 剪接師的地下補給站 · EST. 2026</div>
+    <button class="enter" id="enter">▸ 點此進入補給站</button>
     <button class="quiet" id="enterQuiet">靜音進入</button>
     <p class="note">進入後播放深夜配樂 · 右上角可隨時關閉</p>
   </div>
 </div>
 
 <div class="ticker"><span>
-  ▮ 買斷制 ▪ 沒有訂閱 ▪ 終身更新 ▪ 付款後立即下載 ▪ MAC 版 ▪ PREMIERE PRO 2020 以上 &nbsp;&nbsp;
-  ▮ 買斷制 ▪ 沒有訂閱 ▪ 終身更新 ▪ 付款後立即下載 ▪ MAC 版 ▪ PREMIERE PRO 2020 以上 &nbsp;&nbsp;
+  // BURGERHZZ™ · EST. 2026 · PREMIERE PRO 地下補給 ▪ 買斷制 ▪ 沒有訂閱 ▪ 終身更新 ▪ 付款後立即下載 &nbsp;
+  // BURGERHZZ™ · EST. 2026 · PREMIERE PRO 地下補給 ▪ 買斷制 ▪ 沒有訂閱 ▪ 終身更新 ▪ 付款後立即下載 &nbsp;
 </span></div>
 
 <div class="wrap">
   <div class="top">
-    <div class="logo">BURGER<b>HZZ</b></div>
-    <div class="m">剪接師的深夜補給站 · EST. 2026</div>
-    <button class="sfx" id="sfx" aria-pressed="false">
-      <i></i><span id="sfxLabel">配樂 · 關</span>
-    </button>
+    <div class="brand">BURGER<b>HZZ</b></div>
+    <div class="ver">™ V1 ▮ SUPPLY</div>
+    <div class="spacer"></div>
+    <button class="chip" id="sfx" aria-pressed="false"><i></i><span id="sfxLabel">SFX: OFF</span></button>
   </div>
 </div>
 
 <div class="wrap">
   <header class="hero">
-    <div class="m">▸ 自己剪片剪到受不了，才動手寫的工具</div>
-    <h1>把那些<em>重複到麻木</em>的步驟，<br>從你的剪接流程裡拿掉。</h1>
-    <p>
+    <div class="eyebrow">▸ 自己剪片剪到受不了，才動手寫的工具</div>
+    <h1>把重複的動作<em>剪掉</em></h1>
+    <p class="lede lo">
       每次開新專案手動拉安全區、每次抓參考影片都要開瀏覽器下載再拖進來——
-      這些動作單次只花兩分鐘，但你一年做上千次。
-    </p>
-    <p class="sub">
-      兩個 Premiere Pro 面板，各自解決一件事。買斷，不綁訂閱，之後的更新都不再收費。
+      這些動作單次只花兩分鐘，但你一年做上千次。兩個 Premiere Pro 面板，各自解決一件事。
     </p>
 
     <div class="stats">
-      <div><b>2</b><span class="m">個工具</span></div>
-      <div><b>0</b><span class="m">訂閱費</span></div>
-      <div><b>∞</b><span class="m">終身更新</span></div>
-      <div><b>2020+</b><span class="m">支援版本</span></div>
+      <div><b>2</b><span>個工具</span></div>
+      <div><b>0</b><span>訂閱費</span></div>
+      <div><b>∞</b><span>終身更新</span></div>
+      <div><b>2020+</b><span>支援版本</span></div>
     </div>
   </header>
 
   <section>
-    <div class="head"><h2>供應清單</h2><hr></div>
+    <div class="head"><h2>THE SUPPLY</h2><span class="n">[2]</span><hr></div>
 
     <div class="menu">
-      <article class="ticket">
-        <div class="tag">新品</div>
-        <h3>burgerGuide</h3>
-        <div class="m">短影音安全區疊圖 · 9:16 + 16:9</div>
+      <article class="card">
+        <div class="flag">新品</div>
+        <h3>BURGERGUIDE</h3>
+        <div class="kind">短影音安全區疊圖 · 9:16 + 16:9</div>
         <p class="desc">
           字卡被 TikTok 的按鈕蓋掉、logo 被 Reels 的文案吃掉——發出去才發現就來不及了。
           這個面板把各平台的介面直接疊在畫面上，剪的時候就看得到。
@@ -291,12 +296,12 @@
           <li>不透明度滑桿，一鍵移除不留痕跡</li>
         </ul>
         <div class="price"><b>NT$490</b></div>
-        <a class="btn" href="#取得">▸ 取得 burgerGuide</a>
+        <a class="buy" href="#取得">▸ ADD TO CART</a>
       </article>
 
-      <article class="ticket">
-        <h3>burgerbo</h3>
-        <div class="m">YouTube 直接進時間軸</div>
+      <article class="card">
+        <h3>BURGERBO</h3>
+        <div class="kind">YOUTUBE 直接進時間軸</div>
         <p class="desc">
           貼上網址，選解析度，按下去。下載、轉碼、匯入專案、放上時間軸——
           中間那些開瀏覽器、找檔案、拖進來的步驟全部消失。
@@ -309,29 +314,26 @@
           <li>插到播放頭、接在最後、或只放專案面板</li>
         </ul>
         <div class="price"><b>NT$690</b></div>
-        <a class="btn" href="#取得">▸ 取得 burgerbo</a>
+        <a class="buy" href="#取得">▸ ADD TO CART</a>
       </article>
     </div>
 
     <div class="combo">
       <div>
-        <div class="m">▮ 最划算</div>
+        <div class="ver">▪ BEST DEAL ▪ 省 NT$290</div>
         <h3>全部帶走</h3>
-        <p class="desc" style="margin:0">兩個工具，一次買齊。以後出的更新都算你的。</p>
-        <div class="in"><span>burgerGuide</span><span>burgerbo</span><span>終身更新</span></div>
+        <div class="in"><span>BURGERGUIDE</span><span>BURGERBO</span><span>終身更新</span></div>
       </div>
-      <div class="buy">
-        <div class="price" style="justify-content:flex-end">
-          <s>NT$1,180</s><b>NT$890</b>
-        </div>
-        <div class="off" style="margin-bottom:14px">省下 NT$290</div>
-        <a class="btn" href="#取得">▸ 全部帶走</a>
+      <div class="right">
+        <div class="price"><s>NT$1,180</s><b>NT$890</b></div>
+        <div class="save">SAVE 25%</div>
+        <a class="buy" href="#取得">▸ TAKE EVERYTHING</a>
       </div>
     </div>
   </section>
 
   <section>
-    <div class="head"><h2>為什麼是這個價</h2><hr></div>
+    <div class="head"><h2>WHO WE ARE</h2><hr></div>
     <div class="creed">
       <div>
         <h3>買斷，不是租的</h3>
@@ -353,10 +355,10 @@
   </section>
 
   <section>
-    <div class="head"><h2>常見問題</h2><hr></div>
+    <div class="head"><h2>FAQ</h2><hr></div>
     <div class="faq">
       <details open>
-        <summary>需要哪個版本的 Premiere？</summary>
+        <summary>需要哪個版本的 PREMIERE？</summary>
         <p>Premiere Pro 2020 以上，macOS。目前沒有 Windows 版。</p>
       </details>
       <details>
@@ -364,26 +366,24 @@
         <p>你自己的裝置都可以裝，沒有限制數量，也沒有啟用碼要輸入。</p>
       </details>
       <details>
-        <summary>burgerGuide 的疊圖會被輸出出去嗎？</summary>
+        <summary>疊圖會被輸出出去嗎？</summary>
         <p>
-          疊圖是放在最上層視訊軌的圖層，<strong>輸出前要關掉該軌道的眼睛</strong>，
-          否則會被算進成品。面板上有一鍵移除，安裝說明裡也寫得很清楚。
-          這是 Premiere 的限制——它的 API 沒有開放建立監視器參考線，所有同類工具都得這樣做。
+          疊圖是放在最上層視訊軌的圖層，<strong>輸出前要關掉該軌道的眼睛</strong>，否則會被算進成品。
+          面板上有一鍵移除。這是 Premiere 的限制——它的 API 沒有開放建立監視器參考線，所有同類工具都得這樣做。
         </p>
       </details>
       <details>
         <summary>平台改版之後安全區跑掉怎麼辦？</summary>
         <p>
-          TikTok、Instagram、YouTube 都會改版面。我會跟著更新數值推新版，
-          你重新下載安裝即可，不另外收費。想自己微調的話，數值是明文寫在設定檔裡的。
+          TikTok、Instagram、YouTube 都會改版面。我會跟著更新數值推新版，你重新下載安裝即可，不另外收費。
+          想自己微調的話，數值是明文寫在設定檔裡的。
         </p>
       </details>
       <details>
-        <summary>burgerbo 可以下載別人的影片嗎？</summary>
+        <summary>BURGERBO 可以下載別人的影片嗎？</summary>
         <p>
-          技術上可以，但這個工具的用途是處理你自己上傳的影片、CC 授權素材、
-          或你已經取得授權的內容。下載他人受版權保護的影片可能違反 YouTube 服務條款，
-          後果由使用者自行承擔。
+          技術上可以，但這個工具的用途是處理你自己上傳的影片、CC 授權素材、或你已經取得授權的內容。
+          下載他人受版權保護的影片可能違反 YouTube 服務條款，後果由使用者自行承擔。
         </p>
       </details>
       <details>
@@ -393,160 +393,237 @@
     </div>
   </section>
 
+  <div class="sys">
+    <span>SYS: <b>ONLINE</b></span>
+    <span>▪ NODE BURGER-01</span>
+    <span>▪ 買斷制</span>
+    <span>▪ 14 天退款保證</span>
+    <span>▪ LOCAL <b id="clock">--:--:--</b></span>
+  </div>
+
   <footer>
-    <p class="legal">
-      © 2026 BURGERHZZ ▪ 買斷制 ▪ 終身更新 ▪ 14 天退款保證
-    </p>
-    <p class="legal">
-      本站與 ADOBE、TIKTOK、META、GOOGLE 均無隸屬關係。<br>
-      PREMIERE PRO 為 ADOBE INC. 之商標；TIKTOK、INSTAGRAM、YOUTUBE 為其各自所有者之商標。<br>
-      各平台介面示意圖僅供構圖參考用途。<br>
-      配樂為本站即時合成之原創音訊，未使用任何第三方錄音。
+    <p>© 2026 BURGERHZZ ▪ 終身更新 ▪ 即時下載</p>
+    <p>
+      本站與 ADOBE、TIKTOK、META、GOOGLE 均無隸屬關係。
+      PREMIERE PRO 為 ADOBE INC. 之商標；TIKTOK、INSTAGRAM、YOUTUBE 為其各自所有者之商標。
+      各平台介面示意圖僅供構圖參考用途。配樂為本站即時合成之原創音訊，未使用任何第三方錄音。
     </p>
   </footer>
 </div>
+
 <script>
-/* 深夜 City Pop —— Web Audio 即時合成，不載任何音檔。
+/* 本地時鐘，狀態列用 */
+(function () {
+  var el = document.getElementById('clock');
+  function tick() {
+    var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; };
+    el.textContent = p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+  }
+  tick(); setInterval(tick, 1000);
+})();
+</script>
+
+<script>
+/* 90s Chill Hip Hop —— Web Audio 即時合成，不載任何音檔。
  *
- * 92 BPM，四小節循環 Cmaj9 → Am9 → Dm9 → G13（I-vi-ii-V 加九音，
- * city pop 最典型的和聲語彙）。三個聲部：
- *   電鋼琴  正弦波 + 兩倍頻略失諧的泛音，過 tremolo 做出 Rhodes 的顫音
- *   貝斯    三角波過低通，切分在第 3 拍後半，這是 city pop 的律動來源
- *   腳踏鈸  短促白噪音過高通，八分音符，音量壓很低只做時間感
+ * 86 BPM，四小節循環 Dm9 → G13 → Cmaj9 → Am9（爵士味的 ii-V-I-vi）。
  *
- * 排程用 lookahead：setInterval 每 60ms 檢查，把未來 0.25 秒內該響的音
- * 先排進 AudioContext 的時間軸。直接用 setTimeout 觸發會因為主執行緒
- * 被版面繪製卡住而抖動。
+ * 關鍵在三件事，少了任何一個就不像 90 年代的東西：
+ *   swing    十六分音符的偶數格往後推 16%，鬆垮的拖拍感就是從這來的
+ *   boom bap 大鼓落在 1 與第 3 拍前，小鼓釘死在 2、4，中間留白
+ *   lo-fi    整條匯流排過 6.8kHz 低通 + 黑膠雜訊，把數位的銳利磨掉
+ *
+ * 排程用 lookahead：每 60ms 把未來 0.25 秒的音排進 AudioContext 時間軸。
+ * 直接用 setTimeout 會被主執行緒的版面繪製卡住而抖拍。
  */
 (function () {
   var btn = document.getElementById('sfx');
   var label = document.getElementById('sfxLabel');
-  var ctx = null, master = null, trem = null, noise = null, timer = null;
+  var ctx = null, master = null, drums = null, keys = null, noise = null;
+  var crackleSrc = null, timer = null;
   var nextTime = 0, step = 0, playing = false;
 
-  var BPM = 92, BEAT = 60 / BPM, EIGHTH = BEAT / 2;
+  var BPM = 86, BEAT = 60 / BPM, SIX = BEAT / 4;   // 十六分音符
+  var SWING = 0.16;                                 // 偶數格往後推的比例
 
-  // MIDI 音高。九和弦的張力音是 city pop 聽起來「都會、微甜」的來源
   var PROG = [
-    { ch: [60, 64, 67, 71, 74], bass: 36, fifth: 43 },  // Cmaj9
-    { ch: [57, 60, 64, 67, 71], bass: 33, fifth: 40 },  // Am9
-    { ch: [62, 65, 69, 72, 76], bass: 38, fifth: 45 },  // Dm9
-    { ch: [55, 59, 65, 69, 76], bass: 31, fifth: 38 }   // G13
+    { ch: [62, 65, 69, 72, 76], bass: 38 },   // Dm9
+    { ch: [55, 59, 65, 69, 76], bass: 31 },   // G13
+    { ch: [60, 64, 67, 71, 74], bass: 36 },   // Cmaj9
+    { ch: [57, 60, 64, 67, 71], bass: 33 }    // Am9
   ];
+
+  // 每小節 16 格。留白比填滿重要，boom bap 的呼吸感全靠這個。
+  var KICK  = [0, 7, 10];
+  var SNARE = [4, 12];
+  var HAT   = [0, 2, 4, 6, 8, 10, 12, 14];
+  var STAB  = [2, 11];
+  var BASSP = [0, 10];
 
   function hz(m) { return 440 * Math.pow(2, (m - 69) / 12); }
 
+  function kick(t) {
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(125, t);
+    o.frequency.exponentialRampToValueAtTime(42, t + 0.09);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.85, t + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.4);
+    o.connect(g); g.connect(drums);
+    o.start(t); o.stop(t + 0.42);
+  }
+
+  function snare(t, vel) {
+    var s = ctx.createBufferSource(), hp = ctx.createBiquadFilter(), gn = ctx.createGain();
+    s.buffer = noise;
+    hp.type = 'highpass'; hp.frequency.value = 1500;
+    gn.gain.setValueAtTime(vel * 0.5, t);
+    gn.gain.exponentialRampToValueAtTime(0.0001, t + 0.15);
+    s.connect(hp); hp.connect(gn); gn.connect(drums);
+    s.start(t); s.stop(t + 0.18);
+
+    var o = ctx.createOscillator(), go = ctx.createGain();   // 鼓身，沒有這層小鼓會太薄
+    o.type = 'triangle';
+    o.frequency.setValueAtTime(195, t);
+    o.frequency.exponentialRampToValueAtTime(125, t + 0.09);
+    go.gain.setValueAtTime(vel * 0.32, t);
+    go.gain.exponentialRampToValueAtTime(0.0001, t + 0.11);
+    o.connect(go); go.connect(drums);
+    o.start(t); o.stop(t + 0.13);
+  }
+
+  function hat(t, vel, open) {
+    var s = ctx.createBufferSource(), hp = ctx.createBiquadFilter(), g = ctx.createGain();
+    var dur = open ? 0.17 : 0.032;
+    s.buffer = noise;
+    hp.type = 'highpass'; hp.frequency.value = 8200;
+    g.gain.setValueAtTime(vel, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(hp); hp.connect(g); g.connect(drums);
+    s.start(t); s.stop(t + dur + 0.02);
+  }
+
   function rhodes(t, f, dur, vel) {
     var o1 = ctx.createOscillator(), o2 = ctx.createOscillator();
-    var g = ctx.createGain(), g2 = ctx.createGain();
-    var lp = ctx.createBiquadFilter();
+    var g = ctx.createGain(), g2 = ctx.createGain(), lp = ctx.createBiquadFilter();
     o1.type = 'sine'; o1.frequency.value = f;
-    o2.type = 'sine'; o2.frequency.value = f * 2.006;   // 略微失諧，泛音才不會死板
-    g2.gain.value = 0.16;
-    lp.type = 'lowpass'; lp.frequency.value = 2400;
-
+    o2.type = 'sine'; o2.frequency.value = f * 2.004;
+    o1.detune.value = (Math.random() - 0.5) * 9;      // 每次微微走音，模擬卡帶的抖動
+    g2.gain.value = 0.14;
+    lp.type = 'lowpass'; lp.frequency.value = 2000;
     g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(vel, t + 0.014);
-    g.gain.exponentialRampToValueAtTime(vel * 0.3, t + 0.55);
+    g.gain.exponentialRampToValueAtTime(vel, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(vel * 0.25, t + 0.35);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-
-    o1.connect(g); o2.connect(g2); g2.connect(g);
-    g.connect(lp); lp.connect(trem);
+    o1.connect(g); o2.connect(g2); g2.connect(g); g.connect(lp); lp.connect(keys);
     o1.start(t); o2.start(t);
     o1.stop(t + dur + 0.05); o2.stop(t + dur + 0.05);
   }
 
   function bass(t, f, dur) {
-    var o = ctx.createOscillator(), g = ctx.createGain();
-    var lp = ctx.createBiquadFilter();
+    var o = ctx.createOscillator(), g = ctx.createGain(), lp = ctx.createBiquadFilter();
     o.type = 'triangle'; o.frequency.value = f;
-    lp.type = 'lowpass'; lp.frequency.value = 460;
+    lp.type = 'lowpass'; lp.frequency.value = 380;
     g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(0.20, t + 0.025);
+    g.gain.exponentialRampToValueAtTime(0.24, t + 0.03);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
     o.connect(lp); lp.connect(g); g.connect(master);
     o.start(t); o.stop(t + dur + 0.05);
   }
 
-  function hat(t, vel) {
-    var s = ctx.createBufferSource(), g = ctx.createGain();
-    var hp = ctx.createBiquadFilter();
-    s.buffer = noise;
-    hp.type = 'highpass'; hp.frequency.value = 7800;
-    g.gain.setValueAtTime(vel, t);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.045);
-    s.connect(hp); hp.connect(g); g.connect(master);
-    s.start(t); s.stop(t + 0.06);
-  }
+  function has(arr, v) { return arr.indexOf(v) !== -1; }
 
   function schedule() {
     while (nextTime < ctx.currentTime + 0.25) {
-      var i = step % 32;                 // 4 小節 × 8 個八分音符
-      var P = PROG[Math.floor(i / 8)];
-      var e = i % 8;
+      var bar = Math.floor(step / 16) % 4;
+      var i = step % 16;
+      var P = PROG[bar];
+      var t = nextTime + (i % 2 === 1 ? SIX * SWING : 0);    // swing 只推偶數格
 
-      if (e === 0) {                     // 第 1 拍：和弦落下
-        P.ch.forEach(function (m, k) { rhodes(nextTime, hz(m), BEAT * 3.6, 0.055 - k * 0.004); });
-        bass(nextTime, hz(P.bass), BEAT * 0.9);
+      if (has(KICK, i))  kick(t);
+      if (has(SNARE, i)) snare(t, 0.9);
+      if (i === 15 && bar === 3) snare(t, 0.45);             // 過門，四小節收尾用
+      if (has(HAT, i))   hat(t, i % 4 === 0 ? 0.05 : 0.03, i === 14);
+      if (has(BASSP, i)) bass(t, hz(P.bass), BEAT * 0.85);
+      if (has(STAB, i)) {
+        P.ch.forEach(function (m, k) { rhodes(t, hz(m), BEAT * 1.6, 0.05 - k * 0.004); });
       }
-      if (e === 3) {                     // 第 2 拍後半：切分的和弦點綴
-        P.ch.slice(1).forEach(function (m, k) { rhodes(nextTime, hz(m), BEAT * 1.1, 0.030 - k * 0.003); });
-      }
-      if (e === 5) bass(nextTime, hz(P.fifth), BEAT * 0.55);   // 第 3 拍後半，律動的關鍵
-      if (e === 6) bass(nextTime, hz(P.bass + 12), BEAT * 0.4);
 
-      hat(nextTime, e % 2 === 0 ? 0.016 : 0.009);
-
-      nextTime += EIGHTH;
+      nextTime += SIX;
       step++;
     }
   }
 
   function makeNoise() {
-    var len = Math.floor(ctx.sampleRate * 0.1);
+    var len = Math.floor(ctx.sampleRate * 0.25);
     noise = ctx.createBuffer(1, len, ctx.sampleRate);
     var d = noise.getChannelData(0);
     for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
   }
 
+  /* 黑膠雜訊：底噪加上稀疏的爆音，是 lo-fi 的靈魂 */
+  function makeCrackle() {
+    var len = Math.floor(ctx.sampleRate * 4);
+    var b = ctx.createBuffer(1, len, ctx.sampleRate);
+    var d = b.getChannelData(0);
+    for (var i = 0; i < len; i++) {
+      d[i] = Math.random() < 0.0007
+        ? (Math.random() * 2 - 1) * 0.8
+        : (Math.random() * 2 - 1) * 0.014;
+    }
+    return b;
+  }
+
   function build() {
     ctx = new (window.AudioContext || window.webkitAudioContext)();
-    master = ctx.createGain(); master.gain.value = 0;
-    master.connect(ctx.destination);
 
-    // Rhodes 的招牌顫音：5.4Hz 的 LFO 調變增益
-    trem = ctx.createGain(); trem.gain.value = 1;
-    var lfo = ctx.createOscillator(); lfo.frequency.value = 5.4;
-    var lfoG = ctx.createGain(); lfoG.gain.value = 0.14;
-    lfo.connect(lfoG); lfoG.connect(trem.gain);
-    trem.connect(master); lfo.start();
+    master = ctx.createGain(); master.gain.value = 0;
+    var tape = ctx.createBiquadFilter();                 // 整條匯流排的 lo-fi 低通
+    tape.type = 'lowpass'; tape.frequency.value = 6800;
+    master.connect(tape); tape.connect(ctx.destination);
+
+    drums = ctx.createGain(); drums.gain.value = 0.5; drums.connect(master);
+
+    keys = ctx.createGain(); keys.gain.value = 1;        // 電鋼琴走 tremolo
+    var lfo = ctx.createOscillator(); lfo.frequency.value = 4.8;
+    var lfoG = ctx.createGain(); lfoG.gain.value = 0.12;
+    lfo.connect(lfoG); lfoG.connect(keys.gain);
+    keys.connect(master); lfo.start();
 
     makeNoise();
+    crackleSrc = ctx.createBufferSource();
+    crackleSrc.buffer = makeCrackle(); crackleSrc.loop = true;
+    var cg = ctx.createGain(); cg.gain.value = 0.5;
+    var cf = ctx.createBiquadFilter(); cf.type = 'bandpass';
+    cf.frequency.value = 2600; cf.Q.value = 0.6;
+    crackleSrc.connect(cf); cf.connect(cg); cg.connect(master);
+    crackleSrc.start();
   }
 
   function start() {
     if (!ctx) build();
-    ctx.resume();                                     // 閘門的點擊就是這裡要的手勢
+    ctx.resume();                                   // 閘門的點擊就是這裡要的手勢
     master.gain.cancelScheduledValues(ctx.currentTime);
     master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), ctx.currentTime);
-    master.gain.linearRampToValueAtTime(0.85, ctx.currentTime + 2);
+    master.gain.linearRampToValueAtTime(0.8, ctx.currentTime + 1.6);
     if (!playing) {
       nextTime = ctx.currentTime + 0.15;
       timer = setInterval(schedule, 60);
       playing = true;
     }
     btn.setAttribute('aria-pressed', 'true');
-    label.textContent = '配樂 · 開';
+    label.textContent = 'SFX: ON';
   }
 
   function stop() {
     if (!ctx) return;
     master.gain.cancelScheduledValues(ctx.currentTime);
     master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
-    master.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.8);
+    master.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.7);
     clearInterval(timer); timer = null; playing = false;
     btn.setAttribute('aria-pressed', 'false');
-    label.textContent = '配樂 · 關';
+    label.textContent = 'SFX: OFF';
   }
 
   btn.addEventListener('click', function () {
@@ -561,7 +638,7 @@
     if (withSound) start();
     gate.classList.add('out');
     document.body.classList.remove('locked');
-    setTimeout(function () { gate.style.display = 'none'; }, 650);
+    setTimeout(function () { gate.style.display = 'none'; }, 550);
   }
   document.getElementById('enter').addEventListener('click', function () { open(true); });
   document.getElementById('enterQuiet').addEventListener('click', function () { open(false); });
