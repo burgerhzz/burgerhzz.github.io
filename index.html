@@ -177,6 +177,24 @@
   footer { padding: 40px 0 60px; font-size: 12px; color: var(--smoke-dim); }
   footer p { margin: 0 0 10px; max-width: 78ch; }
   .legal { font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; line-height: 1.9; }
+
+  /* ── 環境音開關 ── */
+  .sfx {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--smoke); background: none;
+    border: 1px solid var(--line); padding: 5px 11px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: color .15s, border-color .15s;
+  }
+  .sfx:hover { color: var(--lamp); border-color: var(--smoke-dim); }
+  .sfx[aria-pressed="true"] { color: var(--lamp); border-color: var(--lamp); }
+  .sfx i {
+    width: 6px; height: 6px; background: var(--smoke-dim);
+    border-radius: 50%; font-style: normal; flex: none;
+  }
+  .sfx[aria-pressed="true"] i { background: var(--lamp); animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .25; } }
+  @media (prefers-reduced-motion: reduce) { .sfx[aria-pressed="true"] i { animation: none; } }
 </style>
 </head>
 <body>
@@ -189,7 +207,9 @@
   <div class="top">
     <div class="logo">BURGER<b>HZZ</b></div>
     <div class="m">剪接師的深夜補給站 · EST. 2026</div>
-    <div class="m">供應中 [2]</div>
+    <button class="sfx" id="sfx" aria-pressed="false">
+      <i></i><span id="sfxLabel">梅雨 · 關</span>
+    </button>
   </div>
 </div>
 
@@ -342,9 +362,108 @@
     <p class="legal">
       本站與 ADOBE、TIKTOK、META、GOOGLE 均無隸屬關係。<br>
       PREMIERE PRO 為 ADOBE INC. 之商標；TIKTOK、INSTAGRAM、YOUTUBE 為其各自所有者之商標。<br>
-      各平台介面示意圖僅供構圖參考用途。
+      各平台介面示意圖僅供構圖參考用途。<br>
+      環境音為本站即時合成之原創音訊，未使用任何第三方錄音。
     </p>
   </footer>
 </div>
+
+<script>
+/* 梅雨環境音 —— 用 Web Audio 即時合成，不載任何音檔。
+ *
+ * 兩層：雨（白噪音過帶通濾波，濾波頻率緩慢漂移模擬雨勢起伏）
+ *      + 和聲鋪底（每 11 秒換一個和弦，長淡入淡出）
+ *
+ * 一律預設關閉：瀏覽器本來就擋自動播放，而且沒人喜歡一開網頁就有聲音。
+ */
+(function () {
+  var btn = document.getElementById('sfx');
+  var label = document.getElementById('sfxLabel');
+  var ctx = null, master = null, timer = null, on = false;
+
+  // 小調三和弦進行，慢速循環，帶點濕悶的感覺
+  var CHORDS = [
+    [146.83, 174.61, 220.00],   // Dm
+    [130.81, 155.56, 196.00],   // Cm
+    [116.54, 146.83, 174.61],   // Bb
+    [130.81, 164.81, 196.00]    // C
+  ];
+  var chordIndex = 0;
+
+  function makeRain() {
+    // 2 秒的白噪音循環，長度取質數秒數以外的值不影響，重點是夠長聽不出接縫
+    var len = ctx.sampleRate * 2;
+    var buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    var d = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+
+    var src = ctx.createBufferSource();
+    src.buffer = buf; src.loop = true;
+
+    var bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass'; bp.frequency.value = 1400; bp.Q.value = 0.55;
+
+    var lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 5200;
+
+    var g = ctx.createGain(); g.gain.value = 0.055;
+
+    // 讓濾波頻率緩慢漂移，雨聲才不會像一片死掉的噪音
+    var lfo = ctx.createOscillator(); lfo.frequency.value = 0.07;
+    var lfoGain = ctx.createGain(); lfoGain.gain.value = 420;
+    lfo.connect(lfoGain).connect(bp.frequency);
+
+    src.connect(bp).connect(lp).connect(g).connect(master);
+    src.start(); lfo.start();
+  }
+
+  function playChord() {
+    var notes = CHORDS[chordIndex++ % CHORDS.length];
+    var t = ctx.currentTime;
+    notes.forEach(function (f, i) {
+      var osc = ctx.createOscillator();
+      osc.type = i === 0 ? 'sine' : 'triangle';
+      osc.frequency.value = f;
+
+      var g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.028 / (i + 1), t + 4);   // 長淡入
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 12);           // 長淡出
+
+      osc.connect(g).connect(master);
+      osc.start(t); osc.stop(t + 12.5);
+    });
+  }
+
+  function start() {
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    master = ctx.createGain();
+    master.gain.value = 0;
+    master.connect(ctx.destination);
+    master.gain.linearRampToValueAtTime(0.9, ctx.currentTime + 2.5);  // 淡入，不要突然出聲
+
+    makeRain();
+    playChord();
+    timer = setInterval(playChord, 11000);
+  }
+
+  function stop() {
+    clearInterval(timer); timer = null;
+    var c = ctx;
+    master.gain.cancelScheduledValues(c.currentTime);
+    master.gain.setValueAtTime(master.gain.value, c.currentTime);
+    master.gain.linearRampToValueAtTime(0, c.currentTime + 1.2);
+    setTimeout(function () { c.close(); }, 1500);
+    ctx = null; master = null; chordIndex = 0;
+  }
+
+  btn.addEventListener('click', function () {
+    on = !on;
+    btn.setAttribute('aria-pressed', String(on));
+    label.textContent = on ? '梅雨 · 開' : '梅雨 · 關';
+    if (on) start(); else stop();
+  });
+})();
+</script>
 </body>
 </html>
