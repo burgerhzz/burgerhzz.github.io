@@ -42,6 +42,11 @@
     -webkit-font-smoothing: antialiased;
   }
   .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  @media (max-width: 380px) {
+    .wrap { padding: 0 16px; }
+    .ticket { padding: 20px; }
+    .combo { padding: 24px; }
+  }
 
   h1, h2, h3, .m { font-family: var(--mono); text-transform: uppercase; }
   .m { letter-spacing: .14em; font-size: 11px; color: var(--smoke); }
@@ -81,7 +86,7 @@
   .hero p.sub { color: var(--smoke); font-size: 15px; max-width: 62ch; }
 
   .stats {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(128px, 100%), 1fr));
     gap: 1px; background: var(--line); border: 1px solid var(--line);
     margin-top: 46px;
   }
@@ -97,7 +102,7 @@
   .head h2 { margin: 0; font-size: 15px; letter-spacing: .18em; font-weight: 700; }
   .head hr { flex: 1; border: 0; border-top: 1px dashed var(--line); }
 
-  .menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 20px; }
+  .menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 20px; }
 
   .ticket {
     background: var(--char-2); border: 1px solid var(--line);
@@ -152,7 +157,7 @@
   }
 
   /* ── 立場 ── */
-  .creed { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 26px; }
+  .creed { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 26px; }
   .creed h3 { margin: 0 0 8px; font-size: 13px; letter-spacing: .14em; color: var(--lamp); }
   .creed p { margin: 0; font-size: 14px; color: var(--smoke); }
 
