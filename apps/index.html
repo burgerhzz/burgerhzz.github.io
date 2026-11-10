@@ -656,6 +656,24 @@
 </style>
 </head>
 <body>
+<div class="gate" id="gate">
+  <div>
+    <div class="brand">BURGER<b>HZZ</b></div>
+    <div class="sub lo">準備好下載超屌der字幕軟體了ㄇ</div>
+    <button class="enter" id="enter">▸ 打開軍火庫</button>
+    <button class="quiet" id="enterQuiet">靜音進入</button>
+    <p class="note">進入後播放深夜配樂 · 右上角可隨時關閉</p>
+  </div>
+</div>
+<script>
+/* 同一個分頁進過站（從首頁點進來）就馬上拿掉閘門，避免長頁面載入時閃一下 */
+(function () {
+  var seen = null;
+  try { seen = sessionStorage.getItem('bgm'); } catch (e) {}
+  var g = document.getElementById('gate');
+  if (seen !== null) g.parentNode.removeChild(g); else document.body.classList.add('locked');
+})();
+</script>
 <div class="wrap">
   <div class="top">
     <a class="brand home" href="/">BURGER<b>HZZ</b></a>
@@ -1531,5 +1549,20 @@
   })();
 </script>
 <script src="/bgm.js"></script>
+<script>
+/* 直接開 /apps/ 的進站閘門，跟首頁同一套：點擊就是瀏覽器要的出聲手勢 */
+(function () {
+  var gate = document.getElementById('gate');
+  if (!gate) return;
+  function open(withSound) {
+    if (withSound) BGM.start(); else BGM.markEntered();
+    gate.classList.add('out');
+    document.body.classList.remove('locked');
+    setTimeout(function () { gate.style.display = 'none'; }, 550);
+  }
+  document.getElementById('enter').addEventListener('click', function () { open(true); });
+  document.getElementById('enterQuiet').addEventListener('click', function () { open(false); });
+})();
+</script>
 </body>
 </html>
