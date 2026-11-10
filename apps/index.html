@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="burgerSub — Premiere Pro 自動字幕面板，台灣華語辨識、自動斷行、文檔對位。macOS 下載。">
+<meta name="theme-color" content="#060707">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%8D%94</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap">
+<link rel="canonical" href="https://burgerhzz.github.io/apps/">
+<title>burgerSub — 下載 · BURGERHZZ</title>
+<style>
+  /* 色票與字型取自 plugdealer.shop 的設計系統，刻意保持一致。
+     全站單一等寬字、直角、1px 細框，霓虹綠當主要動作色。 */
+  :root {
+    --bg:     #060707;
+    --panel:  #0a0d0b;
+    --panel2: #070908;
+    --line:   #1c2621;
+    --line2:  #111713;
+    --ink:    #cfe7d4;
+    --dim:    #5d7a66;
+    --dimmer: #33463a;
+    --grn:    #3dff73;
+    --grn2:   #9dffb8;
+    --grndk:  #0f3d20;
+    --blu:    #4553ff;
+    --blu2:   #cfd6ff;
+    --red:    #ff3b3b;
+    --amb:    #ffb648;
+    --font: 'IBM Plex Mono', 'Cascadia Mono', ui-monospace, Consolas, 'Courier New', monospace;
+  }
+  /* 地下電台的視覺世界是刻意的單一主題，切換淺色會整個垮掉 */
+  :root[data-theme="light"], :root[data-theme="dark"] { color-scheme: dark; }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--font); font-size: 14px; line-height: 1.6;
+    text-transform: uppercase; letter-spacing: .04em;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 22px; }
+  @media (max-width: 380px) { .wrap { padding: 0 14px; } }
+
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--grn); outline-offset: 2px; }
+  .lo { text-transform: none; }               /* 中文段落不做大寫轉換 */
+
+  /* ── 跑馬燈 ── */
+  .ticker {
+    background: var(--panel2); border-bottom: 1px solid var(--line);
+    overflow: hidden; white-space: nowrap; padding: 8px 0;
+    font-size: 11px; letter-spacing: .18em; color: var(--grn);
+  }
+  .ticker span { display: inline-block; padding-right: 2.5rem; animation: slide 40s linear infinite; }
+  @keyframes slide { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .ticker span { animation: none; } }
+
+  /* ── 頂部列 ── */
+  .top {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 14px 0; border-bottom: 1px solid var(--line);
+  }
+  .brand { font-size: 15px; font-weight: 700; letter-spacing: .22em; }
+  .brand b { color: var(--grn); }
+  .ver { font-size: 10px; color: var(--dim); letter-spacing: .18em; }
+  .top .spacer { flex: 1; }
+
+  .chip {
+    font-size: 10px; letter-spacing: .16em; color: var(--dim);
+    background: none; border: 1px solid var(--line); padding: 6px 11px;
+    cursor: pointer; font-family: var(--font); text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 7px;
+  }
+  .chip:hover { color: var(--grn); border-color: var(--dimmer); }
+  .chip[aria-pressed="true"] { color: var(--grn); border-color: var(--grndk); background: var(--grndk); }
+  .chip i { width: 5px; height: 5px; background: var(--dimmer); flex: none; }
+  .chip[aria-pressed="true"] i { background: var(--grn); animation: blip 1.8s steps(2) infinite; }
+  @keyframes blip { 50% { opacity: .2; } }
+  @media (prefers-reduced-motion: reduce) { .chip[aria-pressed="true"] i { animation: none; } }
+
+  /* ── HERO ── */
+  .hero { padding: 62px 0 52px; border-bottom: 1px solid var(--line); }
+  .eyebrow { font-size: 11px; letter-spacing: .22em; color: var(--dim); }
+  .hero h1 {
+    margin: 20px 0 0; font-size: clamp(34px, 7.4vw, 68px); line-height: 1.04;
+    letter-spacing: .02em; font-weight: 700; text-wrap: balance;
+  }
+  .hero h1 em { font-style: normal; color: var(--grn); }
+  .hero .lede {
+    margin: 24px 0 0; max-width: 56ch; font-size: 13px; color: var(--dim);
+    letter-spacing: .02em; line-height: 1.85;
+  }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(126px, 100%), 1fr));
+    gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 42px;
+  }
+  .stats div { background: var(--bg); padding: 16px 18px; }
+  .stats b {
+    display: block; font-size: 25px; color: var(--grn); font-weight: 700;
+    letter-spacing: 0; font-variant-numeric: tabular-nums;
+  }
+  .stats span { font-size: 10px; letter-spacing: .16em; color: var(--dim); }
+
+  /* ── 區塊標題 ── */
+  section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+  .head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 28px; }
+  .head h2 { margin: 0; font-size: 13px; letter-spacing: .22em; font-weight: 700; }
+  .head h2::before { content: "// "; color: var(--grn); }
+  .head .n { font-size: 11px; color: var(--dim); }
+  .head hr { flex: 1; border: 0; border-top: 1px solid var(--line); }
+
+  /* ── 商品卡 ── */
+  .menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 16px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    padding: 24px; display: flex; flex-direction: column; gap: 14px; position: relative;
+    transition: border-color .12s;
+  }
+  .card:hover { border-color: var(--dimmer); }
+  .card .flag {
+    position: absolute; top: 0; right: 18px;
+    font-size: 9px; letter-spacing: .18em; font-weight: 700;
+    background: var(--grn); color: var(--bg); padding: 3px 8px;
+  }
+  .card h3 { margin: 0; font-size: 19px; letter-spacing: .1em; font-weight: 700; }
+  .card .kind { font-size: 10px; letter-spacing: .16em; color: var(--blu2); margin-top: -10px; }
+  .card .desc { margin: 0; font-size: 12.5px; color: var(--dim); text-transform: none; line-height: 1.8; }
+
+  .feat { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 11.5px; }
+  .feat li { display: flex; gap: 9px; text-transform: none; letter-spacing: 0; color: var(--ink); }
+  .feat li::before { content: "▸"; color: var(--grn); flex: none; }
+
+  .price { display: flex; align-items: baseline; gap: 9px; margin-top: auto; padding-top: 12px; }
+  .price b { font-size: 27px; font-weight: 700; color: var(--amb); font-variant-numeric: tabular-nums; }
+  .price s { font-size: 12px; color: var(--dimmer); }
+  .price .save { font-size: 10px; letter-spacing: .14em; color: var(--red); }
+
+  .buy {
+    display: block; text-align: center; text-decoration: none; cursor: pointer;
+    font-family: var(--font); font-size: 11px; letter-spacing: .2em; font-weight: 700;
+    text-transform: uppercase; padding: 13px;
+    background: var(--grn); color: var(--bg); border: 1px solid var(--grn);
+    transition: background .12s, color .12s;
+  }
+  .buy:hover { background: transparent; color: var(--grn); }
+
+  /* ── 套餐 ── */
+  .combo {
+    background: var(--panel2); border: 1px solid var(--grndk); margin-top: 16px; padding: 28px;
+    display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center;
+  }
+  .combo h3 { margin: 6px 0 0; font-size: 23px; letter-spacing: .1em; }
+  .combo .in { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; font-size: 11px; color: var(--dim); }
+  .combo .in span::before { content: "▸ "; color: var(--grn); }
+  .combo .right { text-align: right; }
+  .combo .right .price { justify-content: flex-end; }
+  .combo .right .save { font-size: 10px; letter-spacing: .14em; color: var(--red); margin-bottom: 12px; }
+  @media (max-width: 660px) {
+    .combo { grid-template-columns: 1fr; }
+    .combo .right { text-align: left; }
+    .combo .right .price { justify-content: flex-start; }
+  }
+
+  /* ── 立場 ── */
+  .creed { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(215px, 100%), 1fr)); gap: 22px; }
+  .creed h3 { margin: 0 0 7px; font-size: 11px; letter-spacing: .18em; color: var(--grn); }
+  .creed p { margin: 0; font-size: 12.5px; color: var(--dim); text-transform: none; line-height: 1.8; }
+
+  /* ── FAQ ── */
+  .faq { border-top: 1px solid var(--line); }
+  .faq details { border-bottom: 1px solid var(--line); }
+  .faq summary {
+    cursor: pointer; padding: 15px 0; font-size: 12px; letter-spacing: .1em;
+    list-style: none; display: flex; gap: 11px; align-items: baseline;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::before { content: "+"; color: var(--grn); }
+  .faq details[open] summary::before { content: "\2212"; }
+  .faq p {
+    margin: 0 0 16px 22px; font-size: 12.5px; color: var(--dim);
+    text-transform: none; max-width: 64ch; line-height: 1.85;
+  }
+
+  /* ── 狀態列與頁尾 ── */
+  .sys {
+    display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 14px 0;
+    border-bottom: 1px solid var(--line); font-size: 10px;
+    letter-spacing: .16em; color: var(--dimmer);
+  }
+  .sys b { color: var(--grn); font-weight: 400; }
+  footer { padding: 30px 0 52px; font-size: 10px; letter-spacing: .1em; color: var(--dimmer); line-height: 2; }
+  footer p { margin: 0 0 8px; max-width: 84ch; }
+
+  /* ── 進站閘門 ──
+     瀏覽器規定音訊必須由使用者手勢啟動，這道閘門的點擊就是那個手勢。
+     進去之後配樂立刻開始，體感等同自動播放。 */
+  .gate {
+    position: fixed; inset: 0; z-index: 99; background: var(--bg);
+    display: grid; place-items: center; text-align: center; padding: 22px;
+    transition: opacity .5s ease;
+  }
+  .gate.out { opacity: 0; pointer-events: none; }
+  .gate .brand { font-size: clamp(26px, 6.6vw, 42px); margin-bottom: 8px; }
+  .gate .sub { font-size: 10px; letter-spacing: .22em; color: var(--dim); margin-bottom: 38px; }
+  .gate .enter {
+    font-family: var(--font); font-size: 12px; letter-spacing: .24em; font-weight: 700;
+    text-transform: uppercase; background: var(--grn); color: var(--bg);
+    border: 1px solid var(--grn); padding: 15px 32px; cursor: pointer;
+    transition: background .12s, color .12s;
+  }
+  .gate .enter:hover { background: transparent; color: var(--grn); }
+  .gate .quiet {
+    display: block; margin: 16px auto 0; background: none; border: 0; cursor: pointer;
+    font-family: var(--font); color: var(--dimmer); font-size: 10px;
+    letter-spacing: .16em; text-transform: uppercase; padding: 6px;
+  }
+  .gate .quiet:hover { color: var(--dim); }
+  .gate .note { margin-top: 32px; font-size: 9.5px; letter-spacing: .14em; color: var(--dimmer); }
+  body.locked { overflow: hidden; }
+</style>
+<style>
+  /* /apps 下載頁：沿用首頁設計系統，補幾個這頁專用的小東西 */
+  .dl { display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin:18px 0 6px; }
+  .dl .buy { font-size:15px; padding:14px 22px; }
+  .meta { color:var(--dim); font-size:12px; line-height:1.9; }
+  .meta b { color:var(--ink); }
+  .sha { word-break:break-all; color:var(--dimmer); }
+  ol.steps { margin:0; padding-left:1.4em; }
+  ol.steps li { margin:8px 0; }
+  .warn { border:1px solid var(--line); background:var(--panel2); padding:12px 16px; margin-top:16px; color:var(--amb); }
+  a.home { text-decoration:none; }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="brand home" href="/">BURGER<b>HZZ</b></a>
+    <div class="ver">™ APPS ▮ burgerSub</div>
+    <div class="spacer"></div>
+    <a class="chip home" href="/">▸ 回首頁</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">▸ Premiere Pro 自動字幕 · 內部工具</div>
+    <h1>burger<em>Sub</em></h1>
+    <p class="lede lo">
+      讀時間軸上的音訊，用台灣華語模型產生字幕並自動斷行；也可以把現成的稿子對到影片。
+      語音辨識在你的電腦上跑，音訊不會外傳。產生字幕時會連到 burgerSub 的伺服器做斷句，需要用公司 Google 帳號登入。
+    </p>
+  </header>
+
+  <section>
+    <div class="head"><h2>DOWNLOAD</h2><span class="n">[macOS]</span><hr></div>
+    <article class="card">
+      <h3>burgerSub 1.0.5</h3>
+      <div class="kind">macOS · Apple Silicon（M 系列）</div>
+      <div class="dl">
+        <a class="buy" href="https://storage.googleapis.com/burgersub-test-downloads/burgerSub-1.0.5-arm64.dmg">▸ 下載 DMG（113 MB）</a>
+      </div>
+      <p class="meta">
+        <b>版本</b> 1.0.5 ▪ <b>需求</b> Apple Silicon Mac、Premiere Pro 2020（14.0）以上<br>
+        <b>SHA-256</b> <span class="sha">d1ff6604ab7ec7e54fe27f9e6b58d8c9a21ec076680fcdafc4f0c5ed348e194c</span>
+      </p>
+    </article>
+  </section>
+
+  <section>
+    <div class="head"><h2>安裝</h2><span class="n">[4 步]</span><hr></div>
+    <article class="card">
+      <ol class="steps lo">
+        <li>下載後打開 DMG，把裡面的「burgerSub 安裝程式」拖出來，對它按右鍵 →「打開」，再按一次「打開」（這版沒有 Apple 簽章，第一次要這樣繞過 Gatekeeper）。</li>
+        <li>安裝完，<b>完全結束 Premiere 再重新打開</b>（擴充只在啟動時載入）。</li>
+        <li>Premiere → 視窗 → 擴充功能 → <b>burgerSub</b>。</li>
+        <li>第一次使用：面板右上角 👤 → 用 Google 登入（請用<b>公司帳號</b>）。之後就會自動保持登入。</li>
+      </ol>
+      <div class="warn lo">
+        ⚠ 需要權限才能使用完整版：產生字幕會連到伺服器，只有被授權的帳號可以用。
+        沒有權限的帳號裝了之後，按「開始辨識」會顯示「需要權限才能使用完整版」。
+      </div>
+    </article>
+  </section>
+
+  <footer>
+    <p>© 2026 BURGERHZZ ▪ burgerSub ▪ 內部工具</p>
+    <p>
+      本頁與 ADOBE、GOOGLE、聯發科 均無隸屬關係。PREMIERE PRO 為 ADOBE INC. 之商標。
+      語音辨識模型 Breeze-ASR-25 為聯發科研究院發布（Apache 2.0）。
+    </p>
+  </footer>
+</div>
+</body>
+</html>
