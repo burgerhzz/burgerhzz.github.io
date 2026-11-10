@@ -647,6 +647,12 @@
   .pp-tabs .on { color:#e6e6e6; border-bottom:1.5px solid #e6e6e6; padding-bottom:2px; }
   .pane-p .pane-tag { top:auto; bottom:8px; left:8px; }
   @media (max-width: 900px) { .g2-cols, .who { grid-template-columns:1fr; } .pane-p { justify-content:center; } }
+
+  /* Pr 徽章：不管放在哪裡都長一樣（深藍底、淡紫框與字、置中），不吃外層文字樣式 */
+  .pr, .who .pr, .pt .pr, .pane-tag .pr { display:inline-grid; place-items:center; color:#9999ff !important; background:#00005b; border:1.5px solid #9999ff;
+       font-family:-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; font-weight:700; letter-spacing:-.02em; text-transform:none;
+       line-height:1; margin-top:0; flex:none; }
+  .who .pr.big2 { width:46px; height:46px; font-size:22px; border-radius:10px; border-width:2px; }
 </style>
 </head>
 <body>
