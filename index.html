@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="兩個 Premiere Pro 面板：burgerGuide 短影音安全區疊圖、burgerbo YouTube 直接進時間軸。買斷制，無訂閱，終身更新。">
+<meta name="description" content="BURGERHZZ 軍火庫：影像作品集 Burger Film Studio，以及剪接師自己做的工具 burgerSub、burgerbo、burgerGuide。">
 <meta name="theme-color" content="#060707">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%8D%94</text></svg>">
@@ -14,13 +14,13 @@
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="BURGERHZZ">
-<meta property="og:title" content="BURGERHZZ — 剪接師的地下補給站">
-<meta property="og:description" content="兩個 Premiere Pro 面板：burgerGuide 短影音安全區疊圖、burgerbo YouTube 直接進時間軸。買斷制，無訂閱，終身更新。">
+<meta property="og:title" content="BURGERHZZ 軍火庫">
+<meta property="og:description" content="BURGERHZZ 軍火庫：影像作品集 Burger Film Studio，以及剪接師自己做的工具 burgerSub、burgerbo、burgerGuide。">
 <meta property="og:url" content="https://burgerhzz.github.io/">
 <meta property="og:locale" content="zh_TW">
 <meta name="twitter:card" content="summary">
 <link rel="canonical" href="https://burgerhzz.github.io/">
-<title>BURGERHZZ — 剪接師的地下補給站</title>
+<title>BURGERHZZ 軍火庫</title>
 <style>
   /* 色票與字型取自 plugdealer.shop 的設計系統，刻意保持一致。
      全站單一等寬字、直角、1px 細框，霓虹綠當主要動作色。 */
@@ -145,56 +145,16 @@
   .feat li { display: flex; gap: 9px; text-transform: none; letter-spacing: 0; color: var(--ink); }
   .feat li::before { content: "▸"; color: var(--grn); flex: none; }
 
-  .price { display: flex; align-items: baseline; gap: 9px; margin-top: auto; padding-top: 12px; }
-  .price b { font-size: 27px; font-weight: 700; color: var(--amb); font-variant-numeric: tabular-nums; }
-  .price s { font-size: 12px; color: var(--dimmer); }
-  .price .save { font-size: 10px; letter-spacing: .14em; color: var(--red); }
-
-  .buy {
-    display: block; text-align: center; text-decoration: none; cursor: pointer;
-    font-family: var(--font); font-size: 11px; letter-spacing: .2em; font-weight: 700;
-    text-transform: uppercase; padding: 13px;
-    background: var(--grn); color: var(--bg); border: 1px solid var(--grn);
-    transition: background .12s, color .12s;
+  a.card { text-decoration: none; color: inherit; }
+  a.card:hover { border-color: var(--grn); }
+  .card.wide { max-width: none; }
+  .card .flag.off { background: var(--dimmer); color: var(--ink); }
+  .go {
+    margin-top: auto; padding-top: 12px; font-size: 11px; letter-spacing: .2em;
+    font-weight: 700; color: var(--grn);
   }
-  .buy:hover { background: transparent; color: var(--grn); }
-
-  /* ── 套餐 ── */
-  .combo {
-    background: var(--panel2); border: 1px solid var(--grndk); margin-top: 16px; padding: 28px;
-    display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center;
-  }
-  .combo h3 { margin: 6px 0 0; font-size: 23px; letter-spacing: .1em; }
-  .combo .in { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; font-size: 11px; color: var(--dim); }
-  .combo .in span::before { content: "▸ "; color: var(--grn); }
-  .combo .right { text-align: right; }
-  .combo .right .price { justify-content: flex-end; }
-  .combo .right .save { font-size: 10px; letter-spacing: .14em; color: var(--red); margin-bottom: 12px; }
-  @media (max-width: 660px) {
-    .combo { grid-template-columns: 1fr; }
-    .combo .right { text-align: left; }
-    .combo .right .price { justify-content: flex-start; }
-  }
-
-  /* ── 立場 ── */
-  .creed { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(215px, 100%), 1fr)); gap: 22px; }
-  .creed h3 { margin: 0 0 7px; font-size: 11px; letter-spacing: .18em; color: var(--grn); }
-  .creed p { margin: 0; font-size: 12.5px; color: var(--dim); text-transform: none; line-height: 1.8; }
-
-  /* ── FAQ ── */
-  .faq { border-top: 1px solid var(--line); }
-  .faq details { border-bottom: 1px solid var(--line); }
-  .faq summary {
-    cursor: pointer; padding: 15px 0; font-size: 12px; letter-spacing: .1em;
-    list-style: none; display: flex; gap: 11px; align-items: baseline;
-  }
-  .faq summary::-webkit-details-marker { display: none; }
-  .faq summary::before { content: "+"; color: var(--grn); }
-  .faq details[open] summary::before { content: "\2212"; }
-  .faq p {
-    margin: 0 0 16px 22px; font-size: 12.5px; color: var(--dim);
-    text-transform: none; max-width: 64ch; line-height: 1.85;
-  }
+  a.card:hover .go { color: var(--grn2); }
+  .go.off { color: var(--dimmer); font-weight: 400; }
 
   /* ── 狀態列與頁尾 ── */
   .sys {
@@ -238,22 +198,22 @@
 <div class="gate" id="gate">
   <div>
     <div class="brand">BURGER<b>HZZ</b></div>
-    <div class="sub">▮ 剪接師的地下補給站 · EST. 2026</div>
-    <button class="enter" id="enter">▸ 點此進入補給站</button>
+    <div class="sub">▮ 軍火庫 · ARSENAL · EST. 2026</div>
+    <button class="enter" id="enter">▸ 打開軍火庫</button>
     <button class="quiet" id="enterQuiet">靜音進入</button>
     <p class="note">進入後播放深夜配樂 · 右上角可隨時關閉</p>
   </div>
 </div>
 
 <div class="ticker"><span>
-  // BURGERHZZ™ · EST. 2026 · PREMIERE PRO 地下補給 ▪ 買斷制 ▪ 沒有訂閱 ▪ 終身更新 ▪ 付款後立即下載 &nbsp;
-  // BURGERHZZ™ · EST. 2026 · PREMIERE PRO 地下補給 ▪ 買斷制 ▪ 沒有訂閱 ▪ 終身更新 ▪ 付款後立即下載 &nbsp;
+  // BURGERHZZ™ 軍火庫 · ARSENAL ▪ 剪接師自己做的武器 ▪ BURGER FILM STUDIO ▪ BURGERSUB ▪ BURGERBO ▪ BURGERGUIDE &nbsp;
+  // BURGERHZZ™ 軍火庫 · ARSENAL ▪ 剪接師自己做的武器 ▪ BURGER FILM STUDIO ▪ BURGERSUB ▪ BURGERBO ▪ BURGERGUIDE &nbsp;
 </span></div>
 
 <div class="wrap">
   <div class="top">
     <div class="brand">BURGER<b>HZZ</b></div>
-    <div class="ver">™ V1 ▮ SUPPLY</div>
+    <div class="ver">™ 軍火庫 ▮ ARSENAL</div>
     <div class="spacer"></div>
     <button class="chip" id="sfx" aria-pressed="false"><i></i><span id="sfxLabel">SFX: OFF</span></button>
   </div>
@@ -262,44 +222,53 @@
 <div class="wrap">
   <header class="hero">
     <div class="eyebrow">▸ 自己剪片剪到受不了，才動手寫的工具</div>
-    <h1>把重複的動作<em>剪掉</em></h1>
+    <h1>BURGERHZZ<br><em>軍火庫</em></h1>
     <p class="lede lo">
-      每次開新專案手動拉安全區、每次抓參考影片都要開瀏覽器下載再拖進來——
-      這些動作單次只花兩分鐘，但你一年做上千次。兩個 Premiere Pro 面板，各自解決一件事。
+      這裡收著我的作品集，和剪片時順手打造的幾件武器。
+      每一件都是先在自己的專案裡用過、真的省下時間，才放上來的。
     </p>
 
     <div class="stats">
-      <div><b>2</b><span>個工具</span></div>
-      <div><b>0</b><span>訂閱費</span></div>
-      <div><b>∞</b><span>終身更新</span></div>
-      <div><b>2020+</b><span>支援版本</span></div>
+      <div><b>1</b><span>作品集</span></div>
+      <div><b>3</b><span>件武器</span></div>
+      <div><b>1</b><span>開放下載</span></div>
     </div>
   </header>
 
   <section>
-    <div class="head"><h2>THE SUPPLY</h2><span class="n">[2]</span><hr></div>
+    <div class="head"><h2>PORTFOLIO</h2><span class="n">[1]</span><hr></div>
+
+    <a class="card wide" href="https://burgerhzz.github.io/burger-film-studio/">
+      <div class="flag">作品集</div>
+      <h3>BURGER FILM STUDIO</h3>
+      <div class="kind">影像作品集</div>
+      <p class="desc">剪輯、動態圖像與影像作品都放在這裡。</p>
+      <span class="go">▸ 看作品集</span>
+    </a>
+  </section>
+
+  <section>
+    <div class="head"><h2>THE ARSENAL</h2><span class="n">[3]</span><hr></div>
 
     <div class="menu">
-      <article class="card">
-        <div class="flag">新品</div>
-        <h3>BURGERGUIDE</h3>
-        <div class="kind">短影音安全區疊圖 · 9:16 + 16:9</div>
+      <a class="card" href="https://burgerhzz.github.io/apps/">
+        <div class="flag">可下載</div>
+        <h3>BURGERSUB</h3>
+        <div class="kind">中文影片自動字幕 · PREMIERE + MAC</div>
         <p class="desc">
-          字卡被 TikTok 的按鈕蓋掉、logo 被 Reels 的文案吃掉——發出去才發現就來不及了。
-          這個面板把各平台的介面直接疊在畫面上，剪的時候就看得到。
+          台灣華語、中英混合都聽得懂，辨識完自動斷行。
+          有 Premiere 面板版，也有不用開 Premiere 的 Mac 獨立版。
         </p>
         <ul class="feat">
-          <li>TikTok / Instagram Reels / YouTube Shorts 擬真介面</li>
-          <li>自動偵測序列尺寸，直式橫式都吃</li>
-          <li>安全框、三分法、中心十字、動作與字幕安全區</li>
-          <li>自訂格線：列欄、邊界、間距，可存成預設</li>
-          <li>不透明度滑桿，一鍵移除不留痕跡</li>
+          <li>台灣華語語音辨識，原生繁體</li>
+          <li>自動斷句斷行，字幕直接進時間軸</li>
+          <li>Panel（Premiere 外掛）與 Studio（Mac App）兩個版本</li>
         </ul>
-        <div class="price"><b>NT$490</b></div>
-        <a class="buy" href="#取得">▸ ADD TO CART</a>
-      </article>
+        <span class="go">▸ 前往下載頁</span>
+      </a>
 
       <article class="card">
+        <div class="flag off">自用中</div>
         <h3>BURGERBO</h3>
         <div class="kind">YOUTUBE 直接進時間軸</div>
         <p class="desc">
@@ -309,104 +278,42 @@
         <ul class="feat">
           <li>最高 4K，自動選最佳畫質來源</li>
           <li>只在必要時轉碼：來源是 H.264 就原樣匯入</li>
-          <li>硬體加速編碼，轉檔時不會卡住你剪片</li>
-          <li>可轉 ProRes 422，剪輯效能優先</li>
           <li>插到播放頭、接在最後、或只放專案面板</li>
         </ul>
-        <div class="price"><b>NT$690</b></div>
-        <a class="buy" href="#取得">▸ ADD TO CART</a>
+        <span class="go off">▪ 尚未開放下載</span>
       </article>
-    </div>
 
-    <div class="combo">
-      <div>
-        <div class="ver">▪ BEST DEAL ▪ 省 NT$290</div>
-        <h3>全部帶走</h3>
-        <div class="in"><span>BURGERGUIDE</span><span>BURGERBO</span><span>終身更新</span></div>
-      </div>
-      <div class="right">
-        <div class="price"><s>NT$1,180</s><b>NT$890</b></div>
-        <div class="save">SAVE 25%</div>
-        <a class="buy" href="#取得">▸ TAKE EVERYTHING</a>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="head"><h2>WHO WE ARE</h2><hr></div>
-    <div class="creed">
-      <div>
-        <h3>買斷，不是租的</h3>
-        <p>付一次錢，工具就是你的。不會有哪天登入失敗就不能剪片這種事。</p>
-      </div>
-      <div>
-        <h3>自己在用的東西</h3>
-        <p>這兩個面板是我自己剪片時寫來救自己的，不是先想商品再湊功能。</p>
-      </div>
-      <div>
-        <h3>不做臃腫的功能</h3>
-        <p>一個工具解決一件事。不會為了讓價格看起來合理而塞一堆你用不到的東西。</p>
-      </div>
-      <div>
-        <h3>更新不再收錢</h3>
-        <p>平台改版導致安全區跑掉，我修好推更新，你重新下載，不用再付一次。</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="head"><h2>FAQ</h2><hr></div>
-    <div class="faq">
-      <details open>
-        <summary>需要哪個版本的 PREMIERE？</summary>
-        <p>Premiere Pro 2020 以上，macOS。目前沒有 Windows 版。</p>
-      </details>
-      <details>
-        <summary>可以裝在幾台電腦？</summary>
-        <p>你自己的裝置都可以裝，沒有限制數量，也沒有啟用碼要輸入。</p>
-      </details>
-      <details>
-        <summary>疊圖會被輸出出去嗎？</summary>
-        <p>
-          疊圖是放在最上層視訊軌的圖層，<strong>輸出前要關掉該軌道的眼睛</strong>，否則會被算進成品。
-          面板上有一鍵移除。這是 Premiere 的限制——它的 API 沒有開放建立監視器參考線，所有同類工具都得這樣做。
+      <article class="card">
+        <div class="flag off">自用中</div>
+        <h3>BURGERGUIDE</h3>
+        <div class="kind">短影音安全區疊圖 · 9:16 + 16:9</div>
+        <p class="desc">
+          字卡被 TikTok 的按鈕蓋掉、logo 被 Reels 的文案吃掉——發出去才發現就來不及了。
+          這個面板把各平台的介面直接疊在畫面上，剪的時候就看得到。
         </p>
-      </details>
-      <details>
-        <summary>平台改版之後安全區跑掉怎麼辦？</summary>
-        <p>
-          TikTok、Instagram、YouTube 都會改版面。我會跟著更新數值推新版，你重新下載安裝即可，不另外收費。
-          想自己微調的話，數值是明文寫在設定檔裡的。
-        </p>
-      </details>
-      <details>
-        <summary>BURGERBO 可以下載別人的影片嗎？</summary>
-        <p>
-          技術上可以，但這個工具的用途是處理你自己上傳的影片、CC 授權素材、或你已經取得授權的內容。
-          下載他人受版權保護的影片可能違反 YouTube 服務條款，後果由使用者自行承擔。
-        </p>
-      </details>
-      <details>
-        <summary>可以退款嗎？</summary>
-        <p>購買後 14 天內，如果工具在你的環境跑不起來而我也修不好，全額退款。</p>
-      </details>
+        <ul class="feat">
+          <li>TikTok / Instagram Reels / YouTube Shorts 擬真介面</li>
+          <li>自動偵測序列尺寸，直式橫式都吃</li>
+          <li>安全框、三分法、中心十字、自訂格線</li>
+        </ul>
+        <span class="go off">▪ 尚未開放下載</span>
+      </article>
     </div>
   </section>
 
   <div class="sys">
     <span>SYS: <b>ONLINE</b></span>
     <span>▪ NODE BURGER-01</span>
-    <span>▪ 買斷制</span>
-    <span>▪ 14 天退款保證</span>
+    <span>▪ ARSENAL</span>
     <span>▪ LOCAL <b id="clock">--:--:--</b></span>
   </div>
 
   <footer>
-    <p>© 2026 BURGERHZZ ▪ 終身更新 ▪ 即時下載</p>
+    <p>© 2026 BURGERHZZ ▪ 軍火庫</p>
     <p>
       本站與 ADOBE、TIKTOK、META、GOOGLE 均無隸屬關係。
       PREMIERE PRO 為 ADOBE INC. 之商標；TIKTOK、INSTAGRAM、YOUTUBE 為其各自所有者之商標。
-      各平台介面示意圖僅供構圖參考用途。配樂為本站即時合成之原創音訊，未使用任何第三方錄音。
+      配樂為本站即時合成之原創音訊，未使用任何第三方錄音。
     </p>
   </footer>
 </div>
