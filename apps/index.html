@@ -538,6 +538,115 @@
   .ui .cue.split-new { animation:cuein .35s ease; }
   @keyframes cuein { from { opacity:0; transform:translateY(-6px); } }
   .ui .cues .x { transition:font-size .25s; }
+
+  .ui .wave { transition:height .4s ease, margin .4s ease; }
+  .ui .wave.folded { height:0 !important; margin-top:0; margin-bottom:0; }
+
+  /* ── Panel 背後的 Premiere 風格工作區（CSS 畫的示意，不是 Adobe 的圖） ── */
+  .g2-cols, .who { grid-template-columns:1fr 1fr; }
+  .pane-p { justify-content:flex-start; padding:40px 16px 168px; background:#1d1d1d; overflow:hidden; }
+  .pane-p .g2-win { position:relative; z-index:2; }
+  .pane-p .g2-win .ui { box-shadow:0 18px 44px rgba(0,0,0,.7); }
+  .pane-p .pane-tag { z-index:3; background:rgba(0,0,0,.55); padding:3px 8px 3px 6px; border-radius:4px; }
+  .prbg { position:absolute; inset:0; z-index:0; font-family:-apple-system, "PingFang TC", sans-serif; text-transform:none; letter-spacing:0; }
+  .pr-mon { position:absolute; right:10px; top:10px; width:58%; background:#232323; border:1px solid #333; border-radius:4px; padding:8px; }
+  .pr-video { position:relative; aspect-ratio:16/9; background:linear-gradient(160deg,#5a4430,#2a1f17 55%,#120e0b); border-radius:2px; overflow:hidden; }
+  .pr-video::before { content:""; position:absolute; left:52%; top:22%; width:26%; height:56%; border-radius:40% 40% 8px 8px; background:radial-gradient(circle at 50% 30%, #c9a27e, #6b4a33 70%); opacity:.55; }
+  .pr-cap { position:absolute; left:0; right:0; bottom:8%; text-align:center; color:#fff; font-size:11px; font-weight:600; text-shadow:0 1px 2px #000; opacity:0; transition:opacity .3s; }
+  .pr-cap.on { opacity:1; }
+  .pr-mbar { display:flex; align-items:center; gap:9px; color:#9a9a9a; font-size:10px; margin-top:6px; }
+  .pr-mbar .pr-tc { margin-left:auto; color:#4fa3ff; font-family:ui-monospace, Menlo, monospace; font-weight:600; font-size:10.5px; }
+  .pr-tl { position:absolute; left:10px; right:34px; bottom:10px; height:150px; background:#232323; border:1px solid #333; border-radius:4px; overflow:hidden; }
+  .pr-ruler { position:relative; height:16px; border-bottom:1px solid #333; margin-left:34px; }
+  .pr-ruler span { position:absolute; top:2px; font-size:8.5px; color:#8a8a8a; font-family:ui-monospace, Menlo, monospace; }
+  .pr-ruler i { position:absolute; left:4%; width:82%; bottom:0; height:2px; background:#c8c83a; }
+  .pr-row { display:flex; height:18.5px; border-bottom:1px solid #2c2c2c; }
+  .pr-row b { width:34px; flex:none; font-size:9px; color:#bbb; display:grid; place-items:center; font-weight:500; background:#262626; border-right:1px solid #333; }
+  .pr-row.sel b { background:#2d4f8a; color:#fff; }
+  .pr-lane { position:relative; flex:1; }
+  .pr-clip { position:absolute; top:2px; bottom:2px; border-radius:2px; font-size:8.5px; color:#10240f; padding:1px 4px; overflow:hidden; white-space:nowrap; }
+  .pr-clip.v1 { background:#4f8fd6; color:#0b1c33; } .pr-clip.v { background:#4fb86a; }
+  .pr-clip.au { background:#2f7d4f; }
+  .pr-clip.au::after { content:""; position:absolute; inset:3px 2px; background:repeating-linear-gradient(90deg,#7fe0a0 0 1px,transparent 1px 3px); opacity:.7;
+        -webkit-mask:linear-gradient(transparent, #000 30%, #000 70%, transparent); mask:linear-gradient(transparent, #000 30%, #000 70%, transparent); }
+  .pr-c1 i { position:absolute; top:2px; bottom:2px; background:#9b6ad6; border-right:1px solid #232323; border-radius:2px; transform:scaleX(0); transform-origin:left; transition:transform .35s ease; }
+  .pr-c1.on i { transform:scaleX(1); }
+  .pr-c1.on i:nth-child(2) { transition-delay:.08s; } .pr-c1.on i:nth-child(3) { transition-delay:.16s; } .pr-c1.on i:nth-child(4) { transition-delay:.24s; }
+  .pr-head { position:absolute; left:calc(34px + (100% - 34px) * .2); top:0; bottom:0; width:1.5px; background:#4fa3ff; }
+  .pr-meter { position:absolute; right:10px; bottom:10px; width:16px; height:150px; display:flex; gap:2px; align-items:flex-end; background:#232323; border:1px solid #333; border-radius:3px; padding:3px; }
+  .pr-meter i { flex:1; height:62%; background:linear-gradient(to top,#3ea76a 60%,#d6c33a 85%,#d64a3a); border-radius:1px; }
+  .pr-meter i + i { height:55%; }
+  @media (max-width: 900px) { .pane-p { justify-content:center; } .pr-mon { display:none; } .g2-cols, .who { grid-template-columns:1fr; } }
+
+  .ui .ck2 { display:inline-flex; align-items:center; gap:6px; color:#ddd; }
+  .ui .ck2 .box2 { width:12px; height:12px; border-radius:3px; border:1.5px solid #9a9a9a; background:#fff; position:relative; display:block; transition:background .15s; }
+  .ui .ck2.on .box2 { background:#2f7bf6; border-color:#2f7bf6; }
+  .ui .ck2.on .box2::after { content:""; position:absolute; left:3px; top:0; width:3px; height:7px; border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg); }
+  .ui .fsz { font-size:10.5px; }
+  .ui .wave svg rect { transition:width .45s ease; }
+  .ui .wave .seglbl { transition:width .45s ease; }
+
+  /* 節目資訊：Studio 展開欄位、Panel 跳出 program_info.txt */
+  .ui .pi-body { display:none; background:#2a2a2a; border:1px solid #444; border-top:0; border-radius:0 0 5px 5px; padding:8px 10px 10px; margin-top:-2px; }
+  .ui .pi.open .pi-body { display:block; }
+  .ui .pi-hint { margin:0 0 8px; color:#9a9a9a; font-size:10.5px; line-height:1.55; }
+  .ui .pi-grid { display:grid; grid-template-columns:auto 1fr auto 1fr; gap:6px 8px; align-items:center; color:#bbb; font-size:11px; }
+  .ui .pi-in { min-height:24px; color:#fff; }
+  .ui .pi-in.typing::after, .txtwin .v.typing::after { content:""; display:inline-block; width:1.5px; height:1em; background:#3478f6; vertical-align:-0.15em; margin-left:1px; animation:blinkc .8s steps(2) infinite; }
+  .txtwin { position:absolute; z-index:4; width:360px; background:#fff; color:#1d1d1f; border-radius:10px; overflow:hidden; box-shadow:0 18px 40px rgba(0,0,0,.6);
+            font-family:-apple-system, "PingFang TC", sans-serif; font-size:11.5px; text-transform:none; letter-spacing:0; animation:popin .2s ease; }
+  @keyframes popin { from { opacity:0; transform:scale(.96); } }
+  .txtwin .tw-bar { display:flex; align-items:center; gap:6px; padding:7px 10px; background:#ececec; border-bottom:1px solid #d6d6d6; }
+  .txtwin .tw-bar i { width:11px; height:11px; border-radius:50%; background:#febc2e; display:block; }
+  .txtwin .tw-bar i.close { background:#ff5f57; } .txtwin .tw-bar i:nth-child(3) { background:#28c840; }
+  .txtwin .tw-bar b { flex:1; text-align:center; font-weight:600; font-size:11.5px; color:#333; margin-right:40px; }
+  .txtwin .tw-body { padding:8px 12px 12px; line-height:1.7; }
+  .txtwin .c { color:#555; }
+
+  /* ── Panel 背景：照實際 Premiere 版面做的示意（節目監看＋時間軸），Panel 浮在右邊 ── */
+  .g2-cols, .who { grid-template-columns:1.15fr .85fr; }
+  .pane-p { justify-content:flex-end; padding:46px 12px 18px; background:#141414; }
+  .pp { font-family:-apple-system, "PingFang TC", sans-serif; color:#bdbdbd; font-size:9.5px; }
+  .pp-prog { position:absolute; left:0; top:0; width:64%; height:52%; background:#1e1e1e; border-right:1px solid #2c2c2c; border-bottom:2px solid #0d0d0d; display:flex; flex-direction:column; }
+  .pp-tab { padding:5px 8px; border-bottom:1px solid #2c2c2c; color:#d9d9d9; font-size:10px; white-space:nowrap; overflow:hidden; }
+  .pp-tab span { margin-left:6px; color:#888; }
+  .pp-rul { height:9px; background:repeating-linear-gradient(90deg,#3a3a3a 0 1px,transparent 1px 22px); border-bottom:1px solid #2c2c2c; margin-left:12px; }
+  .pp-video { position:relative; margin:8px 10px 6px 16px; aspect-ratio:16/9; background:linear-gradient(160deg,#6b5038,#2d2118 55%,#120e0b); overflow:hidden; }
+  .pp-video::before { content:""; position:absolute; left:50%; top:16%; width:24%; height:58%; border-radius:40% 40% 8px 8px; background:radial-gradient(circle at 50% 30%, #d2ab86, #6b4a33 70%); opacity:.6; }
+  .pp .pr-cap { position:absolute; left:50%; transform:translateX(-50%); bottom:6%; right:auto; width:auto; background:rgba(60,60,60,.85); color:#fff; padding:1px 6px; font-size:10px; border-radius:1px; white-space:nowrap; text-shadow:none; }
+  .pp-info { display:flex; align-items:center; gap:8px; padding:0 10px; }
+  .pp-info b { color:#4fa3ff; font-weight:500; font-size:11px; font-family:ui-monospace, Menlo, monospace; }
+  .pp-dd { border:1px solid #3a3a3a; border-radius:3px; padding:0 5px; }
+  .pp-scrub { margin:6px 10px 0; height:7px; background:#3a3a3a; position:relative; }
+  .pp-scrub i { position:absolute; left:0; width:32%; top:0; bottom:0; background:#5a5a5a; border-right:3px solid #4fa3ff; }
+  .pp-trans { display:flex; justify-content:center; gap:11px; margin-top:6px; color:#aaa; }
+  .pp-seq { position:absolute; left:0; bottom:0; width:64%; height:48%; background:#1e1e1e; border-right:1px solid #2c2c2c; display:flex; flex-direction:column; overflow:hidden; }
+  .pp-tc { color:#4fa3ff; font:500 11px ui-monospace, Menlo, monospace; padding:3px 8px 0; }
+  .pp-tools { display:flex; gap:7px; padding:3px 8px; color:#9a9a9a; }
+  .pp-tools span { width:16px; height:14px; display:grid; place-items:center; background:#2a2a2a; border-radius:2px; font-size:8.5px; }
+  .pp-ruler { position:relative; height:13px; margin-left:38%; border-bottom:1px solid #2c2c2c; background:#262626; }
+  .pp-ruler span { position:absolute; top:1px; font:8px ui-monospace, Menlo, monospace; color:#9a9a9a; white-space:nowrap; }
+  .pp-ruler i { position:absolute; left:0; right:0; bottom:0; height:2px; background:#c8c83a; width:60%; }
+  .pp-rows { position:relative; flex:1; }
+  .pp-row { display:flex; height:22px; border-bottom:1px solid #191919; }
+  .pp-th { width:38%; flex:none; display:flex; align-items:center; gap:4px; padding-left:4px; background:#232323; border-right:1px solid #2c2c2c; color:#9a9a9a; font-size:8px; overflow:hidden; white-space:nowrap; }
+  .pp-th em { font-style:normal; opacity:.75; }
+  .pp-th .nm { color:#cfcfcf; font-size:8.5px; padding:0 3px; border-radius:2px; }
+  .pp-th .nm.sel { background:#2d5bd0; color:#fff; }
+  .pp-th .sub { color:#bdbdbd; margin-left:2px; }
+  .pp-lane { position:relative; flex:1; background:#1b1b1b; }
+  .pp-clip { position:absolute; top:1px; bottom:1px; border-radius:1px; font-style:normal; font-size:7.5px; color:#e8e8ff; padding-left:3px; overflow:hidden; white-space:nowrap; border:1px solid rgba(0,0,0,.35); }
+  .pp-clip.au { background:#3a7a4c; }
+  .pp-clip.au::after { content:""; position:absolute; inset:2px 1px; background:repeating-linear-gradient(90deg,#9fe6a8 0 1px,transparent 1px 2px); opacity:.65;
+        -webkit-mask:linear-gradient(transparent, #000 25%, #000 75%, transparent); mask:linear-gradient(transparent, #000 25%, #000 75%, transparent); }
+  .pp-row.c1 { height:24px; }
+  .pp .pr-c1 i { position:absolute; top:1px; bottom:1px; background:#c27a2c; border-right:1px solid #1b1b1b; border-radius:1px; transform:scaleX(0); transform-origin:left; transition:transform .35s ease; }
+  .pp .pr-c1.on i { transform:scaleX(1); }
+  .pp-head { position:absolute; top:0; bottom:0; left:calc(38% + 62% * .2); width:1px; background:#4fa3ff; }
+  .pp-tabs { position:absolute; right:0; top:0; left:64%; height:26px; display:flex; gap:12px; align-items:center; padding:0 10px; background:#1a1a1a; border-bottom:1px solid #2c2c2c; color:#9a9a9a; font-size:9.5px; white-space:nowrap; overflow:hidden; }
+  .pp-tabs .on { color:#e6e6e6; border-bottom:1.5px solid #e6e6e6; padding-bottom:2px; }
+  .pane-p .pane-tag { top:auto; bottom:8px; left:8px; }
+  @media (max-width: 900px) { .g2-cols, .who { grid-template-columns:1fr; } .pane-p { justify-content:center; } }
 </style>
 </head>
 <body>
@@ -626,8 +735,25 @@
         <div class="g2-head"><span class="no">STEP 01</span><h3>選語言 → 開始辨識 → 字幕出來</h3></div>
         <div class="g2-cols g2-stage" data-script="lang">
           <div class="g2-col">
-            <p class="g2-p"><span class="pt"><span class="pr xs" aria-hidden="true">Pr</span>PANEL</span>在 Premiere 打開序列，按 <b>重新整理</b>，選講話聲音所在的 <b>音訊軌道</b>（標了 In-Out 可以勾 <b>只處理 In-Out 範圍</b>），在 <b>語言</b> 選字幕要的語言，按 <b>開始辨識</b>。跑完會直接打開字幕編輯畫面。已經有講稿就切到 <b>逐字稿匹配</b>，貼上整段稿子。</p>
-            <div class="pane pane-p"><span class="pane-tag"><span class="pr xs" aria-hidden="true">Pr</span>在 Premiere Pro 裡</span><div class="g2-win"><div data-show="2" class="ui panel"><div class="chrome"><span class="pr sm" aria-hidden="true">Pr</span><b>burgerSub Panel ☰</b></div><div class="in"><div class="ident"><strong>burgerSub</strong><span class="badge">Panel</span><span class="v">v1.0.5</span><span class="gear">⚙</span></div>
+            <p class="g2-p"><span class="pt"><span class="pr xs" aria-hidden="true">Pr</span>PANEL</span>在 Premiere 打開序列，按 <b>重新整理</b>，選講話聲音所在的 <b>音訊軌道</b>（標了 In-Out 可以勾 <b>只處理 In-Out 範圍</b>），在 <b>語言</b> 選字幕要的語言，按 <b>填寫節目資訊</b> 會打開 program_info.txt，在冒號後面填節目名稱、主持人、來賓、本集主題（存檔就生效），再按 <b>開始辨識</b>。跑完會直接打開字幕編輯畫面。已經有講稿就切到 <b>逐字稿匹配</b>，貼上整段稿子。</p>
+            <div class="pane pane-p"><div class="prbg pp" aria-hidden="true">
+              <div class="pp-prog">
+                <div class="pp-tab">Program: 我的影片_v1 <span>≡</span></div>
+                <div class="pp-rul"></div>
+                <div class="pp-video"><div class="pr-cap"></div></div>
+                <div class="pp-info"><b>00:00:03:05</b><span class="pp-dd">27% ⌄</span><span style="flex:1"></span><span class="pp-dd">Full ⌄</span><span>🔧</span></div>
+                <div class="pp-scrub"><i></i></div>
+                <div class="pp-trans"><span>◆</span><span>{</span><span>}</span><span>⇤</span><span>◀︎</span><span>▶</span><span>▶︎</span><span>⇥</span></div>
+              </div>
+              <div class="pp-seq">
+                <div class="pp-tab">✕ ▪ 我的影片_v1 <span>≡</span></div>
+                <div class="pp-tc">00:00:03:05</div>
+                <div class="pp-tools"><span>⇥</span><span>∩</span><span>⊞</span><span>⇆</span><span>◆</span><span>🔧</span></div>
+                <div class="pp-ruler"><span style="left:1%">:00:00</span><span style="left:46%">00:00:04:00</span><i></i></div>
+                <div class="pp-rows"><div class="pp-row c1"><div class="pp-th"><em class="lk">⊡</em><span class="nm">C1</span><em>◉</em><span class="sub">Subtitle</span></div><div class="pp-lane"><div class="pr-c1"><i style="left:2%;width:14%"></i><i style="left:16%;width:15%"></i><i style="left:31%;width:15%"></i><i style="left:46%;width:13%"></i><i style="left:59%;width:14%"></i><i style="left:73%;width:12%"></i></div></div></div><div class="pp-row"><div class="pp-th"><em class="lk">⊡</em><span class="nm">V5</span><em>▭</em><em>◉</em></div><div class="pp-lane"><i class="pp-clip" style="left:8%;width:16%;background:#7a3fb5">fx</i><i class="pp-clip" style="left:52%;width:20%;background:#7a3fb5">fx</i></div></div><div class="pp-row"><div class="pp-th"><em class="lk">⊡</em><span class="nm">V4</span><em>▭</em><em>◉</em></div><div class="pp-lane"><i class="pp-clip" style="left:30%;width:26%;background:#1f6b6b">標題</i></div></div><div class="pp-row"><div class="pp-th"><em class="lk">⊡</em><span class="nm">V3</span><em>▭</em><em>◉</em></div><div class="pp-lane"><i class="pp-clip" style="left:2%;width:26%;background:#7a3fb5">fx</i><i class="pp-clip" style="left:40%;width:18%;background:#3d58b8"></i></div></div><div class="pp-row"><div class="pp-th"><em class="lk">⊡</em><span class="nm">V2</span><em>▭</em><em>◉</em></div><div class="pp-lane"><i class="pp-clip" style="left:18%;width:22%;background:#2b6f8f">咖啡_b-roll</i><i class="pp-clip" style="left:62%;width:20%;background:#2b6f8f"></i></div></div><div class="pp-row"><div class="pp-th"><em class="lk">⊡</em><span class="nm sel">V1</span><em>▭</em><em>◉</em></div><div class="pp-lane"><i class="pp-clip" style="left:2%;width:84%;background:#2a5d9e">手沖咖啡.mp4</i></div></div><div class="pp-row a"><div class="pp-th a"><em class="lk">⊡</em><span class="nm sel">A1</span><em>▭</em><em>M&nbsp;S</em></div><div class="pp-lane"><i class="pp-clip au" style="left:2%;width:84%"></i></div></div><div class="pp-row a"><div class="pp-th a"><em class="lk">⊡</em><span class="nm">A2</span><em>▭</em><em>M&nbsp;S</em></div><div class="pp-lane"><i class="pp-clip au" style="left:18%;width:22%"></i></div></div><div class="pp-head"></div></div>
+              </div>
+              <div class="pp-tabs"><span>Effects</span><span>Libraries</span><span class="on">burgerSub</span></div>
+            </div><span class="pane-tag"><span class="pr xs" aria-hidden="true">Pr</span>在 Premiere Pro 裡</span><div class="g2-win"><div data-show="2" class="ui panel"><div class="chrome"><span class="pr sm" aria-hidden="true">Pr</span><b>burgerSub Panel ☰</b></div><div class="in"><div class="ident"><strong>burgerSub</strong><span class="badge">Panel</span><span class="v">v1.0.5</span><span class="gear">⚙</span></div>
   <div class="row" style="background:#2a2a2a;border-radius:5px;padding:7px 8px"><span style="flex:1;color:#fff">我的影片_v1</span><span class="muted">0:00</span><span class="b">↻ 重新整理</span></div>
   <div class="tabs2"><span class="on">語音辨識</span><span>逐字稿匹配</span></div>
   <div class="ck">只處理 In-Out 範圍</div><div class="green" style="margin:2px 0 6px 18px;font-family:ui-monospace,Menlo,monospace;font-size:10.5px">00:00:00,000 → 00:00:42,500（0:42）</div>
@@ -651,17 +777,18 @@
             
           </div>
           <div class="g2-col">
-            <p class="g2-p"><span class="pt st"><img src="burgersub-studio.png" alt="" class="xs-ico">STUDIO</span>把音檔或影片拖進視窗（或按 <b>選擇檔案</b>），在 <b>語言</b> 選繁體、簡體或中英混合，按 <b>開始辨識</b>。跑完會直接打開字幕編輯畫面。第一次使用會先下載語音模型（約 3 GB），只下載一次、跟 Panel 共用。</p>
+            <p class="g2-p"><span class="pt st"><img src="burgersub-studio.png" alt="" class="xs-ico">STUDIO</span>把音檔或影片拖進視窗（或按 <b>選擇檔案</b>），在 <b>語言</b> 選繁體、簡體或中英混合，點 <b>節目資訊</b> 展開欄位，填節目名稱、主持人、來賓、本集主題，人名和專有名詞會辨識得更準，再按 <b>開始辨識</b>。跑完會直接打開字幕編輯畫面。第一次使用會先下載語音模型（約 3 GB），只下載一次、跟 Panel 共用。</p>
             <div class="pane pane-s"><span class="pane-tag">Mac 獨立 App · 不需要 Premiere</span><div class="g2-win"><div data-show="1" class="ui studio"><div class="chrome"><i></i><i></i><i></i><b>burgerSub Studio</b></div><div class="in"><div class="ident"><strong>burgerSub</strong><span class="badge">Studio</span><span class="v">v0.1.0</span><span class="gear">⚙</span></div>
   <div class="drop hl"><h5>把音訊或影片拖到這裡</h5><div class="muted">mp3、mp4、m4a、wav、mov…<br>已經有字幕了？把 SRT＋音檔一起拖進來，直接邊聽邊改</div><div style="margin-top:9px"><span class="b">選擇檔案</span></div></div>
   <div class="row"><span class="lbl">語言</span><span class="inp sel lang-sel">繁體中文（ 台灣狗以 ）</span><span class="lbl" style="width:auto">每行字數</span><span class="inp" style="flex:.5">20</span></div>
-  <div class="b wide" style="justify-content:flex-start">▶ 節目資訊</div>
+  <div class="pi"><div class="b wide pi-head" style="justify-content:flex-start">▶ 節目資訊</div><div class="pi-body"><p class="pi-hint">先讓語音辨識知道「可能會講到什麼」——人名、節目名稱、主題用詞，準確率通常會明顯變好。沒填的欄位不會送出；下次開啟會記住上次填的。</p><div class="pi-grid"><span>節目名稱</span><span class="inp pi-in"></span><span>主持人</span><span class="inp pi-in"></span><span>來賓</span><span class="inp pi-in"></span><span>本集主題</span><span class="inp pi-in"></span></div></div></div>
   <div class="b wide pri">開始辨識</div>
   <div class="row" style="margin-top:6px;margin-bottom:0"><span class="b" style="flex:1">匯入 SRT</span><span class="b" style="flex:1">繼續上次的字幕</span></div>
 </div><div class="v-prog"><div class="ident"><strong>burgerSub</strong><span class="badge">Studio</span><span class="v">v0.1.0</span><span class="gear">⚙</span></div><div style="font-size:15px;font-weight:700;color:#fff;margin-top:4px">辨識中</div><div class="prog"><i class="pg-bar" style="width:0"></i></div><div class="pg-label" style="color:#fff">載入語音模型中…</div><div class="pg-eta muted" style="margin-top:3px">已經過 0:01</div><div class="b wide" style="margin-top:14px">取消</div></div></div><div data-show="3" class="ui v-edit studio"><div class="chrome"><i></i><i></i><i></i><b>burgerSub Studio</b></div><div class="in"><div class="ident"><strong>burgerSub</strong><span class="badge">Studio</span><span class="v">v0.1.0</span><span class="gear">⚙</span></div>
   <div class="bar2"><span class="b">‹ 返回</span><b style="font-size:14px;color:#fff">字幕</b><span class="muted">6 句　手沖咖啡.mp4</span></div>
   <div class="bar2"><span class="search">搜尋字幕…</span><span class="b">取代</span><span class="b">加速</span><span class="b">字典 (2)</span><span class="b">復原</span></div>
-  <div class="bar2"><span class="b hl">▶</span><span class="muted">0:03.1 / 0:14</span><span class="b">循環本句</span><span class="b">1x</span><span style="flex:1"></span><span class="b">▾ 收起音波</span></div>
+  <div class="bar2"><span class="ck2"><i class="box2"></i>填滿空隙</span><span style="flex:1"></span><span class="b">A−</span><span class="muted fsz">14px</span><span class="b">A+</span></div>
+  <div class="bar2"><span class="b hl">▶</span><span class="muted">0:03.1 / 0:14</span><span class="b">循環本句</span><span class="b">1x</span><span style="flex:1"></span><span class="b">−</span><span class="b">+</span><span class="b">▾ 收起音波</span></div>
   <div class="wave"><svg viewBox="0 0 1000 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%" aria-hidden="true"><rect x="46.9" y="0" width="129.1" height="100" fill="#1f2a3a"/><rect x="46.9" y="66" width="129.1" height="22" fill="#26405f"/><rect x="177.5" y="0" width="141.0" height="100" fill="#22382a"/><rect x="177.5" y="66" width="141.0" height="22" fill="#2d4a33"/><rect x="320.0" y="0" width="140.4" height="100" fill="#1f2a3a"/><rect x="320.0" y="66" width="140.4" height="22" fill="#26405f"/><rect x="461.9" y="0" width="131.0" height="100" fill="#1f2a3a"/><rect x="461.9" y="66" width="131.0" height="22" fill="#26405f"/><line x1="0" y1="40" x2="1000" y2="40" stroke="#5b8ff0" stroke-width="1"/><path d="M0.0 39.4V40.6M1.4 39.4V40.6M2.9 39.4V40.6M4.3 39.4V40.6M5.7 39.4V40.6M7.1 39.4V40.6M8.6 39.4V40.6M10.0 39.4V40.6M11.4 39.4V40.6M12.9 39.4V40.6M14.3 39.4V40.6M15.7 39.4V40.6M17.1 39.4V40.6M18.6 39.4V40.6M20.0 39.4V40.6M21.4 39.4V40.6M22.9 39.4V40.6M24.3 39.4V40.6M25.7 39.4V40.6M27.1 39.4V40.6M28.6 39.4V40.6M30.0 39.4V40.6M31.4 39.4V40.6M32.9 39.4V40.6M34.3 39.4V40.6M35.7 39.4V40.6M37.1 39.4V40.6M38.6 39.4V40.6M40.0 39.4V40.6M41.4 39.4V40.6M42.9 39.4V40.6M44.3 39.4V40.6M45.7 39.4V40.6M47.1 39.4V40.6M48.6 39.4V40.6M50.0 35.5V44.5M51.4 37.2V42.8M52.9 34.7V45.3M54.3 33.6V46.4M55.7 27.0V53.0M57.1 25.9V54.1M58.6 29.1V50.9M60.0 28.6V51.4M61.4 34.8V45.2M62.9 35.7V44.3M64.3 36.3V43.7M65.7 33.4V46.6M67.1 26.9V53.1M68.6 19.2V60.8M70.0 26.0V54.0M71.4 27.6V52.4M72.9 29.5V50.5M74.3 32.7V47.3M75.7 34.7V45.3M77.1 32.2V47.8M78.6 22.4V57.6M80.0 26.2V53.8M81.4 15.3V64.7M82.9 24.2V55.8M84.3 29.9V50.1M85.7 34.2V45.8M87.1 35.2V44.8M88.6 31.0V49.0M90.0 29.3V50.7M91.4 20.1V59.9M92.9 16.1V63.9M94.3 20.9V59.1M95.7 24.0V56.0M97.1 32.9V47.1M98.6 35.6V44.4M100.0 34.4V45.6M101.4 27.0V53.0M102.9 22.6V57.4M104.3 19.9V60.1M105.7 16.4V63.6M107.1 22.5V57.5M108.6 29.7V50.3M110.0 32.1V47.9M111.4 33.1V46.9M112.9 31.4V48.6M114.3 22.9V57.1M115.7 18.0V62.0M117.1 11.9V68.1M118.6 17.6V62.4M120.0 28.1V51.9M121.4 30.0V50.0M122.9 35.5V44.5M124.3 32.1V47.9M125.7 23.9V56.1M127.1 24.2V55.8M128.6 17.7V62.3M130.0 25.0V55.0M131.4 23.6V56.4M132.9 29.7V50.3M134.3 34.2V45.8M135.7 31.9V48.1M137.1 29.9V50.1M138.6 21.0V59.0M140.0 18.3V61.7M141.4 19.1V60.9M142.9 24.8V55.2M144.3 28.2V51.8M145.7 32.8V47.2M147.1 34.8V45.2M148.6 30.4V49.6M150.0 29.6V50.4M151.4 20.0V60.0M152.9 19.9V60.1M154.3 20.2V59.8M155.7 27.8V52.2M157.1 34.9V45.1M158.6 35.9V44.1M160.0 33.0V47.0M161.4 32.3V47.7M162.9 25.7V54.3M164.3 27.0V53.0M165.7 28.9V51.1M167.1 32.5V47.5M168.6 33.2V46.8M170.0 37.1V42.9M171.4 39.4V40.6M172.9 39.4V40.6M174.3 39.4V40.6M175.7 39.4V40.6M177.1 39.4V40.6M178.6 39.4V40.6M180.0 39.4V40.6M181.4 36.7V43.3M182.9 36.4V43.6M184.3 32.0V48.0M185.7 31.8V48.2M187.1 26.2V53.8M188.6 24.4V55.6M190.0 24.2V55.8M191.4 29.5V50.5M192.9 33.6V46.4M194.3 36.3V43.7M195.7 33.8V46.2M197.1 29.8V50.2M198.6 20.8V59.2M200.0 17.5V62.5M201.4 27.1V52.9M202.9 30.4V49.6M204.3 34.0V46.0M205.7 36.0V44.0M207.1 33.8V46.2M208.6 28.6V51.4M210.0 25.9V54.1M211.4 26.0V54.0M212.9 21.8V58.2M214.3 26.2V53.8M215.7 30.2V49.8M217.1 32.8V47.2M218.6 33.5V46.5M220.0 29.8V50.2M221.4 22.8V57.2M222.9 17.2V62.8M224.3 24.1V55.9M225.7 18.0V62.0M227.1 26.1V53.9M228.6 31.5V48.5M230.0 33.3V46.7M231.4 31.6V48.4M232.9 25.8V54.2M234.3 24.1V55.9M235.7 15.4V64.6M237.1 24.9V55.1M238.6 29.2V50.8M240.0 32.9V47.1M241.4 35.3V44.7M242.9 32.9V47.1M244.3 30.1V49.9M245.7 26.1V53.9M247.1 21.6V58.4M248.6 23.2V56.8M250.0 24.7V55.3M251.4 32.6V47.4M252.9 32.5V47.5M254.3 32.9V47.1M255.7 30.9V49.1M257.1 24.8V55.2M258.6 19.7V60.3M260.0 19.3V60.7M261.4 25.8V54.2M262.9 25.7V54.3M264.3 31.2V48.8M265.7 34.3V45.7M267.1 30.8V49.2M268.6 28.4V51.6M270.0 24.3V55.7M271.4 20.1V59.9M272.9 23.6V56.4M274.3 24.3V55.7M275.7 33.8V46.2M277.1 36.2V43.8M278.6 30.8V49.2M280.0 27.4V52.6M281.4 25.9V54.1M282.9 19.1V60.9M284.3 26.4V53.6M285.7 25.8V54.2M287.1 29.3V50.7M288.6 33.8V46.2M290.0 33.7V46.3M291.4 31.7V48.3M292.9 26.5V53.5M294.3 25.5V54.5M295.7 19.6V60.4M297.1 25.8V54.2M298.6 29.7V50.3M300.0 35.4V44.6M301.4 36.3V43.7M302.9 31.6V48.4M304.3 25.3V54.7M305.7 22.0V58.0M307.1 21.6V58.4M308.6 24.4V55.6M310.0 29.8V50.2M311.4 35.7V44.3M312.9 39.4V40.6M314.3 39.4V40.6M315.7 39.4V40.6M317.1 39.4V40.6M318.6 39.4V40.6M320.0 39.4V40.6M321.4 39.4V40.6M322.9 39.4V40.6M324.3 36.2V43.8M325.7 34.1V45.9M327.1 32.3V47.7M328.6 29.8V50.2M330.0 27.0V53.0M331.4 29.0V51.0M332.9 30.2V49.8M334.3 33.4V46.6M335.7 36.0V44.0M337.1 32.0V48.0M338.6 26.0V54.0M340.0 20.4V59.6M341.4 23.8V56.2M342.9 26.5V53.5M344.3 30.1V49.9M345.7 34.1V45.9M347.1 36.1V43.9M348.6 33.4V46.6M350.0 26.8V53.2M351.4 20.7V59.3M352.9 20.7V59.3M354.3 19.3V60.7M355.7 22.5V57.5M357.1 32.9V47.1M358.6 33.8V46.2M360.0 32.8V47.2M361.4 28.4V51.6M362.9 21.7V58.3M364.3 19.7V60.3M365.7 22.6V57.4M367.1 19.2V60.8M368.6 29.2V50.8M370.0 31.8V48.2M371.4 32.8V47.2M372.9 31.6V48.4M374.3 25.9V54.1M375.7 14.1V65.9M377.1 14.3V65.7M378.6 23.6V56.4M380.0 28.6V51.4M381.4 33.2V46.8M382.9 32.8V47.2M384.3 30.9V49.1M385.7 29.4V50.6M387.1 16.7V63.3M388.6 10.5V69.5M390.0 16.1V63.9M391.4 24.7V55.3M392.9 29.4V50.6M394.3 35.1V44.9M395.7 35.2V44.8M397.1 25.6V54.4M398.6 20.8V59.2M400.0 17.4V62.6M401.4 11.8V68.2M402.9 22.4V57.6M404.3 25.4V54.6M405.7 31.8V48.2M407.1 35.2V44.8M408.6 32.1V47.9M410.0 26.6V53.4M411.4 22.7V57.3M412.9 16.9V63.1M414.3 23.5V56.5M415.7 27.3V52.7M417.1 33.9V46.1M418.6 33.4V46.6M420.0 33.3V46.7M421.4 27.9V52.1M422.9 21.4V58.6M424.3 14.8V65.2M425.7 21.9V58.1M427.1 22.5V57.5M428.6 31.5V48.5M430.0 34.8V45.2M431.4 34.2V45.8M432.9 33.1V46.9M434.3 25.8V54.2M435.7 25.3V54.7M437.1 27.4V52.6M438.6 23.4V56.6M440.0 32.7V47.3M441.4 34.9V45.1M442.9 34.9V45.1M444.3 32.6V47.4M445.7 29.7V50.3M447.1 24.8V55.2M448.6 23.7V56.3M450.0 24.5V55.5M451.4 33.0V47.0M452.9 34.7V45.3M454.3 36.9V43.1M455.7 39.4V40.6M457.1 39.4V40.6M458.6 39.4V40.6M460.0 39.4V40.6M461.4 39.4V40.6M462.9 39.4V40.6M464.3 39.4V40.6M465.7 36.1V43.9M467.1 30.9V49.1M468.6 28.0V52.0M470.0 24.8V55.2M471.4 23.4V56.6M472.9 25.9V54.1M474.3 33.0V47.0M475.7 35.3V44.7M477.1 35.4V44.6M478.6 32.0V48.0M480.0 25.7V54.3M481.4 23.7V56.3M482.9 22.2V57.8M484.3 25.5V54.5M485.7 27.5V52.5M487.1 33.5V46.5M488.6 34.1V45.9M490.0 30.4V49.6M491.4 28.8V51.2M492.9 21.4V58.6M494.3 14.8V65.2M495.7 18.5V61.5M497.1 29.8V50.2M498.6 34.0V46.0M500.0 34.9V45.1M501.4 34.7V45.3M502.9 29.5V50.5M504.3 26.3V53.7M505.7 16.2V63.8M507.1 15.9V64.1M508.6 20.5V59.5M510.0 32.1V47.9M511.4 33.2V46.8M512.9 32.9V47.1M514.3 31.2V48.8M515.7 18.6V61.4M517.1 11.9V68.1M518.6 21.2V58.8M520.0 16.7V63.3M521.4 28.6V51.4M522.9 33.0V47.0M524.3 32.3V47.7M525.7 28.6V51.4M527.1 27.2V52.8M528.6 19.4V60.6M530.0 16.6V63.4M531.4 21.6V58.4M532.9 28.3V51.7M534.3 32.6V47.4M535.7 33.5V46.5M537.1 34.3V45.7M538.6 25.9V54.1M540.0 21.1V58.9M541.4 23.7V56.3M542.9 21.0V59.0M544.3 23.1V56.9M545.7 30.4V49.6M547.1 35.6V44.4M548.6 31.7V48.3M550.0 27.0V53.0M551.4 18.3V61.7M552.9 23.9V56.1M554.3 22.1V57.9M555.7 27.9V52.1M557.1 27.7V52.3M558.6 34.7V45.3M560.0 35.8V44.2M561.4 31.8V48.2M562.9 22.7V57.3M564.3 18.3V61.7M565.7 23.4V56.6M567.1 27.0V53.0M568.6 26.1V53.9M570.0 33.3V46.7M571.4 34.9V45.1M572.9 35.1V44.9M574.3 32.0V48.0M575.7 23.3V56.7M577.1 23.8V56.2M578.6 28.5V51.5M580.0 26.1V53.9M581.4 32.9V47.1M582.9 35.3V44.7M584.3 36.5V43.5M585.7 30.5V49.5M587.1 39.4V40.6M588.6 39.4V40.6M590.0 39.4V40.6M591.4 39.4V40.6M592.9 39.4V40.6M594.3 39.4V40.6M595.7 39.4V40.6M597.1 39.4V40.6M598.6 39.4V40.6M600.0 39.4V40.6M601.4 39.4V40.6M602.9 39.4V40.6M604.3 39.4V40.6M605.7 39.4V40.6M607.1 39.4V40.6M608.6 39.4V40.6M610.0 39.4V40.6M611.4 39.4V40.6M612.9 39.4V40.6M614.3 39.4V40.6M615.7 39.4V40.6M617.1 39.4V40.6M618.6 39.4V40.6M620.0 39.4V40.6M621.4 39.4V40.6M622.9 39.4V40.6M624.3 39.4V40.6M625.7 39.4V40.6M627.1 39.4V40.6M628.6 39.4V40.6M630.0 39.4V40.6M631.4 39.4V40.6M632.9 39.4V40.6M634.3 39.4V40.6M635.7 39.4V40.6M637.1 39.4V40.6M638.6 39.4V40.6M640.0 39.4V40.6M641.4 39.4V40.6M642.9 39.4V40.6M644.3 39.4V40.6M645.7 39.4V40.6M647.1 39.4V40.6M648.6 39.4V40.6M650.0 39.4V40.6M651.4 39.4V40.6M652.9 39.4V40.6M654.3 39.4V40.6M655.7 39.4V40.6M657.1 39.4V40.6M658.6 39.4V40.6M660.0 39.4V40.6M661.4 39.4V40.6M662.9 39.4V40.6M664.3 39.4V40.6M665.7 39.4V40.6M667.1 39.4V40.6M668.6 39.4V40.6M670.0 39.4V40.6M671.4 39.4V40.6M672.9 39.4V40.6M674.3 39.4V40.6M675.7 39.4V40.6M677.1 39.4V40.6M678.6 39.4V40.6M680.0 39.4V40.6M681.4 39.4V40.6M682.9 39.4V40.6M684.3 39.4V40.6M685.7 39.4V40.6M687.1 39.4V40.6M688.6 39.4V40.6M690.0 39.4V40.6M691.4 39.4V40.6M692.9 39.4V40.6M694.3 39.4V40.6M695.7 39.4V40.6M697.1 39.4V40.6M698.6 39.4V40.6M700.0 39.4V40.6M701.4 39.4V40.6M702.9 39.4V40.6M704.3 39.4V40.6M705.7 39.4V40.6M707.1 39.4V40.6M708.6 39.4V40.6M710.0 39.4V40.6M711.4 39.4V40.6M712.9 39.4V40.6M714.3 39.4V40.6M715.7 39.4V40.6M717.1 39.4V40.6M718.6 39.4V40.6M720.0 39.4V40.6M721.4 39.4V40.6M722.9 39.4V40.6M724.3 39.4V40.6M725.7 39.4V40.6M727.1 39.4V40.6M728.6 39.4V40.6M730.0 39.4V40.6M731.4 39.4V40.6M732.9 39.4V40.6M734.3 39.4V40.6M735.7 39.4V40.6M737.1 39.4V40.6M738.6 39.4V40.6M740.0 39.4V40.6M741.4 39.4V40.6M742.9 39.4V40.6M744.3 39.4V40.6M745.7 39.4V40.6M747.1 39.4V40.6M748.6 39.4V40.6M750.0 39.4V40.6M751.4 39.4V40.6M752.9 39.4V40.6M754.3 39.4V40.6M755.7 39.4V40.6M757.1 39.4V40.6M758.6 39.4V40.6M760.0 39.4V40.6M761.4 39.4V40.6M762.9 39.4V40.6M764.3 39.4V40.6M765.7 39.4V40.6M767.1 39.4V40.6M768.6 39.4V40.6M770.0 39.4V40.6M771.4 39.4V40.6M772.9 39.4V40.6M774.3 39.4V40.6M775.7 39.4V40.6M777.1 39.4V40.6M778.6 39.4V40.6M780.0 39.4V40.6M781.4 39.4V40.6M782.9 39.4V40.6M784.3 39.4V40.6M785.7 39.4V40.6M787.1 39.4V40.6M788.6 39.4V40.6M790.0 39.4V40.6M791.4 39.4V40.6M792.9 39.4V40.6M794.3 39.4V40.6M795.7 39.4V40.6M797.1 39.4V40.6M798.6 39.4V40.6M800.0 39.4V40.6M801.4 39.4V40.6M802.9 39.4V40.6M804.3 39.4V40.6M805.7 39.4V40.6M807.1 39.4V40.6M808.6 39.4V40.6M810.0 39.4V40.6M811.4 39.4V40.6M812.9 39.4V40.6M814.3 39.4V40.6M815.7 39.4V40.6M817.1 39.4V40.6M818.6 39.4V40.6M820.0 39.4V40.6M821.4 39.4V40.6M822.9 39.4V40.6M824.3 39.4V40.6M825.7 39.4V40.6M827.1 39.4V40.6M828.6 39.4V40.6M830.0 39.4V40.6M831.4 39.4V40.6M832.9 39.4V40.6M834.3 39.4V40.6M835.7 39.4V40.6M837.1 39.4V40.6M838.6 39.4V40.6M840.0 39.4V40.6M841.4 39.4V40.6M842.9 39.4V40.6M844.3 39.4V40.6M845.7 39.4V40.6M847.1 39.4V40.6M848.6 39.4V40.6M850.0 39.4V40.6M851.4 39.4V40.6M852.9 39.4V40.6M854.3 39.4V40.6M855.7 39.4V40.6M857.1 39.4V40.6M858.6 39.4V40.6M860.0 39.4V40.6M861.4 39.4V40.6M862.9 39.4V40.6M864.3 39.4V40.6M865.7 39.4V40.6M867.1 39.4V40.6M868.6 39.4V40.6M870.0 39.4V40.6M871.4 39.4V40.6M872.9 39.4V40.6M874.3 39.4V40.6M875.7 39.4V40.6M877.1 39.4V40.6M878.6 39.4V40.6M880.0 39.4V40.6M881.4 39.4V40.6M882.9 39.4V40.6M884.3 39.4V40.6M885.7 39.4V40.6M887.1 39.4V40.6M888.6 39.4V40.6M890.0 39.4V40.6M891.4 39.4V40.6M892.9 39.4V40.6M894.3 39.4V40.6M895.7 39.4V40.6M897.1 39.4V40.6M898.6 39.4V40.6M900.0 39.4V40.6M901.4 39.4V40.6M902.9 39.4V40.6M904.3 39.4V40.6M905.7 39.4V40.6M907.1 39.4V40.6M908.6 39.4V40.6M910.0 39.4V40.6M911.4 39.4V40.6M912.9 39.4V40.6M914.3 39.4V40.6M915.7 39.4V40.6M917.1 39.4V40.6M918.6 39.4V40.6M920.0 39.4V40.6M921.4 39.4V40.6M922.9 39.4V40.6M924.3 39.4V40.6M925.7 39.4V40.6M927.1 39.4V40.6M928.6 39.4V40.6M930.0 39.4V40.6M931.4 39.4V40.6M932.9 39.4V40.6M934.3 39.4V40.6M935.7 39.4V40.6M937.1 39.4V40.6M938.6 39.4V40.6M940.0 39.4V40.6M941.4 39.4V40.6M942.9 39.4V40.6M944.3 39.4V40.6M945.7 39.4V40.6M947.1 39.4V40.6M948.6 39.4V40.6M950.0 39.4V40.6M951.4 39.4V40.6M952.9 39.4V40.6M954.3 39.4V40.6M955.7 39.4V40.6M957.1 39.4V40.6M958.6 39.4V40.6M960.0 39.4V40.6M961.4 39.4V40.6M962.9 39.4V40.6M964.3 39.4V40.6M965.7 39.4V40.6M967.1 39.4V40.6M968.6 39.4V40.6M970.0 39.4V40.6M971.4 39.4V40.6M972.9 39.4V40.6M974.3 39.4V40.6M975.7 39.4V40.6M977.1 39.4V40.6M978.6 39.4V40.6M980.0 39.4V40.6M981.4 39.4V40.6M982.9 39.4V40.6M984.3 39.4V40.6M985.7 39.4V40.6M987.1 39.4V40.6M988.6 39.4V40.6M990.0 39.4V40.6M991.4 39.4V40.6M992.9 39.4V40.6M994.3 39.4V40.6M995.7 39.4V40.6M997.1 39.4V40.6M998.6 39.4V40.6" stroke="#5b8ff0" stroke-width="1" fill="none"/><line x1="0.0" y1="0" x2="0.0" y2="4" stroke="#555"/><line x1="312.5" y1="0" x2="312.5" y2="4" stroke="#555"/><line x1="625.0" y1="0" x2="625.0" y2="4" stroke="#555"/><line x1="937.5" y1="0" x2="937.5" y2="4" stroke="#555"/><line x1="193.8" y1="0" x2="193.8" y2="100" stroke="#ff4d3f" stroke-width="2"/></svg><span class="wtick" style="left:0.00%">0:00</span><span class="wtick" style="left:31.25%">0:05</span><span class="wtick" style="left:62.50%">0:10</span><span class="wtick" style="left:93.75%">0:15</span><div class="seglbl" style="left:4.69%;width:12.91%">今天想跟大家聊聊手沖咖啡</div><div class="seglbl on" style="left:17.75%;width:14.10%">其實在家沖也可以很好喝</div><div class="seglbl" style="left:32.00%;width:14.04%">重點是水溫跟研磨的粗細</div><div class="seglbl" style="left:46.19%;width:13.10%">很多人以為水越燙越好</div></div>
   <div class="cues"><div class="cue"><span class="n">1</span><div class="t">00:00:00,750 → 00:00:02,840</div><div class="x">今天想跟大家聊聊手沖咖啡</div></div><div class="cue on"><span class="n">2</span><div class="t">00:00:02,840 → 00:00:05,120</div><div class="x">其實在家沖也可以很好喝</div></div><div class="cue"><span class="n">3</span><div class="t">00:00:05,120 → 00:00:07,390</div><div class="x">重點是水溫跟研磨的粗細</div></div><div class="cue"><span class="n">4</span><div class="t">00:00:07,390 → 00:00:09,510</div><div class="x">很多人以為水越燙越好</div></div></div>
   <div class="b wide pri" style="margin-top:9px">匯出 SRT</div>
@@ -676,7 +803,24 @@
         <div class="g2-cols g2-stage" data-script="edit">
           <div class="g2-col">
             <p class="g2-p"><span class="pt"><span class="pr xs" aria-hidden="true">Pr</span>PANEL</span>點一下文字進入編輯：游標放在要斷開的地方按 <b>Enter</b>，一句切成兩句；在句首按 <b>Backspace</b>，兩句併回一句。<b>A−／A+</b> 調整清單上的字級。改過的錯字會記進 <b>字典</b>，下次自動修正。改好按 <b>送進 Premiere</b>。</p>
-            <div class="pane pane-p"><span class="pane-tag"><span class="pr xs" aria-hidden="true">Pr</span>在 Premiere Pro 裡</span><div class="g2-win"><div class="ui panel"><div class="chrome"><span class="pr sm" aria-hidden="true">Pr</span><b>burgerSub Panel ☰</b></div><div class="in"><div class="ident"><strong>burgerSub</strong><span class="badge">Panel</span><span class="v">v1.0.5</span><span class="gear">⚙</span></div>
+            <div class="pane pane-p"><div class="prbg pp" aria-hidden="true">
+              <div class="pp-prog">
+                <div class="pp-tab">Program: 我的影片_v1 <span>≡</span></div>
+                <div class="pp-rul"></div>
+                <div class="pp-video"><div class="pr-cap"></div></div>
+                <div class="pp-info"><b>00:00:03:05</b><span class="pp-dd">27% ⌄</span><span style="flex:1"></span><span class="pp-dd">Full ⌄</span><span>🔧</span></div>
+                <div class="pp-scrub"><i></i></div>
+                <div class="pp-trans"><span>◆</span><span>{</span><span>}</span><span>⇤</span><span>◀︎</span><span>▶</span><span>▶︎</span><span>⇥</span></div>
+              </div>
+              <div class="pp-seq">
+                <div class="pp-tab">✕ ▪ 我的影片_v1 <span>≡</span></div>
+                <div class="pp-tc">00:00:03:05</div>
+                <div class="pp-tools"><span>⇥</span><span>∩</span><span>⊞</span><span>⇆</span><span>◆</span><span>🔧</span></div>
+                <div class="pp-ruler"><span style="left:1%">:00:00</span><span style="left:46%">00:00:04:00</span><i></i></div>
+                <div class="pp-rows"><div class="pp-row c1"><div class="pp-th"><em class="lk">⊡</em><span class="nm">C1</span><em>◉</em><span class="sub">Subtitle</span></div><div class="pp-lane"><div class="pr-c1"><i style="left:2%;width:14%"></i><i style="left:16%;width:15%"></i><i style="left:31%;width:15%"></i><i style="left:46%;width:13%"></i><i style="left:59%;width:14%"></i><i style="left:73%;width:12%"></i></div></div></div><div class="pp-row"><div class="pp-th"><em class="lk">⊡</em><span class="nm">V5</span><em>▭</em><em>◉</em></div><div class="pp-lane"><i class="pp-clip" style="left:8%;width:16%;background:#7a3fb5">fx</i><i class="pp-clip" style="left:52%;width:20%;background:#7a3fb5">fx</i></div></div><div class="pp-row"><div class="pp-th"><em class="lk">⊡</em><span class="nm">V4</span><em>▭</em><em>◉</em></div><div class="pp-lane"><i class="pp-clip" style="left:30%;width:26%;background:#1f6b6b">標題</i></div></div><div class="pp-row"><div class="pp-th"><em class="lk">⊡</em><span class="nm">V3</span><em>▭</em><em>◉</em></div><div class="pp-lane"><i class="pp-clip" style="left:2%;width:26%;background:#7a3fb5">fx</i><i class="pp-clip" style="left:40%;width:18%;background:#3d58b8"></i></div></div><div class="pp-row"><div class="pp-th"><em class="lk">⊡</em><span class="nm">V2</span><em>▭</em><em>◉</em></div><div class="pp-lane"><i class="pp-clip" style="left:18%;width:22%;background:#2b6f8f">咖啡_b-roll</i><i class="pp-clip" style="left:62%;width:20%;background:#2b6f8f"></i></div></div><div class="pp-row"><div class="pp-th"><em class="lk">⊡</em><span class="nm sel">V1</span><em>▭</em><em>◉</em></div><div class="pp-lane"><i class="pp-clip" style="left:2%;width:84%;background:#2a5d9e">手沖咖啡.mp4</i></div></div><div class="pp-row a"><div class="pp-th a"><em class="lk">⊡</em><span class="nm sel">A1</span><em>▭</em><em>M&nbsp;S</em></div><div class="pp-lane"><i class="pp-clip au" style="left:2%;width:84%"></i></div></div><div class="pp-row a"><div class="pp-th a"><em class="lk">⊡</em><span class="nm">A2</span><em>▭</em><em>M&nbsp;S</em></div><div class="pp-lane"><i class="pp-clip au" style="left:18%;width:22%"></i></div></div><div class="pp-head"></div></div>
+              </div>
+              <div class="pp-tabs"><span>Effects</span><span>Libraries</span><span class="on">burgerSub</span></div>
+            </div><span class="pane-tag"><span class="pr xs" aria-hidden="true">Pr</span>在 Premiere Pro 裡</span><div class="g2-win"><div class="ui panel"><div class="chrome"><span class="pr sm" aria-hidden="true">Pr</span><b>burgerSub Panel ☰</b></div><div class="in"><div class="ident"><strong>burgerSub</strong><span class="badge">Panel</span><span class="v">v1.0.5</span><span class="gear">⚙</span></div>
   <div class="bar2"><span class="b">‹ 返回</span><b style="font-size:14px;color:#fff">字幕</b><span class="muted">6 句</span></div>
   <div class="bar2"><span class="search">搜尋字幕…</span><span class="b">取代</span><span class="b">加速</span></div>
   <div class="bar2"><span class="ck">填滿空隙</span><span class="ck off">跟隨時間軸</span><span style="flex:1"></span><span class="b">A−</span><span class="b">A+</span></div>
@@ -687,11 +831,12 @@
             <div class="pkeys"><div class="kh">快捷鍵</div><div class="keys"><kbd>空白鍵</kbd><span>Premiere 時間軸跳到這一句</span><kbd>↑ ↓</kbd><span>換句</span><kbd>Enter</kbd><span>在游標處切開</span><kbd>Backspace</kbd><span>在句首按，併入上一句</span><kbd>Esc</kbd><span>結束編輯</span><kbd>點時間碼</kbd><span>修改開始、結束時間</span><kbd>復原</kbd><span>按編輯器上的「復原」（Premiere 會先吃掉 ⌘Z）</span></div></div>
           </div>
           <div class="g2-col">
-            <p class="g2-p"><span class="pt st"><img src="burgersub-studio.png" alt="" class="xs-ico">STUDIO</span>按 <b>▶</b> 或空白鍵播放，正在播的那句會亮起來；點音波可以跳到那個位置。切分、合併、字級跟 Panel 一樣。改好按 <b>匯出 SRT</b>，Premiere、Final Cut Pro、DaVinci Resolve、YouTube 都能用。</p>
+            <p class="g2-p"><span class="pt st"><img src="burgersub-studio.png" alt="" class="xs-ico">STUDIO</span>按 <b>▶</b> 或空白鍵播放，正在播的那句會亮起來；點音波可以跳到那個位置。勾 <b>填滿空隙</b>，句子之間的停頓會接起來，字幕不會一閃一閃。<b>A−／A+</b> 調整清單字級。按 <b>收起音波</b> 讓字幕清單變長，專心改字時用，再按一次展開。切分、合併、字級跟 Panel 一樣。改好按 <b>匯出 SRT</b>，Premiere、Final Cut Pro、DaVinci Resolve、YouTube 都能用。</p>
             <div class="pane pane-s"><span class="pane-tag">Mac 獨立 App · 不需要 Premiere</span><div class="g2-win"><div class="ui studio"><div class="chrome"><i></i><i></i><i></i><b>burgerSub Studio</b></div><div class="in"><div class="ident"><strong>burgerSub</strong><span class="badge">Studio</span><span class="v">v0.1.0</span><span class="gear">⚙</span></div>
   <div class="bar2"><span class="b">‹ 返回</span><b style="font-size:14px;color:#fff">字幕</b><span class="muted">6 句　手沖咖啡.mp4</span></div>
   <div class="bar2"><span class="search">搜尋字幕…</span><span class="b">取代</span><span class="b">加速</span><span class="b">字典 (2)</span><span class="b">復原</span></div>
-  <div class="bar2"><span class="b hl">▶</span><span class="muted">0:03.1 / 0:14</span><span class="b">循環本句</span><span class="b">1x</span><span style="flex:1"></span><span class="b">▾ 收起音波</span></div>
+  <div class="bar2"><span class="ck2"><i class="box2"></i>填滿空隙</span><span style="flex:1"></span><span class="b">A−</span><span class="muted fsz">14px</span><span class="b">A+</span></div>
+  <div class="bar2"><span class="b hl">▶</span><span class="muted">0:03.1 / 0:14</span><span class="b">循環本句</span><span class="b">1x</span><span style="flex:1"></span><span class="b">−</span><span class="b">+</span><span class="b">▾ 收起音波</span></div>
   <div class="wave"><svg viewBox="0 0 1000 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%" aria-hidden="true"><rect x="46.9" y="0" width="129.1" height="100" fill="#1f2a3a"/><rect x="46.9" y="66" width="129.1" height="22" fill="#26405f"/><rect x="177.5" y="0" width="141.0" height="100" fill="#22382a"/><rect x="177.5" y="66" width="141.0" height="22" fill="#2d4a33"/><rect x="320.0" y="0" width="140.4" height="100" fill="#1f2a3a"/><rect x="320.0" y="66" width="140.4" height="22" fill="#26405f"/><rect x="461.9" y="0" width="131.0" height="100" fill="#1f2a3a"/><rect x="461.9" y="66" width="131.0" height="22" fill="#26405f"/><line x1="0" y1="40" x2="1000" y2="40" stroke="#5b8ff0" stroke-width="1"/><path d="M0.0 39.4V40.6M1.4 39.4V40.6M2.9 39.4V40.6M4.3 39.4V40.6M5.7 39.4V40.6M7.1 39.4V40.6M8.6 39.4V40.6M10.0 39.4V40.6M11.4 39.4V40.6M12.9 39.4V40.6M14.3 39.4V40.6M15.7 39.4V40.6M17.1 39.4V40.6M18.6 39.4V40.6M20.0 39.4V40.6M21.4 39.4V40.6M22.9 39.4V40.6M24.3 39.4V40.6M25.7 39.4V40.6M27.1 39.4V40.6M28.6 39.4V40.6M30.0 39.4V40.6M31.4 39.4V40.6M32.9 39.4V40.6M34.3 39.4V40.6M35.7 39.4V40.6M37.1 39.4V40.6M38.6 39.4V40.6M40.0 39.4V40.6M41.4 39.4V40.6M42.9 39.4V40.6M44.3 39.4V40.6M45.7 39.4V40.6M47.1 39.4V40.6M48.6 39.4V40.6M50.0 35.5V44.5M51.4 37.2V42.8M52.9 34.7V45.3M54.3 33.6V46.4M55.7 27.0V53.0M57.1 25.9V54.1M58.6 29.1V50.9M60.0 28.6V51.4M61.4 34.8V45.2M62.9 35.7V44.3M64.3 36.3V43.7M65.7 33.4V46.6M67.1 26.9V53.1M68.6 19.2V60.8M70.0 26.0V54.0M71.4 27.6V52.4M72.9 29.5V50.5M74.3 32.7V47.3M75.7 34.7V45.3M77.1 32.2V47.8M78.6 22.4V57.6M80.0 26.2V53.8M81.4 15.3V64.7M82.9 24.2V55.8M84.3 29.9V50.1M85.7 34.2V45.8M87.1 35.2V44.8M88.6 31.0V49.0M90.0 29.3V50.7M91.4 20.1V59.9M92.9 16.1V63.9M94.3 20.9V59.1M95.7 24.0V56.0M97.1 32.9V47.1M98.6 35.6V44.4M100.0 34.4V45.6M101.4 27.0V53.0M102.9 22.6V57.4M104.3 19.9V60.1M105.7 16.4V63.6M107.1 22.5V57.5M108.6 29.7V50.3M110.0 32.1V47.9M111.4 33.1V46.9M112.9 31.4V48.6M114.3 22.9V57.1M115.7 18.0V62.0M117.1 11.9V68.1M118.6 17.6V62.4M120.0 28.1V51.9M121.4 30.0V50.0M122.9 35.5V44.5M124.3 32.1V47.9M125.7 23.9V56.1M127.1 24.2V55.8M128.6 17.7V62.3M130.0 25.0V55.0M131.4 23.6V56.4M132.9 29.7V50.3M134.3 34.2V45.8M135.7 31.9V48.1M137.1 29.9V50.1M138.6 21.0V59.0M140.0 18.3V61.7M141.4 19.1V60.9M142.9 24.8V55.2M144.3 28.2V51.8M145.7 32.8V47.2M147.1 34.8V45.2M148.6 30.4V49.6M150.0 29.6V50.4M151.4 20.0V60.0M152.9 19.9V60.1M154.3 20.2V59.8M155.7 27.8V52.2M157.1 34.9V45.1M158.6 35.9V44.1M160.0 33.0V47.0M161.4 32.3V47.7M162.9 25.7V54.3M164.3 27.0V53.0M165.7 28.9V51.1M167.1 32.5V47.5M168.6 33.2V46.8M170.0 37.1V42.9M171.4 39.4V40.6M172.9 39.4V40.6M174.3 39.4V40.6M175.7 39.4V40.6M177.1 39.4V40.6M178.6 39.4V40.6M180.0 39.4V40.6M181.4 36.7V43.3M182.9 36.4V43.6M184.3 32.0V48.0M185.7 31.8V48.2M187.1 26.2V53.8M188.6 24.4V55.6M190.0 24.2V55.8M191.4 29.5V50.5M192.9 33.6V46.4M194.3 36.3V43.7M195.7 33.8V46.2M197.1 29.8V50.2M198.6 20.8V59.2M200.0 17.5V62.5M201.4 27.1V52.9M202.9 30.4V49.6M204.3 34.0V46.0M205.7 36.0V44.0M207.1 33.8V46.2M208.6 28.6V51.4M210.0 25.9V54.1M211.4 26.0V54.0M212.9 21.8V58.2M214.3 26.2V53.8M215.7 30.2V49.8M217.1 32.8V47.2M218.6 33.5V46.5M220.0 29.8V50.2M221.4 22.8V57.2M222.9 17.2V62.8M224.3 24.1V55.9M225.7 18.0V62.0M227.1 26.1V53.9M228.6 31.5V48.5M230.0 33.3V46.7M231.4 31.6V48.4M232.9 25.8V54.2M234.3 24.1V55.9M235.7 15.4V64.6M237.1 24.9V55.1M238.6 29.2V50.8M240.0 32.9V47.1M241.4 35.3V44.7M242.9 32.9V47.1M244.3 30.1V49.9M245.7 26.1V53.9M247.1 21.6V58.4M248.6 23.2V56.8M250.0 24.7V55.3M251.4 32.6V47.4M252.9 32.5V47.5M254.3 32.9V47.1M255.7 30.9V49.1M257.1 24.8V55.2M258.6 19.7V60.3M260.0 19.3V60.7M261.4 25.8V54.2M262.9 25.7V54.3M264.3 31.2V48.8M265.7 34.3V45.7M267.1 30.8V49.2M268.6 28.4V51.6M270.0 24.3V55.7M271.4 20.1V59.9M272.9 23.6V56.4M274.3 24.3V55.7M275.7 33.8V46.2M277.1 36.2V43.8M278.6 30.8V49.2M280.0 27.4V52.6M281.4 25.9V54.1M282.9 19.1V60.9M284.3 26.4V53.6M285.7 25.8V54.2M287.1 29.3V50.7M288.6 33.8V46.2M290.0 33.7V46.3M291.4 31.7V48.3M292.9 26.5V53.5M294.3 25.5V54.5M295.7 19.6V60.4M297.1 25.8V54.2M298.6 29.7V50.3M300.0 35.4V44.6M301.4 36.3V43.7M302.9 31.6V48.4M304.3 25.3V54.7M305.7 22.0V58.0M307.1 21.6V58.4M308.6 24.4V55.6M310.0 29.8V50.2M311.4 35.7V44.3M312.9 39.4V40.6M314.3 39.4V40.6M315.7 39.4V40.6M317.1 39.4V40.6M318.6 39.4V40.6M320.0 39.4V40.6M321.4 39.4V40.6M322.9 39.4V40.6M324.3 36.2V43.8M325.7 34.1V45.9M327.1 32.3V47.7M328.6 29.8V50.2M330.0 27.0V53.0M331.4 29.0V51.0M332.9 30.2V49.8M334.3 33.4V46.6M335.7 36.0V44.0M337.1 32.0V48.0M338.6 26.0V54.0M340.0 20.4V59.6M341.4 23.8V56.2M342.9 26.5V53.5M344.3 30.1V49.9M345.7 34.1V45.9M347.1 36.1V43.9M348.6 33.4V46.6M350.0 26.8V53.2M351.4 20.7V59.3M352.9 20.7V59.3M354.3 19.3V60.7M355.7 22.5V57.5M357.1 32.9V47.1M358.6 33.8V46.2M360.0 32.8V47.2M361.4 28.4V51.6M362.9 21.7V58.3M364.3 19.7V60.3M365.7 22.6V57.4M367.1 19.2V60.8M368.6 29.2V50.8M370.0 31.8V48.2M371.4 32.8V47.2M372.9 31.6V48.4M374.3 25.9V54.1M375.7 14.1V65.9M377.1 14.3V65.7M378.6 23.6V56.4M380.0 28.6V51.4M381.4 33.2V46.8M382.9 32.8V47.2M384.3 30.9V49.1M385.7 29.4V50.6M387.1 16.7V63.3M388.6 10.5V69.5M390.0 16.1V63.9M391.4 24.7V55.3M392.9 29.4V50.6M394.3 35.1V44.9M395.7 35.2V44.8M397.1 25.6V54.4M398.6 20.8V59.2M400.0 17.4V62.6M401.4 11.8V68.2M402.9 22.4V57.6M404.3 25.4V54.6M405.7 31.8V48.2M407.1 35.2V44.8M408.6 32.1V47.9M410.0 26.6V53.4M411.4 22.7V57.3M412.9 16.9V63.1M414.3 23.5V56.5M415.7 27.3V52.7M417.1 33.9V46.1M418.6 33.4V46.6M420.0 33.3V46.7M421.4 27.9V52.1M422.9 21.4V58.6M424.3 14.8V65.2M425.7 21.9V58.1M427.1 22.5V57.5M428.6 31.5V48.5M430.0 34.8V45.2M431.4 34.2V45.8M432.9 33.1V46.9M434.3 25.8V54.2M435.7 25.3V54.7M437.1 27.4V52.6M438.6 23.4V56.6M440.0 32.7V47.3M441.4 34.9V45.1M442.9 34.9V45.1M444.3 32.6V47.4M445.7 29.7V50.3M447.1 24.8V55.2M448.6 23.7V56.3M450.0 24.5V55.5M451.4 33.0V47.0M452.9 34.7V45.3M454.3 36.9V43.1M455.7 39.4V40.6M457.1 39.4V40.6M458.6 39.4V40.6M460.0 39.4V40.6M461.4 39.4V40.6M462.9 39.4V40.6M464.3 39.4V40.6M465.7 36.1V43.9M467.1 30.9V49.1M468.6 28.0V52.0M470.0 24.8V55.2M471.4 23.4V56.6M472.9 25.9V54.1M474.3 33.0V47.0M475.7 35.3V44.7M477.1 35.4V44.6M478.6 32.0V48.0M480.0 25.7V54.3M481.4 23.7V56.3M482.9 22.2V57.8M484.3 25.5V54.5M485.7 27.5V52.5M487.1 33.5V46.5M488.6 34.1V45.9M490.0 30.4V49.6M491.4 28.8V51.2M492.9 21.4V58.6M494.3 14.8V65.2M495.7 18.5V61.5M497.1 29.8V50.2M498.6 34.0V46.0M500.0 34.9V45.1M501.4 34.7V45.3M502.9 29.5V50.5M504.3 26.3V53.7M505.7 16.2V63.8M507.1 15.9V64.1M508.6 20.5V59.5M510.0 32.1V47.9M511.4 33.2V46.8M512.9 32.9V47.1M514.3 31.2V48.8M515.7 18.6V61.4M517.1 11.9V68.1M518.6 21.2V58.8M520.0 16.7V63.3M521.4 28.6V51.4M522.9 33.0V47.0M524.3 32.3V47.7M525.7 28.6V51.4M527.1 27.2V52.8M528.6 19.4V60.6M530.0 16.6V63.4M531.4 21.6V58.4M532.9 28.3V51.7M534.3 32.6V47.4M535.7 33.5V46.5M537.1 34.3V45.7M538.6 25.9V54.1M540.0 21.1V58.9M541.4 23.7V56.3M542.9 21.0V59.0M544.3 23.1V56.9M545.7 30.4V49.6M547.1 35.6V44.4M548.6 31.7V48.3M550.0 27.0V53.0M551.4 18.3V61.7M552.9 23.9V56.1M554.3 22.1V57.9M555.7 27.9V52.1M557.1 27.7V52.3M558.6 34.7V45.3M560.0 35.8V44.2M561.4 31.8V48.2M562.9 22.7V57.3M564.3 18.3V61.7M565.7 23.4V56.6M567.1 27.0V53.0M568.6 26.1V53.9M570.0 33.3V46.7M571.4 34.9V45.1M572.9 35.1V44.9M574.3 32.0V48.0M575.7 23.3V56.7M577.1 23.8V56.2M578.6 28.5V51.5M580.0 26.1V53.9M581.4 32.9V47.1M582.9 35.3V44.7M584.3 36.5V43.5M585.7 30.5V49.5M587.1 39.4V40.6M588.6 39.4V40.6M590.0 39.4V40.6M591.4 39.4V40.6M592.9 39.4V40.6M594.3 39.4V40.6M595.7 39.4V40.6M597.1 39.4V40.6M598.6 39.4V40.6M600.0 39.4V40.6M601.4 39.4V40.6M602.9 39.4V40.6M604.3 39.4V40.6M605.7 39.4V40.6M607.1 39.4V40.6M608.6 39.4V40.6M610.0 39.4V40.6M611.4 39.4V40.6M612.9 39.4V40.6M614.3 39.4V40.6M615.7 39.4V40.6M617.1 39.4V40.6M618.6 39.4V40.6M620.0 39.4V40.6M621.4 39.4V40.6M622.9 39.4V40.6M624.3 39.4V40.6M625.7 39.4V40.6M627.1 39.4V40.6M628.6 39.4V40.6M630.0 39.4V40.6M631.4 39.4V40.6M632.9 39.4V40.6M634.3 39.4V40.6M635.7 39.4V40.6M637.1 39.4V40.6M638.6 39.4V40.6M640.0 39.4V40.6M641.4 39.4V40.6M642.9 39.4V40.6M644.3 39.4V40.6M645.7 39.4V40.6M647.1 39.4V40.6M648.6 39.4V40.6M650.0 39.4V40.6M651.4 39.4V40.6M652.9 39.4V40.6M654.3 39.4V40.6M655.7 39.4V40.6M657.1 39.4V40.6M658.6 39.4V40.6M660.0 39.4V40.6M661.4 39.4V40.6M662.9 39.4V40.6M664.3 39.4V40.6M665.7 39.4V40.6M667.1 39.4V40.6M668.6 39.4V40.6M670.0 39.4V40.6M671.4 39.4V40.6M672.9 39.4V40.6M674.3 39.4V40.6M675.7 39.4V40.6M677.1 39.4V40.6M678.6 39.4V40.6M680.0 39.4V40.6M681.4 39.4V40.6M682.9 39.4V40.6M684.3 39.4V40.6M685.7 39.4V40.6M687.1 39.4V40.6M688.6 39.4V40.6M690.0 39.4V40.6M691.4 39.4V40.6M692.9 39.4V40.6M694.3 39.4V40.6M695.7 39.4V40.6M697.1 39.4V40.6M698.6 39.4V40.6M700.0 39.4V40.6M701.4 39.4V40.6M702.9 39.4V40.6M704.3 39.4V40.6M705.7 39.4V40.6M707.1 39.4V40.6M708.6 39.4V40.6M710.0 39.4V40.6M711.4 39.4V40.6M712.9 39.4V40.6M714.3 39.4V40.6M715.7 39.4V40.6M717.1 39.4V40.6M718.6 39.4V40.6M720.0 39.4V40.6M721.4 39.4V40.6M722.9 39.4V40.6M724.3 39.4V40.6M725.7 39.4V40.6M727.1 39.4V40.6M728.6 39.4V40.6M730.0 39.4V40.6M731.4 39.4V40.6M732.9 39.4V40.6M734.3 39.4V40.6M735.7 39.4V40.6M737.1 39.4V40.6M738.6 39.4V40.6M740.0 39.4V40.6M741.4 39.4V40.6M742.9 39.4V40.6M744.3 39.4V40.6M745.7 39.4V40.6M747.1 39.4V40.6M748.6 39.4V40.6M750.0 39.4V40.6M751.4 39.4V40.6M752.9 39.4V40.6M754.3 39.4V40.6M755.7 39.4V40.6M757.1 39.4V40.6M758.6 39.4V40.6M760.0 39.4V40.6M761.4 39.4V40.6M762.9 39.4V40.6M764.3 39.4V40.6M765.7 39.4V40.6M767.1 39.4V40.6M768.6 39.4V40.6M770.0 39.4V40.6M771.4 39.4V40.6M772.9 39.4V40.6M774.3 39.4V40.6M775.7 39.4V40.6M777.1 39.4V40.6M778.6 39.4V40.6M780.0 39.4V40.6M781.4 39.4V40.6M782.9 39.4V40.6M784.3 39.4V40.6M785.7 39.4V40.6M787.1 39.4V40.6M788.6 39.4V40.6M790.0 39.4V40.6M791.4 39.4V40.6M792.9 39.4V40.6M794.3 39.4V40.6M795.7 39.4V40.6M797.1 39.4V40.6M798.6 39.4V40.6M800.0 39.4V40.6M801.4 39.4V40.6M802.9 39.4V40.6M804.3 39.4V40.6M805.7 39.4V40.6M807.1 39.4V40.6M808.6 39.4V40.6M810.0 39.4V40.6M811.4 39.4V40.6M812.9 39.4V40.6M814.3 39.4V40.6M815.7 39.4V40.6M817.1 39.4V40.6M818.6 39.4V40.6M820.0 39.4V40.6M821.4 39.4V40.6M822.9 39.4V40.6M824.3 39.4V40.6M825.7 39.4V40.6M827.1 39.4V40.6M828.6 39.4V40.6M830.0 39.4V40.6M831.4 39.4V40.6M832.9 39.4V40.6M834.3 39.4V40.6M835.7 39.4V40.6M837.1 39.4V40.6M838.6 39.4V40.6M840.0 39.4V40.6M841.4 39.4V40.6M842.9 39.4V40.6M844.3 39.4V40.6M845.7 39.4V40.6M847.1 39.4V40.6M848.6 39.4V40.6M850.0 39.4V40.6M851.4 39.4V40.6M852.9 39.4V40.6M854.3 39.4V40.6M855.7 39.4V40.6M857.1 39.4V40.6M858.6 39.4V40.6M860.0 39.4V40.6M861.4 39.4V40.6M862.9 39.4V40.6M864.3 39.4V40.6M865.7 39.4V40.6M867.1 39.4V40.6M868.6 39.4V40.6M870.0 39.4V40.6M871.4 39.4V40.6M872.9 39.4V40.6M874.3 39.4V40.6M875.7 39.4V40.6M877.1 39.4V40.6M878.6 39.4V40.6M880.0 39.4V40.6M881.4 39.4V40.6M882.9 39.4V40.6M884.3 39.4V40.6M885.7 39.4V40.6M887.1 39.4V40.6M888.6 39.4V40.6M890.0 39.4V40.6M891.4 39.4V40.6M892.9 39.4V40.6M894.3 39.4V40.6M895.7 39.4V40.6M897.1 39.4V40.6M898.6 39.4V40.6M900.0 39.4V40.6M901.4 39.4V40.6M902.9 39.4V40.6M904.3 39.4V40.6M905.7 39.4V40.6M907.1 39.4V40.6M908.6 39.4V40.6M910.0 39.4V40.6M911.4 39.4V40.6M912.9 39.4V40.6M914.3 39.4V40.6M915.7 39.4V40.6M917.1 39.4V40.6M918.6 39.4V40.6M920.0 39.4V40.6M921.4 39.4V40.6M922.9 39.4V40.6M924.3 39.4V40.6M925.7 39.4V40.6M927.1 39.4V40.6M928.6 39.4V40.6M930.0 39.4V40.6M931.4 39.4V40.6M932.9 39.4V40.6M934.3 39.4V40.6M935.7 39.4V40.6M937.1 39.4V40.6M938.6 39.4V40.6M940.0 39.4V40.6M941.4 39.4V40.6M942.9 39.4V40.6M944.3 39.4V40.6M945.7 39.4V40.6M947.1 39.4V40.6M948.6 39.4V40.6M950.0 39.4V40.6M951.4 39.4V40.6M952.9 39.4V40.6M954.3 39.4V40.6M955.7 39.4V40.6M957.1 39.4V40.6M958.6 39.4V40.6M960.0 39.4V40.6M961.4 39.4V40.6M962.9 39.4V40.6M964.3 39.4V40.6M965.7 39.4V40.6M967.1 39.4V40.6M968.6 39.4V40.6M970.0 39.4V40.6M971.4 39.4V40.6M972.9 39.4V40.6M974.3 39.4V40.6M975.7 39.4V40.6M977.1 39.4V40.6M978.6 39.4V40.6M980.0 39.4V40.6M981.4 39.4V40.6M982.9 39.4V40.6M984.3 39.4V40.6M985.7 39.4V40.6M987.1 39.4V40.6M988.6 39.4V40.6M990.0 39.4V40.6M991.4 39.4V40.6M992.9 39.4V40.6M994.3 39.4V40.6M995.7 39.4V40.6M997.1 39.4V40.6M998.6 39.4V40.6" stroke="#5b8ff0" stroke-width="1" fill="none"/><line x1="0.0" y1="0" x2="0.0" y2="4" stroke="#555"/><line x1="312.5" y1="0" x2="312.5" y2="4" stroke="#555"/><line x1="625.0" y1="0" x2="625.0" y2="4" stroke="#555"/><line x1="937.5" y1="0" x2="937.5" y2="4" stroke="#555"/><line x1="193.8" y1="0" x2="193.8" y2="100" stroke="#ff4d3f" stroke-width="2"/></svg><span class="wtick" style="left:0.00%">0:00</span><span class="wtick" style="left:31.25%">0:05</span><span class="wtick" style="left:62.50%">0:10</span><span class="wtick" style="left:93.75%">0:15</span><div class="seglbl" style="left:4.69%;width:12.91%">今天想跟大家聊聊手沖咖啡</div><div class="seglbl on" style="left:17.75%;width:14.10%">其實在家沖也可以很好喝</div><div class="seglbl" style="left:32.00%;width:14.04%">重點是水溫跟研磨的粗細</div><div class="seglbl" style="left:46.19%;width:13.10%">很多人以為水越燙越好</div></div>
   <div class="cues"><div class="cue"><span class="n">1</span><div class="t">00:00:00,750 → 00:00:02,840</div><div class="x">今天想跟大家聊聊手沖咖啡</div></div><div class="cue on"><span class="n">2</span><div class="t">00:00:02,840 → 00:00:05,120</div><div class="x">其實在家沖也可以很好喝</div></div><div class="cue"><span class="n">3</span><div class="t">00:00:05,120 → 00:00:07,390</div><div class="x">重點是水溫跟研磨的粗細</div></div><div class="cue"><span class="n">4</span><div class="t">00:00:07,390 → 00:00:09,510</div><div class="x">很多人以為水越燙越好</div></div></div>
   <div class="b wide pri" style="margin-top:9px">匯出 SRT</div>
@@ -1115,9 +1260,11 @@
         var z = Math.min(1, avail / ww); w.style.zoom = z < 1 ? z : '';
         // 主畫面、編輯畫面輪流出現，高度先撐到兩者較高的那個
         var ed = w.querySelector('.v-edit');
+        var pi = w.querySelector('.pi'), piWas = pi && pi.classList.contains('open'); if (pi) pi.classList.add('open');
         if (ed) { var was = w.classList.contains('edit-on'); w.classList.remove('edit-on'); var h1 = w.offsetHeight;
           w.classList.add('edit-on'); var h2 = w.offsetHeight; if (!was) w.classList.remove('edit-on');
           w.style.minHeight = Math.max(h1, h2) + 'px'; }
+        if (pi && !piWas) pi.classList.remove('open');
       });
     }
     fitWins(); window.addEventListener('resize', fitWins);
@@ -1176,6 +1323,23 @@
       LANGS.forEach(function (t, i) { var o = document.createElement('div'); o.className = 'opt' + (i === 3 ? ' off' : ''); o.textContent = t; dd.appendChild(o); });
       row.appendChild(dd); ui._dd = dd;
     });
+    // 節目資訊：Panel 是 program_info.txt、Studio 是展開欄位
+    var PI = ['咖啡時間', '小安', '咖啡師阿哲', '在家手沖咖啡'];
+    var pPiBtn = [].filter.call(uis[0].querySelectorAll('.b'), function (e) { return e.textContent === '填寫節目資訊'; })[0];
+    var txt = document.createElement('div'); txt.className = 'txtwin'; txt.style.display = 'none';
+    txt.innerHTML = '<div class="tw-bar"><i class="close"></i><i></i><i></i><b>program_info.txt — 已編輯</b></div><div class="tw-body">' +
+      '<div class="c"># 在冒號後面填寫，讓語音辨識模型先知道這集可能會講到的人名、名詞。</div>' +
+      '<div class="c"># 存檔後就會生效，不需要另外按任何鈕讀回來。</div>' +
+      '<div class="c"># 開頭是 # 的行（像這幾行）不會被送給模型，可以放心當說明用。</div>' +
+      ['節目名稱', '主持人', '來賓', '本集主題'].map(function (k) { return '<div>' + k + '：<span class="v"></span></div>'; }).join('') + '</div>';
+    uis[0].parentNode.appendChild(txt);
+    var txtVals = txt.querySelectorAll('.v'), txtClose = txt.querySelector('.close');
+    var sPi = uis[1].querySelector('.pi'), sPiHead = uis[1].querySelector('.pi-head'), sPiIns = uis[1].querySelectorAll('.pi-in');
+    function openTxt() { var b = pPiBtn.getBoundingClientRect(), w = uis[0].parentNode.getBoundingClientRect();
+      var z = parseFloat(uis[0].parentNode.style.zoom) || 1;
+      txt.style.left = '12px'; txt.style.top = ((b.bottom - w.top) / z + 6) + 'px'; txt.style.display = 'block'; }
+    function typeInto(el, text, ms) { el.textContent = ''; el.classList.add('typing'); var i = 0;
+      var t = setInterval(function () { i++; el.textContent = text.slice(0, i); if (i >= text.length) { clearInterval(t); setTimeout(function () { el.classList.remove('typing'); }, 200); } }, ms); }
     if (reduce) { uis.forEach(function (ui) { ui._sel.textContent = LANGS[0]; ui._start.classList.add('hl'); }); cur.style.display = 'none'; return; }
     function center(el) { var b = el.getBoundingClientRect(), d = st.getBoundingClientRect();
       return { x: b.left - d.left + Math.min(b.width / 2, 60), y: b.top - d.top + b.height / 2 }; }
@@ -1203,7 +1367,9 @@
       }, 100);
       ui._edT = setTimeout(function () { clearInterval(ui._timer); ui.classList.remove('running'); ui.parentNode.classList.add('edit-on'); }, 4700);
     }
-    function reset() { uis.forEach(function (ui) { clearInterval(ui._timer); clearTimeout(ui._edT); ui.classList.remove('running'); ui._dd.classList.remove('open'); ui._sel.textContent = LANGS[2];
+    function reset() { txt.style.display = 'none'; txtVals.forEach(function (v) { v.textContent = ''; });
+      sPi.classList.remove('open'); sPiHead.textContent = '▶ 節目資訊'; sPiIns.forEach(function (v) { v.textContent = ''; });
+      uis.forEach(function (ui) { clearInterval(ui._timer); clearTimeout(ui._edT); ui.classList.remove('running'); ui._dd.classList.remove('open'); ui._sel.textContent = LANGS[2];
       var w = ui.parentNode; w.classList.remove('edit-on');
       }); }
     var q = [];
@@ -1213,7 +1379,18 @@
       add(500, function () { press(ui._sel); openDd(ui); });
       add(650, function () { aim(ui._dd.children[0]); hover(ui, 0); });
       add(550, function () { press(ui._dd.children[0]); ui._sel.textContent = LANGS[0]; ui._dd.classList.remove('open'); });
-      add(600, function () { aim(ui._start); });
+      if (ui === uis[0]) {          // Panel：點「填寫節目資訊」→ 跳出 program_info.txt、逐欄打字 → 關掉
+        add(700, function () { aim(pPiBtn); });
+        add(550, function () { press(pPiBtn); openTxt(); });
+        PI.forEach(function (v, i) { add(i ? 650 : 600, function () { typeInto(txtVals[i], v, 70); }); });
+        add(900, function () { aim(txtClose); });
+        add(550, function () { press(txtClose); txt.style.display = 'none'; });
+      } else {                      // Studio：點「節目資訊」展開欄位、逐欄打字
+        add(700, function () { aim(sPiHead); });
+        add(550, function () { press(sPiHead); sPi.classList.add('open'); sPiHead.textContent = '▼ 節目資訊'; });
+        PI.forEach(function (v, i) { add(i ? 650 : 600, function () { aim(sPiIns[i]); typeInto(sPiIns[i], v, 70); }); });
+      }
+      add(800, function () { aim(ui._start); });
       add(550, function () { press(ui._start); run(ui); });
     });
     add(5200, function () { rest(); });
@@ -1271,6 +1448,25 @@
     // Studio：播放頭與亮句
     var line = sEd.querySelector('line[stroke="#ff4d3f"]'), clock = byText(sEd, '.muted', '0:0'), sCues = sEd.querySelectorAll('.cue');
     var sPlay = byText(sEd, '.b', '▶'), sExport = byText(sEd, '.b', '匯出 SRT'), wave = sEd.querySelector('.wave'), timer = null;
+    var sFold = byText(sEd, '.b', '▾ 收起音波');
+    // 填滿空隙：範例字幕之間留零點幾秒空隙，勾選後結束時間延到下一句開頭（規則同編輯器，上限 2 秒）
+    var sFill = sEd.querySelector('.ck2'), sAPlus = byText(sEd, '.b', 'A+'), sAMinus = byText(sEd, '.b', 'A−'), sFsz = sEd.querySelector('.fsz');
+    var SEG = [[0.75, 2.60], [2.84, 4.90], [5.12, 7.10], [7.39, 9.51]];
+    var rects = sEd.querySelectorAll('.wave svg rect'), lbls = sEd.querySelectorAll('.wave .seglbl');
+    function stampFull(sec) { var ms = Math.round(sec * 1000), s2 = Math.floor(ms / 1000);
+      return '00:00:' + ('0' + s2).slice(-2) + ',' + ('00' + (ms % 1000)).slice(-3); }
+    function sFillSet(on) {
+      sFill.classList.toggle('on', on);
+      SEG.forEach(function (c, i) {
+        var n = SEG[i + 1], end = (on && n && n[0] - c[1] <= 2) ? n[0] : c[1];
+        sCues[i].querySelector('.t').textContent = stampFull(c[0]) + ' → ' + stampFull(end);
+        var w = (end - c[0]) / 16 * 1000 - 1.5;
+        if (rects[i * 2]) { rects[i * 2].setAttribute('width', w.toFixed(1)); rects[i * 2 + 1].setAttribute('width', w.toFixed(1)); }
+        if (lbls[i]) lbls[i].style.width = (w / 10) + '%';
+      });
+    }
+    function sFont(px, label) { [].forEach.call(sEd.querySelectorAll('.cues .x'), function (x) { x.style.fontSize = px + 'px'; }); sFsz.textContent = label; }
+    function fold(on) { wave.classList.toggle('folded', on); sFold.textContent = on ? '▸ 展開音波' : '▾ 收起音波'; }
     var CT = [[0.75, 2.84], [2.84, 5.12], [5.12, 7.39], [7.39, 9.51]];
     function at(t) { var x = (t / 16 * 1000).toFixed(1); line.setAttribute('x1', x); line.setAttribute('x2', x);
       clock.textContent = '0:' + ('0' + Math.floor(t)).slice(-2) + '.' + Math.floor(t * 10 % 10) + ' / 0:14';
@@ -1278,7 +1474,8 @@
     function play(from, secs) { var t0 = Date.now(); sPlay.textContent = '❚❚'; clearInterval(timer);
       timer = setInterval(function () { var t = from + (Date.now() - t0) / 1000 * 1.6; if (t > from + secs) { clearInterval(timer); sPlay.textContent = '▶'; return; } at(t); }, 60); }
 
-    function reset() { clearInterval(timer); sPlay.textContent = '▶'; at(3.1);
+    function reset() { clearInterval(timer); sPlay.textContent = '▶'; at(3.1); fold(false); sFillSet(false); sFont(13.5, '14px');
+      var pane = pEd.closest('.pane'); pane.querySelector('.pr-c1').classList.remove('on'); pane.querySelector('.pr-cap').classList.remove('on');
       if (newCue) { newCue.remove(); newCue = null; } c1x.textContent = ORIG[0]; c1t.textContent = ORIG[1]; c1.classList.remove('editing'); renumber(); setFont(13.5); }
 
     var q = [];
@@ -1297,12 +1494,27 @@
     add(550, function () { press(); setFont(15.5); });
     add(450, function () { press(); setFont(13.5); });
     add(800, function () { aim(pSend); });
-    add(550, function () { press(); toast(pEd, '✓ 已送進 Premiere 時間軸'); });
+    add(550, function () { press(); toast(pEd, '✓ 已送進 Premiere 時間軸');
+      var pane = pEd.closest('.pane'); pane.querySelector('.pr-c1').classList.add('on');
+      var cap = pane.querySelector('.pr-cap'); cap.textContent = '今天想跟大家聊聊手沖咖啡'; cap.classList.add('on'); });
     add(1000, function () { aim(sPlay); });
     add(550, function () { press(); play(3.1, 3.6); });
     add(2600, function () { var b = wave.getBoundingClientRect(), o = rel(b); moveTo(o.x + b.width * (8.2 / 16), o.y + b.height * 0.42); });
     add(550, function () { press(); clearInterval(timer); sPlay.textContent = '▶'; at(8.2); });
-    add(1000, function () { aim(sExport); });
+    // 音波收起來、再展開（清單會變長，適合專心改字）
+    add(1000, function () { aim(sFill); });
+    add(550, function () { press(); sFillSet(true); });
+    add(1500, function () { aim(sAPlus); });
+    add(550, function () { press(); sFont(15.5, '16px'); });
+    add(450, function () { press(); sFont(17.5, '18px'); });
+    add(900, function () { aim(sAMinus); });
+    add(550, function () { press(); sFont(15.5, '16px'); });
+    add(450, function () { press(); sFont(13.5, '14px'); });
+    add(900, function () { aim(sFold); });
+    add(550, function () { press(); fold(true); });
+    add(1300, function () { aim(sFold); });
+    add(550, function () { press(); fold(false); });
+    add(1100, function () { aim(sExport); });
     add(550, function () { press(); toast(sEd, '✓ 已匯出 手沖咖啡.srt'); });
     add(1200, function () { rest(); });
     add(1500, function () { reset(); });
