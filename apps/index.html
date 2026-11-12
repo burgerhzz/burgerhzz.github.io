@@ -199,9 +199,11 @@
     padding: 5px 10px; cursor: pointer; transition: background .12s, color .12s;
   }
   .whatsnew:hover { background: var(--grn); color: var(--bg); }
-  .card .prod { padding-right: 92px; }   /* 右上角按鈕的位置，標題不要壓到 */
-  /* 手機寬：按鈕改放在標題上方靠右，產品名稱才不會被擠成兩行 */
-  @media (max-width: 520px) {
+  .card .prod { padding-right: 170px; }   /* 右上角按鈕的位置，標題不要壓到 */
+  /* 卡片太窄（手機、或兩欄並排但視窗不寬）：按鈕改放在標題上方靠右，產品名稱才不會被擠成兩行。
+     看的是卡片自己的寬度，不是視窗寬度 */
+  .menu > .card { container-type: inline-size; }
+  @container (max-width: 500px) {
     .whatsnew { position: static; align-self: flex-end; margin-bottom: -6px; }
     .card .prod { padding-right: 0; }
   }
@@ -734,7 +736,7 @@
     <div class="head"><h2>DOWNLOAD</h2><span class="n">[macOS · Apple Silicon]</span><hr></div>
     <div class="menu">
       <article class="card">
-        <button class="whatsnew" type="button" data-notes="panel">更新了啥</button>
+        <button class="whatsnew" type="button" data-notes="panel">按我！看「版本更新」</button>
         <div class="prod">
           <div class="ico"><img src="burgersub-studio.png" alt=""><span class="pr big" aria-hidden="true">Pr</span></div>
           <div><h3>burgerSub Panel</h3><div class="kind">Premiere Pro 外掛</div></div>
@@ -752,7 +754,7 @@
         <div class="dl"><a class="buy" href="https://storage.googleapis.com/burgersub-test-downloads/burgerSub-2.1.0-arm64.dmg">▸ 下載 Panel（112 MB）</a><button class="buy ghost" type="button" data-install="panel">安裝教學</button></div>
       </article>
       <article class="card">
-        <button class="whatsnew" type="button" data-notes="studio">更新了啥</button>
+        <button class="whatsnew" type="button" data-notes="studio">按我！看「版本更新」</button>
         <div class="prod">
           <div class="ico"><img src="burgersub-studio.png" alt=""></div>
           <div><h3>burgerSub Studio</h3><div class="kind">Mac 獨立 App · 不需要 Premiere</div></div>
@@ -968,10 +970,10 @@
     </p>
   </footer>
 </div>
-<!-- 更新了啥：下載卡片右上角的按鈕打開，Panel／Studio 各一份（新版放最上面、加 open 和「最新」） -->
+<!-- 版本更新：下載卡片右上角「按我！看「版本更新」」按鈕打開，Panel／Studio 各一份（新版放最上面、加 open 和「最新」） -->
 <dialog class="dlg notes-dlg" id="notes-dlg" aria-labelledby="notes-title">
   <div class="dlg-head">
-    <h2 id="notes-title">更新了啥</h2>
+    <h2 id="notes-title">版本更新</h2>
     <button class="chip" type="button" id="notes-close" aria-label="關閉">✕ 關閉</button>
   </div>
   <div class="dlg-body rel">
@@ -1205,12 +1207,12 @@
     if (location.hash === '#install-studio' || location.hash === '#install-panel') openInstall(location.hash.slice(9));
   })();
 
-  // 更新了啥：下載卡片右上角的按鈕
+  // 版本更新：下載卡片右上角的按鈕
   (function () {
     var dlg = document.getElementById('notes-dlg');
     function openNotes(prod) {
       document.querySelectorAll('[data-notes-body]').forEach(function (el) { el.hidden = el.dataset.notesBody !== prod; });
-      document.getElementById('notes-title').textContent = '更新了啥 · ' + (prod === 'panel' ? 'Panel' : 'Studio');
+      document.getElementById('notes-title').textContent = '版本更新 · ' + (prod === 'panel' ? 'Panel' : 'Studio');
       if (!dlg.open) dlg.showModal();
       document.body.classList.add('dlg-open');
       dlg.querySelector('.dlg-body').scrollTop = 0;
