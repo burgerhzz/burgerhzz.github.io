@@ -367,7 +367,9 @@
   .ui .row { display:flex; align-items:center; gap:6px; margin-bottom:7px; }
   .ui .lbl { color:#aaa; width:56px; flex:none; font-size:11px; }
   .ui .inp { flex:1; background:#1b1b1b; border:1px solid #3d3d3d; border-radius:5px; padding:5px 8px; color:#ddd; min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
-  .ui .inp.sel::after { content:" ⌄"; color:#888; float:right; }
+  /* 選單的 ⌄ 固定在右邊：用 float 的話文字一長，⌄ 會被擠到下一行、框整個變高 */
+  .ui .inp.sel { position:relative; padding-right:20px; }
+  .ui .inp.sel::after { content:"⌄"; color:#888; position:absolute; right:7px; top:50%; transform:translateY(-60%); }
   .ui .muted { color:#8a8a8a; } .ui .green { color:#6fd18a; }
   .ui .tabs2 { display:flex; margin:8px 0; border-radius:5px; overflow:hidden; border:1px solid #3d3d3d; }
   .ui .tabs2 span { flex:1; text-align:center; padding:6px; color:#bbb; }
