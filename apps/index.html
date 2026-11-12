@@ -835,10 +835,10 @@
     <div class="demos">
       <div class="demo-wrap">
         <div class="demo-txt">
-          <h3>讀回校正 SRT：AI 改了哪些字，一眼就看到</h3>
-          <p>先按 <b>匯出 SRT</b>，把字幕檔整份丟給 AI 改錯字。改好之後回來按 <b>讀回校正 SRT</b>，選 AI 給你的那個檔案。</p>
-          <p>字幕清單上會直接標出改了哪些字：舊的字劃掉、新的字標橘色，用 <b>‹ ›</b> 一處一處看。
-            沒問題就按 <b>全部套用</b>，時間點完全不會動；哪一句 AI 改錯了，按那句右邊的 <b>✕</b> 跳過就好。（Panel 限定）</p>
+          <h3>讀回校正 SRT：AI 改了哪裡，一眼就看到 (≧▽≦)</h3>
+          <p>字幕有錯字超煩der？先按 <b>匯出 SRT</b>，整份丟給 AI 幫你改～改好再回來按 <b>讀回校正 SRT</b>，選 AI 給你的檔案就好啦！</p>
+          <p>哪些字被換掉，會直接標在字幕上：舊的劃掉、新的標橘色，按 <b>‹ ›</b> 一處一處看。
+            沒問題就按 <b>全部套用</b>，一鍵全部換好，時間點完全不會跑掉喔！AI 改錯的那句不想要？按右邊的 <b>✕</b> 跳過它就好 ヽ(・∀・)ノ（這是 Panel 限定的功能喔）</p>
         </div>
         <div class="demo" id="demo-proof" aria-label="讀回校正 SRT 的動態示範">
           <div class="ui panel pv-ui"><div class="in">
@@ -1411,23 +1411,23 @@
         pdemo.appendChild(r); setTimeout(function () { r.remove(); }, 600); }
       function preset() { setRows('typo'); pbar.classList.add('off'); pick.classList.remove('open'); pfile.classList.remove('sel');
         pbtn.textContent = '⇩ 讀回校正 SRT'; pbtn.classList.remove('flash');
-        psay.innerHTML = '<span class="x">辨識結果有錯字：</span>「粗系」「水越湯」。先匯出 SRT 給 AI 改。'; }
+        psay.innerHTML = '<span class="x">哎呀有錯字：</span>「粗系」「水越湯」，先匯出 SRT 丟給 AI 改～'; }
       if (reduce) { setRows('preview', 2); pbar.classList.remove('off'); pcur.style.display = 'none';
-        psay.innerHTML = '<b>改了哪些字直接標出來：</b>舊的劃掉、新的標橘色。'; }
+        psay.innerHTML = '<b>改了哪裡直接標出來：</b>舊的劃掉、新的標橘色，一看就懂～'; }
       else {
         var pq = [
           [900, function () { paim(pbtn); }],
-          [550, function () { ppress(pbtn); pick.classList.add('open'); psay.innerHTML = 'AI 改好了，選它給你的檔案。'; }],
+          [550, function () { ppress(pbtn); pick.classList.add('open'); psay.innerHTML = 'AI 改好啦，選它給你的檔案！'; }],
           [750, function () { paim(pfile); }],
           [450, function () { ppress(pfile); pfile.classList.add('sel'); }],
           [650, function () { paim(popen); }],
           [450, function () { ppress(popen); pick.classList.remove('open'); pbar.classList.remove('off'); ppos.textContent = '1/2'; setRows('preview', 2);
-            psay.innerHTML = '<b>改了哪些字直接標出來：</b>舊的劃掉、新的標橘色。'; }],
+            psay.innerHTML = '<b>改了哪裡直接標出來：</b>舊的劃掉、新的標橘色，一看就懂～'; }],
           [1500, function () { paim(pnext); }],
           [450, function () { ppress(pnext); ppos.textContent = '2/2'; setRows('preview', 3); }],
           [1300, function () { paim(papply); }],
           [500, function () { ppress(papply); pbar.classList.add('off'); setRows('fixed'); pbtn.textContent = '✓ 已更新 2 句'; pbtn.classList.add('flash');
-            psay.innerHTML = '<b>按一下全部換好：</b>時間點完全不會動，也可以復原。'; }],
+            psay.innerHTML = '<b>一鍵全部換好！</b>時間點完全不會跑掉，不滿意還能復原 (≧▽≦)'; }],
           [1400, function () { prest(); }],
           [1800, function () { preset(); }]
         ];
