@@ -191,7 +191,20 @@
   }
 
   /* ── 更新紀錄 ── */
-  .rel h3 { margin: 0 0 4px; font-size: 15px; letter-spacing: .1em; }
+  .notes-dlg { width: min(620px, 94vw); }
+  .whatsnew {
+    position: absolute; top: 16px; right: 16px;
+    font-family: var(--font); font-size: 10px; letter-spacing: .14em; font-weight: 700;
+    color: var(--grn); background: transparent; border: 1px solid var(--grndk);
+    padding: 5px 10px; cursor: pointer; transition: background .12s, color .12s;
+  }
+  .whatsnew:hover { background: var(--grn); color: var(--bg); }
+  .card .prod { padding-right: 92px; }   /* 右上角按鈕的位置，標題不要壓到 */
+  /* 手機寬：按鈕改放在標題上方靠右，產品名稱才不會被擠成兩行 */
+  @media (max-width: 520px) {
+    .whatsnew { position: static; align-self: flex-end; margin-bottom: -6px; }
+    .card .prod { padding-right: 0; }
+  }
   .rel summary .ver { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
   .rel summary .date { color: var(--dimmer); font-size: 10px; letter-spacing: .08em; }
   .rel summary .new { font-size: 9px; letter-spacing: .16em; font-weight: 700; background: var(--grn); color: var(--bg); padding: 1px 6px; }
@@ -721,6 +734,7 @@
     <div class="head"><h2>DOWNLOAD</h2><span class="n">[macOS · Apple Silicon]</span><hr></div>
     <div class="menu">
       <article class="card">
+        <button class="whatsnew" type="button" data-notes="panel">更新了啥</button>
         <div class="prod">
           <div class="ico"><img src="burgersub-studio.png" alt=""><span class="pr big" aria-hidden="true">Pr</span></div>
           <div><h3>burgerSub Panel</h3><div class="kind">Premiere Pro 外掛</div></div>
@@ -738,6 +752,7 @@
         <div class="dl"><a class="buy" href="https://storage.googleapis.com/burgersub-test-downloads/burgerSub-2.1.0-arm64.dmg">▸ 下載 Panel（112 MB）</a><button class="buy ghost" type="button" data-install="panel">安裝教學</button></div>
       </article>
       <article class="card">
+        <button class="whatsnew" type="button" data-notes="studio">更新了啥</button>
         <div class="prod">
           <div class="ico"><img src="burgersub-studio.png" alt=""></div>
           <div><h3>burgerSub Studio</h3><div class="kind">Mac 獨立 App · 不需要 Premiere</div></div>
@@ -932,12 +947,35 @@
     </div>
   </section>
 
-  <section id="changelog">
-    <div class="head"><h2>更新紀錄</h2><span class="n">[Panel ＋ Studio]</span><hr></div>
-    <div class="menu">
-      <article class="card rel">
-        <h3>burgerSub Panel</h3>
-        <div class="faq">
+
+  <section>
+    <div class="head"><h2>移除</h2><hr></div>
+    <article class="card">
+      <ul class="feat">
+        <li><span><b>Studio</b>：把「應用程式」裡的 burgerSub Studio 拖到垃圾桶。</span></li>
+        <li><span><b>Panel</b>：刪除 <code>~/Library/Application Support/Adobe/CEP/extensions/com.helenazeng.burgersub</code>，以及 <code>~/Library/Application Support/burgerSub/</code> 裡的 <code>runtime</code>、<code>engine</code> 兩個資料夾。</span></li>
+        <li><span><b>兩個都不用了</b>：再刪掉整個 <code>~/Library/Application Support/burgerSub/</code>（語音模型、字典、登入資料都在這裡）。只移除其中一個時請保留它。</span></li>
+      </ul>
+      <p class="desc">在 Finder 按 ⌘⇧G，貼上路徑就能找到這些資料夾。</p>
+    </article>
+  </section>
+
+  <footer>
+    <p>© 2026 BURGERHZZ ▪ burgerSub</p>
+    <p>
+      本頁與 APPLE、ADOBE、GOOGLE、聯發科 均無隸屬關係。安裝教學中的 MACOS 畫面為示意圖。PREMIERE PRO 為 ADOBE INC. 之商標。
+      語音辨識模型 Breeze-ASR-25 為聯發科研究院發布（Apache 2.0）。
+    </p>
+  </footer>
+</div>
+<!-- 更新了啥：下載卡片右上角的按鈕打開，Panel／Studio 各一份（新版放最上面、加 open 和「最新」） -->
+<dialog class="dlg notes-dlg" id="notes-dlg" aria-labelledby="notes-title">
+  <div class="dlg-head">
+    <h2 id="notes-title">更新了啥</h2>
+    <button class="chip" type="button" id="notes-close" aria-label="關閉">✕ 關閉</button>
+  </div>
+  <div class="dlg-body rel">
+    <div class="faq" data-notes-body="panel">
         <details open><summary><span class="ver">2.1.0</span><span class="date">2026.11.12</span><span class="new">最新</span></summary>
           <ul class="feat">
             <li><span>新功能<b>「讀回校正 SRT」</b>來了！(≧▽≦) 把字幕檔丟給 AI 改錯字，改好再讀回來，哪些字被換掉一眼就看得到（舊的劃掉、新的標橘色），沒問題按一下就全部換好，時間點完全不會跑掉喔</span></li>
@@ -975,11 +1013,8 @@
             <li><span>超屌der字幕軟體第一版誕生！在 Premiere 裡直接把時間軸上的聲音變成字幕 (≧▽≦)</span></li>
           </ul>
         </details>
-        </div>
-      </article>
-      <article class="card rel">
-        <h3>burgerSub Studio</h3>
-        <div class="faq">
+    </div>
+    <div class="faq" data-notes-body="studio" hidden>
         <details open><summary><span class="ver">1.0.0</span><span class="date">2026.11.11</span><span class="new">最新</span></summary>
           <ul class="feat">
             <li><span>正式版來囉！之後有新版會自己提醒你，按「立即更新」等它下載好，再按「重新啟動」就是新版，完全不用重裝 ヽ(・∀・)ノ</span></li>
@@ -991,31 +1026,10 @@
             <li><span>第一版！音檔或影片拖進來就能做字幕，邊聽邊改，改完匯出 SRT 給任何剪輯軟體用</span></li>
           </ul>
         </details>
-        </div>
-      </article>
     </div>
-  </section>
+  </div>
+</dialog>
 
-  <section>
-    <div class="head"><h2>移除</h2><hr></div>
-    <article class="card">
-      <ul class="feat">
-        <li><span><b>Studio</b>：把「應用程式」裡的 burgerSub Studio 拖到垃圾桶。</span></li>
-        <li><span><b>Panel</b>：刪除 <code>~/Library/Application Support/Adobe/CEP/extensions/com.helenazeng.burgersub</code>，以及 <code>~/Library/Application Support/burgerSub/</code> 裡的 <code>runtime</code>、<code>engine</code> 兩個資料夾。</span></li>
-        <li><span><b>兩個都不用了</b>：再刪掉整個 <code>~/Library/Application Support/burgerSub/</code>（語音模型、字典、登入資料都在這裡）。只移除其中一個時請保留它。</span></li>
-      </ul>
-      <p class="desc">在 Finder 按 ⌘⇧G，貼上路徑就能找到這些資料夾。</p>
-    </article>
-  </section>
-
-  <footer>
-    <p>© 2026 BURGERHZZ ▪ burgerSub</p>
-    <p>
-      本頁與 APPLE、ADOBE、GOOGLE、聯發科 均無隸屬關係。安裝教學中的 MACOS 畫面為示意圖。PREMIERE PRO 為 ADOBE INC. 之商標。
-      語音辨識模型 Breeze-ASR-25 為聯發科研究院發布（Apache 2.0）。
-    </p>
-  </footer>
-</div>
 <dialog class="dlg" id="install-dlg" aria-labelledby="install-title">
   <div class="dlg-head">
     <h2 id="install-title">安裝教學</h2>
@@ -1189,6 +1203,27 @@
     });
     show('studio');
     if (location.hash === '#install-studio' || location.hash === '#install-panel') openInstall(location.hash.slice(9));
+  })();
+
+  // 更新了啥：下載卡片右上角的按鈕
+  (function () {
+    var dlg = document.getElementById('notes-dlg');
+    function openNotes(prod) {
+      document.querySelectorAll('[data-notes-body]').forEach(function (el) { el.hidden = el.dataset.notesBody !== prod; });
+      document.getElementById('notes-title').textContent = '更新了啥 · ' + (prod === 'panel' ? 'Panel' : 'Studio');
+      if (!dlg.open) dlg.showModal();
+      document.body.classList.add('dlg-open');
+      dlg.querySelector('.dlg-body').scrollTop = 0;
+    }
+    dlg.addEventListener('close', function () { document.body.classList.remove('dlg-open'); });
+    document.getElementById('notes-close').addEventListener('click', function () { dlg.close(); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });   // 點背景關閉
+    document.querySelectorAll('[data-notes]').forEach(function (b) {
+      b.addEventListener('click', function () { openNotes(b.dataset.notes); });
+    });
+    // 舊連結 #changelog 也開得到；#notes-panel／#notes-studio 直接開指定的
+    if (location.hash === '#changelog' || location.hash === '#notes-panel') openNotes('panel');
+    if (location.hash === '#notes-studio') openNotes('studio');
   })();
 
   // ── 進階功能的動態示範（規則照 burgerSub 編輯器：填滿空隙上限 2 秒；加速是時間 ÷ 倍率）──
