@@ -385,6 +385,58 @@
   .ui .cues { border-top:1px solid #333; max-height:none; }
   .ui .cue { padding:6px 4px 7px 22px; border-bottom:1px solid #2e2e2e; position:relative; }
   .ui .cue .n { position:absolute; left:4px; top:7px; color:#666; font-size:10px; }
+  /* 進階功能：讀回校正 SRT 示範 */
+  #demo-proof { position:relative; }
+  .pv-ui { max-width:none; width:100%; }
+  .pv-ui .in { padding:10px 12px; }
+  .pvbar { display:flex; flex-wrap:wrap; align-items:center; gap:6px; padding:6px 8px; margin-bottom:8px; background:#232a35; border:1px solid #3478f6; border-radius:5px; font-size:11.5px; }
+  .pvbar b { color:#fff; }
+  .pvnav { display:flex; align-items:center; gap:4px; } .pvnav i { font-style:normal; color:#9fc2f5; font-size:10.5px; min-width:24px; text-align:center; }
+  .pvnav .b { padding:1px 7px; }
+  .pvbar #pv-apply { margin-left:auto; }
+  .pvbar.off { opacity:0; pointer-events:none; }
+  @container (max-width: 360px) { .pvbar { flex-wrap:nowrap; gap:4px; padding:5px 6px; font-size:10.5px; } .pvbar .b { padding:2px 6px; font-size:10.5px; } }
+  #demo-proof { container-type:inline-size; }
+  .pv-ui .cue.chg { box-shadow:inset 3px 0 0 #3478f6; background:#232a35; }
+  .pv-ui .cue.cur { background:#283447; }
+  .pv-ui .cue .xx { position:absolute; right:6px; top:8px; color:#999; font-size:11px; }
+  .pv-ui .cue.chg::after { content:none; }   /* 有改的句子右邊是 ✕，▶ 拿掉免得疊在一起 */
+  .d-del { color:#8a8a8a; text-decoration:line-through; text-decoration-color:#d05a5a; }
+  .d-ins { background:#e0703a; color:#fff; border-radius:2px; padding:0 1px; text-decoration:none; }
+  .pv-ui .b.flash { background:#2f6f45; border-color:#3ea76a; color:#fff; }
+  .pvpick { position:absolute; left:50%; top:40px; width:min(300px, 86%); transform:translateX(-50%); background:#2a2a2a; border:1px solid #444; border-radius:8px; box-shadow:0 18px 40px rgba(0,0,0,.6); font-family:-apple-system,"PingFang TC",sans-serif; font-size:11.5px; color:#ddd; display:none; z-index:4; }
+  .pvpick.open { display:block; }
+  .pk-bar { display:flex; align-items:center; gap:5px; padding:7px 9px; border-bottom:1px solid #1c1c1c; }
+  .pk-bar i { width:9px; height:9px; border-radius:50%; background:#5a5a5a; } .pk-bar b { flex:1; text-align:center; font-weight:600; font-size:11px; color:#ccc; }
+  .pk-list div { padding:6px 12px; } .pk-list div.sel { background:#2f6fed; color:#fff; }
+  .pk-act { display:flex; justify-content:flex-end; gap:6px; padding:8px 10px; border-top:1px solid #1c1c1c; }
+  .pvpick .b { display:inline-flex; background:#3a3a3a; border:1px solid #4a4a4a; border-radius:5px; padding:3px 10px; }
+  .pvpick .b.pri { background:#3478f6; border-color:#3478f6; color:#fff; }
+  /* Panel 2.1.0 起的新版面（示意畫面） */
+  .ui .seqbar { display:flex; align-items:center; gap:6px; padding:6px 8px; border:1px solid #3478f6; background:#232a35; border-radius:5px; }
+  .ui .seqi { width:16px; height:16px; flex:none; }
+  .ui .seqtag { font-size:9.5px; padding:0 5px; border-radius:3px; background:#33404f; color:#9fc2f5; }
+  .ui .seqn { flex:1; color:#fff; font-weight:600; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ui .rcard { background:#242424; border:1px solid #333; border-radius:6px; padding:7px 8px; margin-bottom:8px; }
+  .ui .rhead { display:flex; align-items:center; margin-bottom:6px; font-size:11px; }
+  .ui .rhead b { color:#ddd; font-weight:600; } .ui .rhead .io { color:#9fc2f5; margin-right:5px; letter-spacing:-1px; }
+  .ui .rhead .ck { margin-left:auto; color:#bbb; font-size:10.5px; }
+  .ui .rline { display:flex; gap:6px; }
+  .ui .rbox { flex:1; min-width:0; background:#1b1b1b; border:1px solid #3a3a3a; border-radius:4px; padding:5px 7px; color:#ddd; font-family:ui-monospace,Menlo,monospace; font-size:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ui .rline .b { font-size:10.5px; padding:5px 7px; }
+  .ui .sec2 { display:flex; align-items:center; margin:4px 0 5px; font-size:11px; } .ui .sec2 b { color:#ddd; font-weight:600; } .ui .sec2 .muted { margin-left:auto; font-size:10.5px; }
+  .ui .tracks div { display:flex; align-items:center; }
+  .ui .tracks .tk { width:11px; height:11px; border:1px solid #555; border-radius:3px; margin-right:8px; flex:none; }
+  .ui .tracks div.on .tk { background:#3478f6; border-color:#3478f6; box-shadow:inset 0 0 0 2px #3478f6; position:relative; }
+  .ui .tracks div.on .tk::after { content:"✓"; position:absolute; left:1px; top:-3px; font-size:10px; color:#fff; }
+  .ui .foot { border-top:1px solid #333; padding-top:6px; margin-top:4px; }
+  .ui .lbl.s { width:auto; }
+  .ui .inp.n2 { flex:none; width:40px; }
+  .ui .row2 { display:flex; gap:6px; margin-top:6px; } .ui .row2 .b { flex:1; min-width:0; padding:6px 4px; }
+  .ui .row3 { display:flex; gap:5px; margin-top:9px; } .ui .row3 .b { flex:1 1 0; min-width:0; padding:7px 3px; font-size:10.5px; }
+  .ui .row3 .act-pr { flex-grow:1.35; }
+  .ui .act-pr::before { content:"Pr"; font-size:8.5px; font-weight:700; border:1.3px solid currentColor; border-radius:2px; padding:0 2px; margin-right:5px; line-height:11px; }
+  .ui .studio2 { flex-direction:column; gap:1px; } .ui .studio2 small { font-size:9.5px; color:#888; }
   .ui .cue .t { color:#6aa8ff; font-family:ui-monospace, Menlo, monospace; font-size:10px; }
   .ui .cue .x { font-size:13.5px; color:#f2f2f2; margin-top:2px; }
   .ui .cue.on { background:#1e3324; box-shadow:inset 3px 0 0 #3ea76a; }
@@ -790,7 +842,7 @@
         <div class="g2-head"><span class="no">STEP 01</span><h3>選語言 → 開始辨識 → 字幕出來</h3></div>
         <div class="g2-cols g2-stage" data-script="lang">
           <div class="g2-col">
-            <p class="g2-p"><span class="pt"><span class="pr xs" aria-hidden="true">Pr</span>PANEL</span>在 Premiere 打開序列，按 <b>重新整理</b>，選講話聲音所在的 <b>音訊軌道</b>（標了 In-Out 可以勾 <b>只處理 In-Out 範圍</b>），在 <b>語言</b> 選字幕要的語言。按 <b>填寫節目資訊</b> 會打開 program_info.txt，在冒號後面填節目名稱、主持人、來賓、本集主題，存檔就生效。最後按 <b>開始辨識</b>。跑完會直接打開字幕編輯畫面。已經有講稿就切到 <b>逐字稿匹配</b>，貼上整段稿子。</p>
+            <p class="g2-p"><span class="pt"><span class="pr xs" aria-hidden="true">Pr</span>PANEL</span>在 Premiere 打開序列，選講話聲音所在的 <b>音訊軌道</b>。在時間軸標了 In／Out 的話，按 <b>更新 In-Out 範圍</b> 讀進來，就只處理那一段（換了序列也按這顆）。在 <b>語言</b> 選字幕要的語言。按 <b>填寫節目資訊</b> 會打開 program_info.txt，在冒號後面填節目名稱、主持人、來賓、本集主題，存檔就生效。最後按 <b>開始辨識</b>。跑完會直接打開字幕編輯畫面。已經有講稿就切到 <b>逐字稿匹配</b>，貼上整段逐字稿。</p>
             <div class="pane pane-p"><div class="prbg pp" aria-hidden="true">
               <div class="pp-prog">
                 <div class="pp-tab">Program: 我的影片_v1 <span>≡</span></div>
@@ -809,25 +861,25 @@
               </div>
               <div class="pp-tabs"><span>Effects</span><span>Libraries</span><span class="on">burgerSub</span></div>
             </div><span class="pane-tag"><span class="pr xs" aria-hidden="true">Pr</span>在 Premiere Pro 裡</span><div class="g2-win"><div data-show="2" class="ui panel"><div class="chrome"><span class="pr sm" aria-hidden="true">Pr</span><b>burgerSub Panel ☰</b></div><div class="in"><div class="ident"><strong>burgerSub</strong><span class="badge">Panel</span><span class="v">v2.1.0</span><span class="gear">⚙</span></div>
-  <div class="row" style="background:#2a2a2a;border-radius:5px;padding:7px 8px"><span style="flex:1;color:#fff">我的影片_v1</span><span class="muted">0:00</span><span class="b">↻ 重新整理</span></div>
+  <div class="seqbar"><svg class="seqi" viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="4" width="11" height="3" rx="1.2" fill="#5b9dff"/><rect x="6" y="9" width="12" height="3" rx="1.2" fill="#5fd0a5"/><rect x="2" y="14" width="8" height="3" rx="1.2" fill="#3fb8c9"/><line x1="9.5" y1="1.5" x2="9.5" y2="18.5" stroke="#ddd" stroke-width="1.2"/></svg><span class="seqtag">序列</span><span class="seqn">我的影片_v1</span><span class="muted">3:20</span></div>
   <div class="tabs2"><span class="on">語音辨識</span><span>逐字稿匹配</span></div>
-  <div class="ck">只處理 In-Out 範圍</div><div class="green" style="margin:2px 0 6px 18px;font-family:ui-monospace,Menlo,monospace;font-size:10.5px">00:00:00,000 → 00:00:42,500（0:42）</div>
-  <div class="sec">音訊軌道</div>
-  <div class="tracks hl"><div class="on"><b>A1</b>12 個片段・1 支素材</div><div><b>A2</b>3 個片段・2 支素材</div></div>
-  <div class="sec">辨識設定</div>
-  <div class="row"><span class="lbl">語言</span><span class="inp sel lang-sel">繁體中文（ 台灣狗以 ）</span></div>
-  <div class="row"><span class="lbl">每行字數</span><span class="inp">20</span></div>
-  <div class="row"><span class="lbl">字幕存放</span><span class="inp">…/我的專案/burgerSub/</span><span class="b">選擇...</span></div>
-  <div class="b wide">填寫節目資訊</div>
-  <div class="b wide pri" style="margin-top:9px">開始辨識（0:42）</div>
-  <div class="b wide">匯入音檔辨識</div><div class="b wide">匯入 SRT 檔</div>
+  <div class="rcard"><div class="rhead"><b><span class="io">[ ]</span>處理範圍（In / Out）</b><span class="ck">只處理 In-Out</span></div><div class="rline"><span class="rbox">00:00:00,000 → 00:00:42,500</span><span class="b pri">↻ 更新 In-Out 範圍</span></div></div>
+  <div class="sec2"><b>音訊軌道</b><span class="muted">共 2 條・已選 A1</span></div>
+  <div class="tracks hl"><div class="on"><i class="tk"></i><b>A1</b>12 個片段・1 支素材</div><div><i class="tk"></i><b>A2</b>3 個片段・2 支素材</div></div>
+  <div class="foot">
+  <div class="sec2"><b>辨識設定</b></div>
+  <div class="row"><span class="lbl s">語言</span><span class="inp sel lang-sel">繁體中文（ 台灣狗以 ）</span><span class="lbl s">每行</span><span class="inp n2">20</span><span class="muted">字</span></div>
+  <div class="row2"><span class="b">填寫節目資訊</span><span class="b">📁 存到 …/burgerSub/srt</span></div>
+  <div class="b wide pri" style="margin-top:8px">開始辨識（0:42）</div>
+  <div class="row2"><span class="b">⇧ 匯入音檔辨識</span><span class="b">▤ 匯入 SRT 檔</span></div>
+  </div>
 </div><div class="v-prog"><div class="ident"><strong>burgerSub</strong><span class="badge">Panel</span><span class="v">v2.1.0</span><span class="gear">⚙</span></div><div style="font-size:15px;font-weight:700;color:#fff;margin-top:4px">辨識中</div><div class="prog"><i class="pg-bar" style="width:0"></i></div><div class="pg-label" style="color:#fff">載入語音模型中…</div><div class="pg-eta muted" style="margin-top:3px">已經過 0:01</div><div class="b wide" style="margin-top:14px">取消</div></div></div><div data-show="4" class="ui v-edit panel"><div class="chrome"><span class="pr sm" aria-hidden="true">Pr</span><b>burgerSub Panel ☰</b></div><div class="in"><div class="ident"><strong>burgerSub</strong><span class="badge">Panel</span><span class="v">v2.1.0</span><span class="gear">⚙</span></div>
   <div class="bar2"><span class="b">‹ 返回</span><b style="font-size:14px;color:#fff">字幕</b><span class="muted">6 句</span></div>
   <div class="bar2"><span class="search">搜尋字幕…</span><span class="b">取代</span><span class="b">加速</span></div>
   <div class="bar2"><span class="ck">填滿空隙</span><span class="ck off">跟隨時間軸</span><span style="flex:1"></span><span class="b">A−</span><span class="b">A+</span></div>
   <div class="cues"><div class="cue"><span class="n">1</span><div class="t">00:00:00,750 → 00:00:02,840</div><div class="x">今天想跟大家聊聊手沖咖啡</div></div><div class="cue"><span class="n">2</span><div class="t">00:00:02,840 → 00:00:05,120</div><div class="x">其實在家沖也可以很好喝</div></div><div class="cue"><span class="n">3</span><div class="t">00:00:05,120 → 00:00:07,390</div><div class="x">重點是水溫跟研磨的粗細</div></div><div class="cue"><span class="n">4</span><div class="t">00:00:07,390 → 00:00:09,510</div><div class="x">很多人以為水越燙越好</div></div></div>
-  <div class="row" style="margin-top:9px;margin-bottom:0"><span class="b pri" style="flex:1;padding:7px">匯出 SRT</span><span class="b hl" style="flex:1;padding:7px">送進 Premiere</span></div>
-  <div class="grid3"><span class="b">txt編輯</span><span class="b hl">用 burgerSub 編輯</span><span class="b">字幕資料夾</span></div>
+  <div class="row3"><span class="b pri act-pr hl">送進 Premiere</span><span class="b">⇧ 匯出 SRT</span><span class="b">⇩ 讀回校正 SRT</span></div>
+  <div class="b wide studio2">↗ 開啟 burgerSub Studio 編輯<small>支援更完整的中文注音選字操作</small></div>
 </div></div></div></div>
             
           </div>
@@ -857,7 +909,7 @@
         <div class="g2-head"><span class="no">STEP 02</span><h3>校對字幕</h3></div>
         <div class="g2-cols g2-stage" data-script="edit">
           <div class="g2-col">
-            <p class="g2-p"><span class="pt"><span class="pr xs" aria-hidden="true">Pr</span>PANEL</span>點一下文字進入編輯：游標放在要斷開的地方按 <b>Enter</b>，一句切成兩句；在句首按 <b>Backspace</b>，兩句併回一句。<b>A−／A+</b> 調整清單上的字級。改過的錯字會記進 <b>字典</b>，下次自動修正。改好按 <b>送進 Premiere</b>。</p>
+            <p class="g2-p"><span class="pt"><span class="pr xs" aria-hidden="true">Pr</span>PANEL</span>點一下文字進入編輯：游標放在要斷開的地方按 <b>Enter</b>，一句切成兩句；在句首按 <b>Backspace</b>，兩句併回一句。<b>A−／A+</b> 調整清單上的字級。改過的錯字會記進 <b>字典</b>，下次自動修正。改好按 <b>送進 Premiere</b>。想用注音好好打字，按 <b>開啟 burgerSub Studio 編輯</b>。</p>
             <div class="pane pane-p"><div class="prbg pp" aria-hidden="true">
               <div class="pp-prog">
                 <div class="pp-tab">Program: 我的影片_v1 <span>≡</span></div>
@@ -880,8 +932,8 @@
   <div class="bar2"><span class="search">搜尋字幕…</span><span class="b">取代</span><span class="b">加速</span></div>
   <div class="bar2"><span class="ck">填滿空隙</span><span class="ck off">跟隨時間軸</span><span style="flex:1"></span><span class="b">A−</span><span class="b">A+</span></div>
   <div class="cues"><div class="cue"><span class="n">1</span><div class="t">00:00:00,750 → 00:00:02,840</div><div class="x">今天想跟大家聊聊手沖咖啡</div></div><div class="cue"><span class="n">2</span><div class="t">00:00:02,840 → 00:00:05,120</div><div class="x">其實在家沖也可以很好喝</div></div><div class="cue"><span class="n">3</span><div class="t">00:00:05,120 → 00:00:07,390</div><div class="x">重點是水溫跟研磨的粗細</div></div><div class="cue"><span class="n">4</span><div class="t">00:00:07,390 → 00:00:09,510</div><div class="x">很多人以為水越燙越好</div></div></div>
-  <div class="row" style="margin-top:9px;margin-bottom:0"><span class="b pri" style="flex:1;padding:7px">匯出 SRT</span><span class="b hl" style="flex:1;padding:7px">送進 Premiere</span></div>
-  <div class="grid3"><span class="b">txt編輯</span><span class="b hl">用 burgerSub 編輯</span><span class="b">字幕資料夾</span></div>
+  <div class="row3"><span class="b pri act-pr hl">送進 Premiere</span><span class="b">⇧ 匯出 SRT</span><span class="b">⇩ 讀回校正 SRT</span></div>
+  <div class="b wide studio2">↗ 開啟 burgerSub Studio 編輯<small>支援更完整的中文注音選字操作</small></div>
 </div></div></div></div>
             <div class="pkeys"><div class="kh">快捷鍵</div><div class="keys"><kbd>空白鍵</kbd><span>Premiere 時間軸跳到這一句</span><kbd>↑ ↓</kbd><span>換句</span><kbd>Enter</kbd><span>在游標處切開</span><kbd>Backspace</kbd><span>在句首按，併入上一句</span><kbd>Esc</kbd><span>結束編輯</span><kbd>點時間碼</kbd><span>修改開始、結束時間</span><kbd>復原</kbd><span>按編輯器上的「復原」（Premiere 會先吃掉 ⌘Z）</span></div></div>
           </div>
@@ -944,6 +996,26 @@
           </div>
           <div class="say" id="speed-say"></div>
           <svg class="cursor" id="speed-cursor" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2l14 11-6.2 1 3.6 7.2-2.6 1.3-3.6-7.2L5 20z" fill="#fff" stroke="#000" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+      <div class="demo-wrap">
+        <div class="demo-txt">
+          <h3>讀回校正 SRT：AI 改了哪些字，一眼就看到</h3>
+          <p>先按 <b>匯出 SRT</b>，把字幕檔整份丟給 AI 改錯字。改好之後回來按 <b>讀回校正 SRT</b>，選 AI 給你的那個檔案。</p>
+          <p>字幕清單上會直接標出改了哪些字：舊的字劃掉、新的字標橘色，用 <b>‹ ›</b> 一處一處看。
+            沒問題就按 <b>全部套用</b>，時間點完全不會動；哪一句 AI 改錯了，按那句右邊的 <b>✕</b> 跳過就好。（Panel 限定）</p>
+        </div>
+        <div class="demo" id="demo-proof" aria-label="讀回校正 SRT 的動態示範">
+          <div class="ui panel pv-ui"><div class="in">
+            <div class="pvbar" id="pv-bar"><b>AI 改了 2 句</b><span class="pvnav"><span class="b" id="pv-prev">‹</span><i id="pv-pos">1/2</i><span class="b" id="pv-next">›</span></span><span class="b pri" id="pv-apply">全部套用</span><span class="b">不套用</span></div>
+            <div class="cues" id="pv-cues"></div>
+            <div class="row3"><span class="b pri act-pr">送進 Premiere</span><span class="b">⇧ 匯出 SRT</span><span class="b" id="pv-btn">⇩ 讀回校正 SRT</span></div>
+          </div></div>
+          <div class="pvpick" id="pv-pick"><div class="pk-bar"><i></i><i></i><i></i><b>選擇校正後的 SRT</b></div>
+            <div class="pk-list"><div>📄 我的影片.srt</div><div id="pv-file">📄 我的影片_AI校正.srt</div></div>
+            <div class="pk-act"><span class="b">取消</span><span class="b pri" id="pv-open">打開</span></div></div>
+          <svg class="cursor" id="pv-cursor" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2l14 11-6.2 1 3.6 7.2-2.6 1.3-3.6-7.2L5 20z" fill="#fff" stroke="#000" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          <div class="say" id="pv-say"></div>
         </div>
       </div>
     </div>
@@ -1303,6 +1375,60 @@
       }
       if (reduce) { setFill(true); cap.textContent = CUES[1][2]; head.style.left = pct(4); document.getElementById('fill-cursor').style.display = 'none'; }
       else { setFill(false); moveCursor(false); setInterval(frame, 30); }
+    }
+
+    // ── 讀回校正 SRT：按「讀回校正 SRT」→ 選檔 → 清單標出改了哪些字 → 下一處 → 全部套用 ──
+    var pdemo = document.getElementById('demo-proof');
+    if (pdemo) {
+      var PC = [['00:00:00,750 → 00:00:02,840', '今天想跟大家聊聊手沖咖啡'], ['00:00:02,840 → 00:00:05,120', '其實在家沖也可以很好喝'],
+                ['00:00:05,120 → 00:00:07,390', '重點是水溫跟研磨的粗系', '重點是水溫跟研磨的粗<del class="d-del">系</del><ins class="d-ins">細</ins>', '重點是水溫跟研磨的粗細'],
+                ['00:00:07,390 → 00:00:09,510', '很多人以為水越湯越好', '很多人以為水越<del class="d-del">湯</del><ins class="d-ins">燙</ins>越好', '很多人以為水越燙越好']];
+      var pcues = document.getElementById('pv-cues'), pbar = document.getElementById('pv-bar'), ppos = document.getElementById('pv-pos'),
+          pbtn = document.getElementById('pv-btn'), pick = document.getElementById('pv-pick'), pfile = document.getElementById('pv-file'),
+          popen = document.getElementById('pv-open'), pnext = document.getElementById('pv-next'), papply = document.getElementById('pv-apply'),
+          psay = document.getElementById('pv-say'), pcur = document.getElementById('pv-cursor');
+      var rows = PC.map(function (c, i) {
+        var d = document.createElement('div'); d.className = 'cue';
+        d.innerHTML = '<span class="n">' + (i + 1) + '</span><div class="t">' + c[0] + '</div><div class="x"></div>';
+        pcues.appendChild(d); return d; });
+      function setRows(mode, curIdx) {    // mode：typo（辨識結果）／preview（預覽）／fixed（套用後）
+        rows.forEach(function (r, i) { var c = PC[i], chg = c.length > 2;
+          r.querySelector('.x').innerHTML = !chg ? c[1] : mode === 'typo' ? c[1] : mode === 'preview' ? c[2] : c[3];
+          r.classList.toggle('chg', chg && mode === 'preview'); r.classList.toggle('cur', mode === 'preview' && i === curIdx);
+          var xx = r.querySelector('.xx'); if (chg && mode === 'preview') { if (!xx) { xx = document.createElement('span'); xx.className = 'xx'; xx.textContent = '✕'; r.appendChild(xx); } } else if (xx) xx.remove(); });
+      }
+      function pc(el) { var b = el.getBoundingClientRect(), d = pdemo.getBoundingClientRect(); return { x: b.left - d.left + b.width / 2, y: b.top - d.top + b.height / 2 }; }
+      function paim(el) { var c = pc(el); pcur.style.transform = 'translate(' + (c.x - 3) + 'px,' + (c.y - 2) + 'px)'; }
+      function prest() { pcur.style.transform = 'translate(' + (pdemo.clientWidth - 50) + 'px,' + (pdemo.clientHeight - 40) + 'px)'; }
+      function ppress(el) { pcur.classList.remove('press'); void pcur.offsetWidth; pcur.classList.add('press');
+        var c = pc(el), r = document.createElement('span'); r.className = 'click-ring'; r.style.left = c.x + 'px'; r.style.top = c.y + 'px';
+        pdemo.appendChild(r); setTimeout(function () { r.remove(); }, 600); }
+      function preset() { setRows('typo'); pbar.classList.add('off'); pick.classList.remove('open'); pfile.classList.remove('sel');
+        pbtn.textContent = '⇩ 讀回校正 SRT'; pbtn.classList.remove('flash');
+        psay.innerHTML = '<span class="x">辨識結果有錯字：</span>「粗系」「水越湯」。先匯出 SRT 給 AI 改。'; }
+      if (reduce) { setRows('preview', 2); pbar.classList.remove('off'); pcur.style.display = 'none';
+        psay.innerHTML = '<b>改了哪些字直接標出來：</b>舊的劃掉、新的標橘色。'; }
+      else {
+        var pq = [
+          [900, function () { paim(pbtn); }],
+          [550, function () { ppress(pbtn); pick.classList.add('open'); psay.innerHTML = 'AI 改好了，選它給你的檔案。'; }],
+          [750, function () { paim(pfile); }],
+          [450, function () { ppress(pfile); pfile.classList.add('sel'); }],
+          [650, function () { paim(popen); }],
+          [450, function () { ppress(popen); pick.classList.remove('open'); pbar.classList.remove('off'); ppos.textContent = '1/2'; setRows('preview', 2);
+            psay.innerHTML = '<b>改了哪些字直接標出來：</b>舊的劃掉、新的標橘色。'; }],
+          [1500, function () { paim(pnext); }],
+          [450, function () { ppress(pnext); ppos.textContent = '2/2'; setRows('preview', 3); }],
+          [1300, function () { paim(papply); }],
+          [500, function () { ppress(papply); pbar.classList.add('off'); setRows('fixed'); pbtn.textContent = '✓ 已更新 2 句'; pbtn.classList.add('flash');
+            psay.innerHTML = '<b>按一下全部換好：</b>時間點完全不會動，也可以復原。'; }],
+          [1400, function () { prest(); }],
+          [1800, function () { preset(); }]
+        ];
+        var pk = 0;
+        function ptick() { var it = pq[pk]; pk = (pk + 1) % pq.length; it[1](); setTimeout(ptick, pq[pk][0]); }
+        preset(); prest(); setTimeout(ptick, pq[0][0]);
+      }
     }
 
     // ── 加速 ──
