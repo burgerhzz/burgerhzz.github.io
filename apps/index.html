@@ -485,7 +485,7 @@
   .demo .ctrl .sbar .prev { color:#8fd; font-family:ui-monospace, Menlo, monospace; font-size:11px; }
   .demo .ctrl .sbar .ap { background:#333; border:1px solid #555; border-radius:4px; padding:2px 8px; color:#ddd; transition:background .3s; }
   .demo .ctrl .sbar.hot { border-color:#3dff73; } .demo .ctrl .sbar.hot .ap { background:#3478f6; border-color:#3478f6; color:#fff; }
-  .demo .say { margin-top:10px; font-size:12.5px; color:#cfe7d4; min-height:2.6em; line-height:1.6; }
+  .demo .say { margin-top:10px; font-size:12.5px; color:#cfe7d4; min-height:3.2em; line-height:1.6; }   /* 預留兩行：說明字長短不同時，框不會一下高一下矮 */
   .demo .say b { color:#3dff73; font-weight:600; } .demo .say .x { color:#ff8080; font-weight:600; }
   .demo .tc { font-family:ui-monospace, Menlo, monospace; font-size:11px; color:#6aa8ff; }
   .demos { display:grid; gap:18px; }
@@ -1703,6 +1703,9 @@
 
     // Panel：字幕清單
     var list = pEd.querySelector('.cues'), count = byText(pEd, '.muted', '6 句') || byText(pEd, '.muted', '');
+    // 清單高度固定：切分多出一句、A+ 放大字時，在清單裡面捲，不要把整個面板撐高
+    // （視窗窄一點時面板高度會直接推動下面的版面，看起來像整塊在亂跑）
+    list.style.height = list.offsetHeight + 'px'; list.style.overflow = 'hidden';
     var c1 = list.children[0], c1x = c1.querySelector('.x'), c1t = c1.querySelector('.t');
     var ORIG = [c1x.textContent, c1t.textContent], newCue = null, font = 13.5;
     var aPlus = byText(pEd, '.b', 'A+'), aMinus = byText(pEd, '.b', 'A−'), pSend = byText(pEd, '.b', '送進 Premiere');
