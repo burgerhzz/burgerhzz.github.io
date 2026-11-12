@@ -493,6 +493,8 @@
   .demo-wrap { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.4fr); gap:26px; align-items:start; padding:22px 0; border-top:1px solid var(--line2); }
   .demo-wrap:first-child { border-top:0; padding-top:0; }
   @media (max-width: 760px) { .demo-wrap { grid-template-columns:1fr; gap:14px; } }
+  /* 新功能搶先看：示範在左、文字在右（手機上疊成一欄時維持文字在上） */
+  @media (min-width: 761px) { #new .demo-wrap { grid-template-columns:auto minmax(0,1fr); gap:40px; align-items:center; } #new .demo { width:330px; } #new .demo-wrap > .demo { order:-1; } }
 
   /* ── 首頁：Panel、Studio 兩個視窗疊在一起展示（從使用教學複製，拿掉提示框） ── */
   .hero2 { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,600px); gap:36px; align-items:center; }
