@@ -212,6 +212,8 @@
   .rel .feat { margin: 0 0 16px 22px; font-size: 12px; color: var(--dim); }
   .rel .feat li { color: var(--dim); line-height: 1.7; }
   .rel .feat b { color: var(--ink); font-weight: 700; }
+  .rel .rel-sep { margin: 26px 0 0; padding: 0 0 10px; font-size: 10.5px; letter-spacing: .18em; color: var(--dim); border-bottom: 1px solid var(--line); }
+  .rel .rel-sep::before { content: "── "; color: var(--dimmer); }
 
   /* ── 狀態列與頁尾 ── */
   .sys {
@@ -1367,6 +1369,9 @@
           <ul class="feat">
             <li><span>已經有字幕檔？直接讀進來改，不用重新辨識</span></li>
             <li><span><b>字幕加速</b>：影片有加速的話，填跟 Premiere 一樣的速度百分比，字幕就會跟著對好，不滿意還能復原</span></li>
+            <li><span>已經加速過的字幕再按一次，會先提醒你，不會不小心加速兩次</span></li>
+            <li><span>匯出的檔名會標上倍率，像「影片_final_1.2x.srt」，一看就知道是哪一版</span></li>
+            <li><span>不是 UTF-8 的字幕檔會先跟你說，不會匯入一整片亂碼</span></li>
           </ul>
         </details>
         <details><summary><span class="ver">1.0.1 – 1.0.3</span><span class="date">2026.10.19</span></summary>
@@ -1379,6 +1384,46 @@
         <details><summary><span class="ver">1.0.0</span><span class="date">2026.10.07</span></summary>
           <ul class="feat">
             <li><span>超屌der字幕軟體第一版誕生！在 Premiere 裡直接把時間軸上的聲音變成字幕 (≧▽≦)</span></li>
+            <li><span>有新版會在面板上通知你，下載好會先檢查檔案沒問題才留下來</span></li>
+          </ul>
+        </details>
+        <div class="rel-sep">正式版之前・開發紀錄</div>
+        <details><summary><span class="ver">開發中</span><span class="date">2026.10.01 – 10.06</span></summary>
+          <ul class="feat">
+            <li><span>「節目資訊」來了！先告訴它節目名稱、主持人、來賓，人名跟專有名詞會辨識得更準</span></li>
+            <li><span>可以自己選 SRT 要存在哪個資料夾</span></li>
+            <li><span>在外面改過字幕檔？匯出前會先同步回面板，改好的字不會被蓋掉</span></li>
+            <li><span>不用再手動填專案路徑，它自己會找到 ヽ(・∀・)ノ</span></li>
+            <li><span>講完一句停很久，後面孤單掛著一兩個字的小字幕，會被救回來接好</span></li>
+            <li><span>多機位素材會用有開啟的那個來源，不會讀錯</span></li>
+          </ul>
+        </details>
+        <details><summary><span class="ver">開發中</span><span class="date">2026.09.03 – 09.17</span></summary>
+          <ul class="feat">
+            <li><span>跨剪接點的地方，斷句更自然了</span></li>
+            <li><span>句尾只剩兩三個字的小尾巴修好了</span></li>
+          </ul>
+        </details>
+        <details><summary><span class="ver">開發中</span><span class="date">2026.08.18</span></summary>
+          <ul class="feat">
+            <li><span>可以用 DMG 安裝了</span></li>
+            <li><span>第一次辨識會自動下載語音模型，只要下載一次</span></li>
+          </ul>
+        </details>
+        <details><summary><span class="ver">開發中</span><span class="date">2026.08.07 – 08.10</span></summary>
+          <ul class="feat">
+            <li><span>「填滿空隙」開關誕生！字幕不再一閃一閃</span></li>
+            <li><span>字幕改存在專案資料夾裡的 burgerSub 資料夾，檔名是 burgersub_序列名_001.srt</span></li>
+            <li><span>編輯頁多了「字幕資料夾」按鈕，一鍵打開</span></li>
+            <li><span>時間軸上有一個片段怪怪的，也不會害整條序列讀不到</span></li>
+            <li><span>辨識的時候 Premiere 不會再卡住</span></li>
+          </ul>
+        </details>
+        <details><summary><span class="ver">開發中</span><span class="date">2026.08.06</span></summary>
+          <ul class="feat">
+            <li><span>burgerSub 開工！第一次在 Premiere 裡把時間軸上的聲音變成字幕 (≧▽≦)</span></li>
+            <li><span>進度會把每支素材加起來一起算</span></li>
+            <li><span>合併片段、多機位只轉看得到的那一段</span></li>
           </ul>
         </details>
     </div>
