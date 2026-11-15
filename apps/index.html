@@ -191,7 +191,6 @@
   }
 
   /* ── 更新紀錄 ── */
-  .notes-dlg { width: min(620px, 94vw); }
   .whatsnew {
     position: absolute; top: 16px; right: 16px;
     font-family: var(--font); font-size: 10px; letter-spacing: .14em; font-weight: 700;
@@ -496,7 +495,7 @@
   .demo-wrap:first-child { border-top:0; padding-top:0; }
   @media (max-width: 760px) { .demo-wrap { grid-template-columns:1fr; gap:14px; } }
   /* 新功能搶先看：示範在左、文字在右（手機上疊成一欄時維持文字在上） */
-  @media (min-width: 761px) { #new .demo-wrap { grid-template-columns:auto minmax(0,1fr); gap:40px; align-items:center; } #new .demo { width:330px; } #new .demo-wrap > .demo { order:-1; } }
+  @media (min-width: 761px) { #advanced .demo-wrap.narrow { grid-template-columns:auto minmax(0,1fr); gap:40px; align-items:center; } #advanced .narrow .demo { width:330px; } #advanced .demo-wrap.narrow > .demo { order:-1; } }
 
   /* ── 首頁：Panel、Studio 兩個視窗疊在一起展示（從使用教學複製，拿掉提示框） ── */
   .hero2 { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,600px); gap:36px; align-items:center; }
@@ -534,9 +533,10 @@
   .demo .tbtn.dim { color:#777; }
   .demo .tbtn.down { background:#4a4a4a; border-color:#777; }
   .demo .srch { flex:1; min-width:90px; background:#1b1b1b; border:1px solid #3d3d3d; border-radius:5px; padding:4px 9px; color:#777; font-size:12px; }
-  .demo .sbar2 { display:flex; align-items:center; gap:8px; font-size:12.5px; color:#ccc; overflow:hidden; max-height:0; opacity:0;
-                 padding:0 8px; margin-bottom:0; border:1px solid transparent; border-radius:5px; transition:max-height .35s, opacity .35s, margin .35s, padding .35s; }
-  .demo .sbar2.open { max-height:44px; opacity:1; padding:6px 8px; margin-bottom:8px; border-color:#333; background:#1e1e1e; }
+  /* 速度列一直佔著位置、只切換透明度：展開收合不會把整頁撐動（原本 max-height 0↔44 會讓頁面跳 49px） */
+  .demo .sbar2 { display:flex; align-items:center; gap:8px; font-size:12.5px; color:#ccc; overflow:hidden; height:40px; opacity:0;
+                 padding:6px 8px; margin-bottom:8px; border:1px solid transparent; border-radius:5px; transition:opacity .35s, border-color .35s, background .35s; }
+  .demo .sbar2.open { opacity:1; border-color:#333; background:#1e1e1e; }
   .demo .sbar2 .inp2 { width:52px; background:#111; border:1px solid #3d3d3d; border-radius:4px; padding:3px 7px; color:#fff; text-align:right; min-height:1.3em; }
   .demo .sbar2 .inp2.typing::after { content:"|"; color:#6aa8ff; margin-left:1px; animation:blinkc .8s steps(2) infinite; }
   @keyframes blinkc { 50% { opacity:0; } }
@@ -742,6 +742,209 @@
        line-height:1; margin-top:0; flex:none; }
   .who .pr.big2 { width:46px; height:46px; font-size:22px; border-radius:10px; border-width:2px; }
 </style>
+<style>
+  /* ── 2026-11 改版：品牌層級、產品分流、閱讀性 ──
+     顏色分工：綠＝burgerSub 品牌與「動作」（下載、主要按鈕）；
+     紫＝Panel（沿用 Premiere 的 Pr 徽章色）；橘＝Studio（沿用 App 圖示與 Studio 標籤的橘）。
+     兩個產品各有自己的色，但按鈕一律綠，看得出是同一個品牌。 */
+  :root {
+    --txt: #86a28f;                       /* 內文段落（--dim 只有 4.3:1，中文小字讀起來吃力） */
+    --pnl: #a3a3ff; --pnl-bg: #0e0e2a; --pnl-ln: #2b2f6b;
+    --stu: #ffa64d; --stu-bg: #1f1509; --stu-ln: #5a3d1c;
+  }
+  /* 品牌名保留大小寫：burgerSub 的 S 大寫是識別的一部分，全大寫會變成 BURGERSUB */
+  .hero h1, .card h3, .lane h3 { text-transform: none; }
+  .hero h1 { letter-spacing: -.01em; }
+  .hero .lede { font-size: 14.5px; color: var(--txt); max-width: 52ch; }
+  .card .desc, .demo-txt p, .step .txt p, .faq p { color: var(--txt); }
+  footer { color: var(--dim); }
+
+  /* 語言：純資訊，不做成看起來能點的框 */
+  .lang { gap: 6px 0; font-size: 12px; color: var(--ink); }
+  .lang span { border: 0; padding: 0; font-size: 12px; }
+  .lang { gap: 6px 18px; }
+  .lang span::before { content: "▪"; color: var(--grn); margin-right: 7px; }
+  .lang span[style]::before { color: var(--dimmer); }
+
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .cta .buy { font-size: 12px; padding: 13px 22px; }
+
+  /* 頁內導覽：頁面很長，固定在上方 */
+  .jump { position: sticky; top: 0; z-index: 20; background: rgba(6,7,7,.92); border-bottom: 1px solid var(--line);
+          -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .jump .wrap { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+  .jump .wrap::-webkit-scrollbar { display: none; }
+  .jump a { flex: none; text-decoration: none; font-size: 11px; letter-spacing: .14em; color: var(--dim); padding: 11px 12px; }
+  .jump a:first-child { padding-left: 0; }
+  .jump a:hover { color: var(--grn); }
+  .jump a b { color: var(--grn); font-weight: 400; margin-right: 6px; }
+  section[id] { scroll-margin-top: 44px; }
+
+  /* ── 選一個開始：兩條產品線 ── */
+  .pick-lead { margin: -8px 0 22px; font-size: 14.5px; color: var(--txt); }
+  .pick-lead b { color: var(--ink); font-weight: 500; }
+  .lane { gap: 16px; padding: 26px; }
+  .lane-p { background: linear-gradient(160deg, var(--pnl-bg), var(--panel) 45%); border-color: var(--pnl-ln); }
+  .lane-s { background: linear-gradient(160deg, var(--stu-bg), var(--panel) 45%); border-color: var(--stu-ln); }
+  .lane-p:hover { border-color: #3d4290; } .lane-s:hover { border-color: #7a5326; }
+  .lane .prod { padding-right: 0; }
+  .lane h3 { font-size: 21px; letter-spacing: .02em; }
+  .lane-p .kind { color: var(--pnl); } .lane-s .kind { color: var(--stu); }
+  .lane .kind { margin-top: 2px; }
+  .fit { margin: 0; font-size: 17px; font-weight: 700; color: var(--ink); letter-spacing: .02em; line-height: 1.5; }
+  .fit .fk { display: inline-block; font-size: 10px; letter-spacing: .16em; font-weight: 700; padding: 2px 7px; margin-right: 10px; vertical-align: 3px; }
+  .lane-p .fit .fk { color: var(--pnl); border: 1px solid var(--pnl-ln); }
+  .lane-s .fit .fk { color: var(--stu); border: 1px solid var(--stu-ln); }
+  /* 輸入 → 輸出：一眼看懂兩個產品的差別 */
+  .flow { display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; gap: 8px; font-size: 12px; letter-spacing: .01em; }
+  .flow > span { border: 1px solid var(--line); background: var(--panel2); padding: 9px 11px; line-height: 1.5; color: var(--ink); }
+  .flow > span small { display: block; font-size: 9.5px; letter-spacing: .16em; color: var(--dim); margin-bottom: 2px; }
+  .flow > i { align-self: center; font-style: normal; color: var(--grn); }
+  .hl-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 13px; color: var(--ink); line-height: 1.6; }
+  .hl-list li { display: flex; gap: 10px; }
+  .hl-list li::before { content: "▸"; flex: none; }
+  .lane-p .hl-list li::before { color: var(--pnl); } .lane-s .hl-list li::before { color: var(--stu); }
+  .lane .specs { border-top: 1px solid var(--line2); padding-top: 14px; }
+  .lane .dl { margin-top: 2px; }
+  .lane .dl .buy { flex: 1 1 auto; }
+  .vrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 12px; color: var(--dim); letter-spacing: .02em; }
+  .vrow b { color: var(--ink); font-weight: 500; }
+  .vrow .whatsnew { position: static; margin-left: auto; }
+  .lane .specs { margin-top: auto; }   /* 兩張卡內容長短不同，下載鈕對齊在底部 */
+  .sha-row { text-transform: none; font-size: 10.5px; color: var(--dimmer); letter-spacing: .02em; line-height: 1.6; word-break: break-all; }
+  .sha-row b { color: var(--dim); font-weight: 400; }
+  .sha-row .sha { color: var(--dim); }
+  @container (max-width: 500px) { .vrow .whatsnew { margin-left: 0; } .flow { gap: 6px; font-size: 11.5px; } .flow > span { padding: 8px 9px; } }
+  @container (max-width: 270px) { .flow { grid-template-columns: 1fr; } .flow > i { transform: rotate(90deg); justify-self: center; } }
+  @media (max-width: 480px) { .lane { padding: 20px 18px; } .fit { font-size: 16px; } }
+  .head h2 { white-space: nowrap; }
+
+  /* 兩個都有／下載前先確認 */
+  .pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 16px; margin-top: 16px; }
+  @media (max-width: 860px) { .pair { grid-template-columns: 1fr; } }
+  .box2 { border: 1px solid var(--line); background: var(--panel2); padding: 20px 22px; font-size: 13px; line-height: 1.75; }
+  .box2 h4 { margin: 0 0 12px; font-size: 11px; letter-spacing: .2em; color: var(--grn); font-weight: 700; }
+  .box2 ul, .box2 ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .box2 li { color: var(--txt); }
+  .box2 li b { color: var(--ink); font-weight: 500; }
+  .box2 ul li { display: flex; gap: 10px; } .box2 ul li::before { content: "＋"; color: var(--grn); flex: none; }
+  .box2 ol { counter-reset: ck; }
+  .box2 ol li { display: grid; grid-template-columns: 24px 1fr; counter-increment: ck; }
+  .box2 ol li::before { content: counter(ck, decimal-leading-zero); color: var(--amb); font-size: 11px; letter-spacing: .06em; padding-top: 2px; }
+  .box2 ol li.key b { color: var(--amb); }
+  .linkbtn { background: none; border: 0; padding: 0; font: inherit; color: var(--grn); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+  /* ── 功能：每個功能標出 Panel／Studio 能不能用 ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+  .tg { font-size: 10px; letter-spacing: .12em; padding: 2px 8px; border: 1px solid var(--line); color: var(--dim); text-transform: none; }
+  .tg.p { color: var(--pnl); border-color: var(--pnl-ln); }
+  .tg.s { color: var(--stu); border-color: var(--stu-ln); }
+  .tg.n { color: var(--bg); background: var(--grn); border-color: var(--grn); font-weight: 700; }
+  /* ── 分頁鈕（使用教學、版本更新共用）：Panel 紫、Studio 橘 ── */
+  .ptabs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; max-width: 520px; margin: 0 0 18px;
+           background: var(--bg); border: 1px solid var(--line); padding: 4px; }
+  .ptabs button { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 8px; cursor: pointer;
+         font-family: var(--font); font-size: 12px; letter-spacing: .12em; font-weight: 700; text-transform: none;
+         background: transparent; color: var(--dim); border: 1px solid transparent; }
+  .ptabs button:hover { color: var(--ink); }
+  .ptabs button .pr.xs { width: 18px; height: 18px; font-size: 9.5px; border-radius: 4px; border-width: 1px; margin: 0; }
+  .ptabs button .xs-ico { width: 18px; height: 18px; margin: 0; }
+  .ptabs button:is([data-guide="panel"],[data-ntab="panel"])[aria-pressed="true"] { color: var(--pnl); background: var(--pnl-bg); border-color: var(--pnl-ln); }
+  .ptabs button:is([data-guide="studio"],[data-ntab="studio"])[aria-pressed="true"] { color: var(--stu); background: var(--stu-bg); border-color: var(--stu-ln); }
+  .ptabs button[aria-pressed="false"] { opacity: .75; }
+  /* 使用教學：所有寬度都一次只看一個產品；分頁鈕捲動時黏在頁內導覽下面 */
+  .gsw { position: sticky; top: 41px; z-index: 15; }
+  .g2 { scroll-margin-top: 104px; }
+  #guide .g2-cols { grid-template-columns: 1fr; }
+  #guide[data-prod="panel"] .g2-col:nth-child(2), #guide[data-prod="studio"] .g2-col:nth-child(1) { display: none; }
+  #guide .g2-p { min-height: 0; }
+  /* 桌面：一個產品佔整列，改成「左邊說明＋快捷鍵、右邊示意畫面」 */
+  @media (min-width: 901px) {
+    #guide .g2-col { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); grid-template-rows: auto 1fr;
+                     column-gap: 36px; row-gap: 18px; align-items: start; }
+    #guide .g2-col > .g2-p { grid-column: 1; grid-row: 1; font-size: 13.5px; }
+    #guide .g2-col > .pane { grid-column: 2; grid-row: 1 / span 2; }
+    #guide .g2-col > .pkeys { grid-column: 1; grid-row: 2; }
+  }
+
+  /* ── 下載卡片：適合誰＋一句話 ── */
+  .fit-sub { margin: -6px 0 0; font-size: 13px; color: var(--txt); line-height: 1.7; }
+  .pre { margin: 16px 0 0; font-size: 12.5px; color: var(--txt); line-height: 1.8; border-left: 2px solid var(--amb); padding: 2px 0 2px 14px; }
+  .pre b { color: var(--ink); font-weight: 500; } .pre b:first-child { color: var(--amb); }
+  .pre a { color: var(--grn); text-underline-offset: 3px; white-space: nowrap; }
+
+  /* ── 比較表 ── */
+  .cmp { border: 1px solid var(--line); }
+  .cmp-row { display: grid; grid-template-columns: 132px minmax(0,1fr) minmax(0,1fr); border-top: 1px solid var(--line2); }
+  .cmp-row:first-child { border-top: 0; }
+  .cmp-row > div { padding: 13px 18px; font-size: 13px; line-height: 1.7; letter-spacing: .01em; }
+  .cmp .k { font-size: 11px; letter-spacing: .14em; color: var(--dim); font-weight: 700; }
+  .cmp .c { color: var(--ink); }
+  .cmp .c.p { background: rgba(14,14,42,.55); border-left: 1px solid var(--pnl-ln); }
+  .cmp .c.s { background: rgba(31,21,9,.55); border-left: 1px solid var(--stu-ln); }
+  .cmp-head .c { font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 9px; }
+  .cmp-head .c.p { color: var(--pnl); } .cmp-head .c.s { color: var(--stu); }
+  .cmp-head .pr.xs, .cmp-head .xs-ico { width: 20px; height: 20px; margin: 0; font-size: 10px; }
+  .cmp-both .c { grid-column: 2 / -1; display: flex; flex-wrap: wrap; gap: 6px 22px; color: var(--txt); border-left: 1px solid var(--line); }
+  .cmp-both .c span::before { content: "＋ "; color: var(--grn); }
+  @media (max-width: 640px) {
+    .cmp-row { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+    .cmp-row > .k { grid-column: 1 / -1; padding: 12px 14px 4px; }
+    .cmp-row > .c { padding: 8px 12px 12px; font-size: 12.5px; }
+    .cmp-head > .k { display: none; }
+    .cmp-both .c { grid-column: 1 / -1; flex-direction: column; border-left: 0; }
+  }
+
+  /* ── 產品功能：兩欄各自的特色（預設收合，內容之後再改） ── */
+  .fx-fold > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px;
+                       border: 1px solid var(--line); background: var(--panel2); padding: 14px 18px; font-size: 13px; color: var(--ink); }
+  .fx-fold > summary::-webkit-details-marker { display: none; }
+  .fx-fold > summary::before { content: "+"; color: var(--grn); font-size: 15px; }
+  .fx-fold[open] > summary::before { content: "\2212"; }
+  .fx-fold > summary:hover { border-color: var(--dimmer); }
+  .fx-fold[open] > summary { margin-bottom: 16px; }
+  .fx { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px; }
+  @media (max-width: 760px) { .fx { grid-template-columns: 1fr; } }
+  .fx-col { border: 1px solid var(--line); padding: 22px 24px; }
+  .fx-p { background: linear-gradient(170deg, var(--pnl-bg), var(--panel) 40%); border-color: var(--pnl-ln); }
+  .fx-s { background: linear-gradient(170deg, var(--stu-bg), var(--panel) 40%); border-color: var(--stu-ln); }
+  .fx-col h3 { margin: 0 0 16px; font-size: 16px; letter-spacing: .02em; text-transform: none; display: flex; align-items: center; gap: 10px; }
+  .fx-p h3 { color: var(--pnl); } .fx-s h3 { color: var(--stu); }
+  .fx-col h3 .pr.xs, .fx-col h3 .xs-ico { width: 22px; height: 22px; margin: 0; font-size: 11px; }
+  .fx-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .fx-col li { display: grid; gap: 3px; padding-left: 16px; position: relative; }
+  .fx-col li::before { content: "▸"; position: absolute; left: 0; top: 1px; font-size: 11px; }
+  .fx-p li::before { color: var(--pnl); } .fx-s li::before { color: var(--stu); }
+  .fx-col li b { font-size: 13.5px; color: var(--ink); font-weight: 700; }
+  .fx-col li span { font-size: 12.5px; color: var(--txt); line-height: 1.75; }
+
+  /* ── 斷句前後對照（靜態示意） ── */
+  .segcmp { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: 12px; align-items: start;
+            background: #141a17; border: 1px solid var(--line); padding: 18px; text-transform: none; letter-spacing: 0; }
+  .segcmp .sc-h { font-size: 11px; letter-spacing: .14em; color: var(--dim); margin-bottom: 8px; }
+  .segcmp .sc-new .sc-h { color: var(--grn); }
+  .segcmp ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .segcmp li { display: flex; gap: 8px; align-items: baseline; background: #1d1d1d; border: 1px solid #2c2c2c; border-radius: 5px; padding: 7px 10px;
+               font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", sans-serif; font-size: 13.5px; color: #e8e8e8; }
+  .segcmp li i { font-style: normal; font-size: 10px; color: #777; min-width: 10px; }
+  .segcmp li.bad { border-color: #6b2f2f; background: #2a1717; }
+  .segcmp .sc-new li { border-color: #2f6b4a; background: #142419; }
+  .segcmp .sc-arrow { align-self: center; color: var(--grn); font-size: 18px; }
+  .segcmp .sc-note { grid-column: 1 / -1; font-size: 10.5px; color: #6f7d74; text-align: right; }
+  @media (max-width: 520px) { .segcmp { grid-template-columns: 1fr; } .segcmp .sc-arrow { transform: rotate(90deg); justify-self: center; } }
+
+  /* ── 版本更新、FAQ ── */
+  .notes-body { max-width: 780px; }
+  #faq .faq { max-width: 860px; }
+  #faq .faq summary { text-transform: none; letter-spacing: .04em; font-size: 13.5px; color: var(--ink); }
+  #faq .faq p { margin-left: 22px; font-size: 13px; }
+  #faq .faq p b { color: var(--ink); font-weight: 500; }
+  .sub-h { margin: 40px 0 14px; }
+  .sub-h h3 { margin: 0; font-size: 12px; letter-spacing: .2em; color: var(--grn); }
+  .sub-h p { margin: 6px 0 0; font-size: 12.5px; color: var(--txt); }
+  #install, #remove { scroll-margin-top: 60px; }
+  .anchor { position: relative; top: -60px; display: block; height: 0; }
+</style>
 </head>
 <body>
 <div class="gate" id="gate">
@@ -771,6 +974,9 @@
     <button class="chip" id="sfx" aria-pressed="false"><i></i><span id="sfxLabel">SFX: OFF</span></button>
   </div>
 </div>
+<nav class="jump" aria-label="頁內導覽"><div class="wrap">
+  <a href="#download"><b>01</b>下載</a><a href="#compare"><b>02</b>比較</a><a href="#features"><b>03</b>功能</a><a href="#guide"><b>04</b>使用教學</a><a href="#advanced"><b>05</b>進階功能</a><a href="#notes"><b>06</b>版本更新</a><a href="#faq"><b>07</b>FAQ</a>
+</div></nav>
 
 <div class="wrap">
   <header class="hero hero2">
@@ -786,6 +992,7 @@
     <div class="lang" style="margin-top:22px">
       <span>繁體中文（ 台灣狗以 ）</span><span>簡體中文</span><span>中英混合（ 晶晶體沒問題！）</span><span style="color:var(--dimmer)">English（即將推出）</span>
     </div>
+    <div class="cta"><a class="buy" href="#download">▸ 選一個下載</a><a class="buy ghost" href="#guide">先看怎麼用</a></div>
     </div>
     <div class="show" id="show" aria-label="burgerSub Panel 與 Studio 的畫面（示意）">
       <div class="show-box" id="show-box"><div class="show-stage" id="show-stage"></div></div>
@@ -793,83 +1000,98 @@
     </div>
   </header>
 
-  <section>
-    <div class="head"><h2>DOWNLOAD</h2><span class="n">[macOS · Apple Silicon]</span><hr></div>
-    <div class="menu">
-      <article class="card">
-        <button class="whatsnew" type="button" data-notes="panel">按我！看「版本更新」</button>
+  <section id="download">
+    <div class="head"><h2>選一個開始</h2><span class="n">[DOWNLOAD · macOS · Apple Silicon]</span><hr></div>
+    <p class="pick-lead lo">兩個用的是同一套語音辨識，差別只在：<b>你在哪裡剪片</b>。</p>
+    <div class="menu lanes">
+      <article class="card lane lane-p" id="panel">
         <div class="prod">
           <div class="ico"><img src="burgersub-studio.png" alt=""><span class="pr big" aria-hidden="true">Pr</span></div>
           <div><h3>burgerSub Panel</h3><div class="kind">Premiere Pro 外掛</div></div>
         </div>
-        <p class="desc">直接在 Premiere 裡辨識時間軸上的音訊，字幕放回時間軸。只轉錄剪進去的片段，一小時的素材剪成三分鐘，就只轉那三分鐘。</p>
+        <p class="fit lo"><span class="fk">適合</span>用 Premiere Pro 剪片的人</p>
+        <p class="fit-sub lo">在 Premiere 裡辨識時間軸上的聲音，字幕直接放回時間軸</p>
         <ul class="specs">
           <li class="hero-spec"><span class="pr" aria-hidden="true">Pr</span><span>Premiere Pro 2020（14.0）以上</span></li>
-          <li><span class="si"><svg viewBox="0 0 24 24"><path d="M7 18a5 5 0 1 1 .9-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 7.9"/><path d="M12 12v8M9 15l3-3 3 3"/></svg></span><span>發布：2026年11月15日</span></li>
-          <li><span class="si"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M10 13l-2 2 2 2M14 13l2 2-2 2"/></svg></span><span>版本 2.2.0</span></li>
-          <li><span class="si"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span><span>繁體中文、簡體中文、中英混合</span></li>
-          <li><span class="si"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg></span><span>111 MB</span></li>
           <li><span class="si"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span><span>相容：macOS（Apple Silicon M 系列）</span></li>
-          <li><span class="si"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span>SHA-256 <span class="sha">3ab526aefeb4e556a53e90a952054cb9c5b0c093f565225fe75bd65c356ac9eb</span></span></li>
         </ul>
         <div class="dl"><a class="buy" href="https://storage.googleapis.com/burgersub-test-downloads/burgerSub-2.2.0-arm64.dmg">▸ 下載 Panel（111 MB）</a><button class="buy ghost" type="button" data-install="panel">安裝教學</button></div>
+        <div class="vrow lo"><span>版本 <b>2.2.0</b></span><span>發布：2026年11月15日</span><span>111 MB</span><button class="whatsnew" type="button" data-notes="panel">按我！看「版本更新」</button></div>
+        <div class="sha-row"><b>SHA-256</b> <span class="sha">3ab526aefeb4e556a53e90a952054cb9c5b0c093f565225fe75bd65c356ac9eb</span></div>
       </article>
-      <article class="card">
-        <button class="whatsnew" type="button" data-notes="studio">按我！看「版本更新」</button>
+      <article class="card lane lane-s" id="studio">
         <div class="prod">
           <div class="ico"><img src="burgersub-studio.png" alt=""></div>
           <div><h3>burgerSub Studio</h3><div class="kind">Mac 獨立 App · 不需要 Premiere</div></div>
         </div>
-        <p class="desc">把音檔或影片拖進來就能辨識，邊聽邊改字幕，匯出 SRT 給任何剪輯軟體用。已經有字幕的話，把 SRT 跟音檔一起拖進來直接校對。</p>
+        <p class="fit lo"><span class="fk">適合</span>用其他剪輯軟體，或手上只有音檔、影片</p>
+        <p class="fit-sub lo">把音檔或影片拖進來就能辨識，邊聽邊改，匯出 SRT</p>
         <ul class="specs">
-          <li class="hero-spec"><span class="si"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span><span>獨立 App，不需要 Premiere</span></li>
-          <li><span class="si"><svg viewBox="0 0 24 24"><path d="M7 18a5 5 0 1 1 .9-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 7.9"/><path d="M12 12v8M9 15l3-3 3 3"/></svg></span><span>發布：2026年11月15日</span></li>
-          <li><span class="si"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M10 13l-2 2 2 2M14 13l2 2-2 2"/></svg></span><span>版本 1.1.0</span></li>
-          <li><span class="si"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span><span>繁體中文、簡體中文、中英混合</span></li>
-          <li><span class="si"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg></span><span>127 MB</span></li>
           <li><span class="si"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span><span>相容：macOS 11 以上（Apple Silicon M 系列）</span></li>
-          <li><span class="si"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span>SHA-256 <span class="sha">0e1faa2f2e1619d73b108ee3bbbc62139d937c3ce73e5862e7cc3e5a7971224b</span></span></li>
         </ul>
         <div class="dl"><a class="buy" href="https://storage.googleapis.com/burgersub-test-downloads/burgerSub-Studio-1.1.0-arm64.dmg">▸ 下載 Studio（127 MB）</a><button class="buy ghost" type="button" data-install="studio">安裝教學</button></div>
+        <div class="vrow lo"><span>版本 <b>1.1.0</b></span><span>發布：2026年11月15日</span><span>127 MB</span><button class="whatsnew" type="button" data-notes="studio">按我！看「版本更新」</button></div>
+        <div class="sha-row"><b>SHA-256</b> <span class="sha">0e1faa2f2e1619d73b108ee3bbbc62139d937c3ce73e5862e7cc3e5a7971224b</span></div>
       </article>
     </div>
-    <div class="warn lo" style="margin-top:16px">
-      ⚠ 產生字幕需要開通權限：用 Google 帳號登入後，帳號要在使用名單上才能辨識。還沒開通的帳號會看到「需要權限才能使用完整版」。
-      第一次辨識會下載語音辨識模型（約 3 GB），只會下載一次，Panel 和 Studio 共用。
+    <p class="pre lo"><b>下載前</b>：需要 Apple Silicon（M 系列）Mac，以及<b>已開通的 Google 帳號</b>（目前採邀請制）。第一次辨識會下載約 3 GB 的語音模型。<a href="#faq">常見問題 ›</a></p>
+  </section>
+
+  <section id="compare">
+    <div class="head"><h2>兩個差在哪</h2><span class="n">[Panel vs Studio]</span><hr></div>
+    <div class="cmp lo" role="table" aria-label="burgerSub Panel 與 Studio 比較">
+        <div class="cmp-row cmp-head"><div class="k"></div><div class="c p"><span class="pr xs" aria-hidden="true">Pr</span>burgerSub Panel</div><div class="c s"><img src="burgersub-studio.png" alt="" class="xs-ico">burgerSub Studio</div></div>
+        <div class="cmp-row"><div class="k">在哪裡用</div><div class="c p">Premiere Pro 裡的外掛面板</div><div class="c s">Mac 獨立 App，不需要 Premiere</div></div>
+        <div class="cmp-row"><div class="k">適合</div><div class="c p">用 Premiere Pro 剪片的人</div><div class="c s">用其他剪輯軟體，或手上只有音檔、影片</div></div>
+        <div class="cmp-row"><div class="k">你手上有</div><div class="c p">Premiere 裡剪好的序列（也可以直接匯入音檔）</div><div class="c s">音檔或影片（mp3、mp4、m4a、wav、mov…）；已經有字幕就帶 SRT＋音檔</div></div>
+        <div class="cmp-row"><div class="k">你會拿到</div><div class="c p">字幕直接放回 Premiere 時間軸，也能匯出 SRT</div><div class="c s">SRT 字幕檔：Premiere、Final Cut Pro、DaVinci Resolve、YouTube 都能用</div></div>
+        <div class="cmp-row"><div class="k">怎麼校對</div><div class="c p">在面板裡改，改好按「送進 Premiere」；想用注音好好打字，可以一鍵打開 Studio</div><div class="c s">邊聽邊改：正在播的那句會亮起來，點音波跳到那個位置，還能循環本句</div></div>
+        <div class="cmp-row"><div class="k">主打功能</div><div class="c p">只轉錄剪進去的片段、In／Out 範圍、逐字稿匹配、讀回校正 SRT</div><div class="c s">音波、循環本句、收起音波、注音選字、一鍵自動更新</div></div>
+        <div class="cmp-row"><div class="k">系統需求</div><div class="c p">Premiere Pro 2020（14.0）以上 · Apple Silicon Mac</div><div class="c s">macOS 11 以上 · Apple Silicon Mac</div></div>
+        <div class="cmp-row cmp-both"><div class="k">兩個都有</div><div class="c">
+          <span>繁體中文、簡體中文、中英混合（English 即將推出）</span><span>語音辨識在你的 Mac 上跑，影音檔不用上傳雲端</span><span>取代、字典、填滿空隙、加速；改過的錯字會記進字典，下次自動修正</span><span>同一個 Google 帳號，兩個都裝只要登入一次；語音模型共用</span>
+        </div></div>
     </div>
   </section>
 
-  <section id="new">
-    <div class="head"><h2>新功能搶先看</h2><span class="n">[Panel 2.1.0]</span><hr></div>
-    <div class="demos">
-      <div class="demo-wrap">
-        <div class="demo-txt">
-          <h3>讀回校正 SRT：AI 改了哪裡，一眼就看到 (≧▽≦)</h3>
-          <p>字幕有錯字超煩der？先按 <b>匯出 SRT</b>，整份丟給 AI 幫你改～改好再回來按 <b>讀回校正 SRT</b>，選 AI 給你的檔案就好啦！</p>
-          <p>哪些字被換掉，會直接標在字幕上：舊的劃掉、新的標橘色，按 <b>‹ ›</b> 一處一處看。
-            沒問題就按 <b>全部套用</b>，一鍵全部換好，時間點完全不會跑掉喔！AI 改錯的那句不想要？按右邊的 <b>✕</b> 跳過它就好 ヽ(・∀・)ノ（這是 Panel 限定的功能喔）</p>
-        </div>
-        <div class="demo" id="demo-proof" aria-label="讀回校正 SRT 的動態示範">
-          <div class="ui panel pv-ui"><div class="in">
-            <div class="pvbar" id="pv-bar"><b>AI 改了 2 句</b><span class="pvnav"><span class="b" id="pv-prev">‹</span><i id="pv-pos">1/2</i><span class="b" id="pv-next">›</span></span><span class="b pri" id="pv-apply">全部套用</span><span class="b">不套用</span></div>
-            <div class="cues" id="pv-cues"></div>
-            <div class="row3"><span class="b pri act-pr">送進 Premiere</span><span class="b">⇧ 匯出 SRT</span><span class="b" id="pv-btn">⇩ 讀回校正 SRT</span></div>
-          </div></div>
-          <div class="pvpick" id="pv-pick"><div class="pk-bar"><i></i><i></i><i></i><b>選擇校正後的 SRT</b></div>
-            <div class="pk-list"><div>📄 我的影片.srt</div><div id="pv-file">📄 我的影片_AI校正.srt</div></div>
-            <div class="pk-act"><span class="b">取消</span><span class="b pri" id="pv-open">打開</span></div></div>
-          <svg class="cursor" id="pv-cursor" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2l14 11-6.2 1 3.6 7.2-2.6 1.3-3.6-7.2L5 20z" fill="#fff" stroke="#000" stroke-width="1.3" stroke-linejoin="round"/></svg>
-          <div class="say" id="pv-say"></div>
-        </div>
+  <section id="features">
+    <div class="head"><h2>產品功能</h2><span class="n">[各自的特色]</span><hr></div>
+    <details class="fx-fold">
+      <summary><span class="fx-sum lo">展開看 Panel／Studio 各自的特色</span></summary>
+    <div class="fx lo">
+      <div class="fx-col fx-p">
+        <h3><span class="pr xs" aria-hidden="true">Pr</span>burgerSub Panel</h3>
+        <ul>
+          <li><b>只轉錄剪進去的片段</b><span>一小時的素材剪成三分鐘，就只轉那三分鐘。時間軸標了 In／Out，按「更新 In-Out 範圍」就只處理那一段。</span></li>
+          <li><b>字幕直接回到時間軸</b><span>改好按「送進 Premiere」，字幕放回時間軸，不用匯出再匯入。</span></li>
+          <li><b>逐字稿匹配</b><span>已經有講稿？切到「逐字稿匹配」，貼上整段逐字稿。</span></li>
+          <li><b>填寫節目資訊</b><span>按「填寫節目資訊」打開 program_info.txt，填節目名稱、主持人、來賓、本集主題，存檔就生效。</span></li>
+          <li><b>不用先丟進時間軸</b><span>手邊只有音檔，用「匯入音檔辨識」直接選檔案；已經有字幕檔，用「匯入 SRT 檔」讀進來改。</span></li>
+          <li><b>讀回校正 SRT（Panel 限定）</b><span>匯出 SRT 給 AI 改錯字，改好讀回來，哪些字被換掉一眼看到，一鍵全部套用。動態示範在下方「進階功能」。</span></li>
+          <li><b>一鍵打開 Studio</b><span>想用注音好好打字改稿，按「開啟 burgerSub Studio 編輯」。</span></li>
+        </ul>
+      </div>
+      <div class="fx-col fx-s">
+        <h3><img src="burgersub-studio.png" alt="" class="xs-ico">burgerSub Studio</h3>
+        <ul>
+          <li><b>拖進來就辨識</b><span>mp3、mp4、m4a、wav、mov…拖進視窗或按「選擇檔案」，選好語言就能開始。</span></li>
+          <li><b>已經有字幕？直接校對</b><span>把 SRT 跟音檔一起拖進來，邊聽邊改，不用重新辨識。</span></li>
+          <li><b>邊聽邊改</b><span>按 ▶ 或空白鍵播放，正在播的那句會亮起來；點音波跳到那個位置，還能循環本句。</span></li>
+          <li><b>收起音波，專心改字</b><span>按「收起音波」讓字幕清單變長，再按一次展開。</span></li>
+          <li><b>注音選字超順</b><span>想好好打字改稿，Studio 支援更完整的中文注音選字操作。</span></li>
+          <li><b>節目資訊</b><span>點「節目資訊」展開欄位，填節目名稱、主持人、來賓、本集主題，人名和專有名詞會辨識得更準；下次開啟會記住。</span></li>
+          <li><b>一鍵自動更新</b><span>有新版會自己提醒，按「立即更新」等它下載好，再按「重新啟動」就是新版，不用重裝。</span></li>
+        </ul>
       </div>
     </div>
+    </details>
   </section>
 
-  <section>
+  <section id="guide" data-prod="panel">
     <div class="head"><h2>使用教學</h2><span class="n">[Panel ＋ Studio]</span><hr></div>
-    <div class="who">
-      <div class="who-p"><span class="pr big2" aria-hidden="true">Pr</span><div><b>burgerSub Panel</b><span>Premiere Pro 外掛 · 在 Premiere 裡面辨識、校對，字幕直接放回時間軸</span></div></div>
-      <div class="who-s"><img src="burgersub-studio.png" alt=""><div><b>burgerSub Studio</b><span>Mac 獨立 App · 不需要 Premiere，拖檔案就能辨識，匯出 SRT 給任何剪輯軟體</span></div></div>
+    <div class="ptabs gsw" role="group" aria-label="切換要看的產品">
+      <button type="button" data-guide="panel" aria-pressed="true"><span class="pr xs" aria-hidden="true">Pr</span>Panel</button>
+      <button type="button" data-guide="studio" aria-pressed="false"><img src="burgersub-studio.png" alt="" class="xs-ico">Studio</button>
     </div>
     <p class="guide-note">兩個產品的流程一樣，按的按鈕不同。以下畫面是示意圖，字幕內容是範例。</p>
     <div class="steps">
@@ -998,11 +1220,55 @@
     </div>
   </section>
 
-  <section>
+  <script>
+  // 使用教學：手機（教學變成單欄）只顯示一個產品，按上方的 Panel／Studio 切換。
+  // 桌面兩欄並排時切換鈕不顯示、兩邊都看得到。選過的產品記在這台瀏覽器。
+  (function () {
+    var g = document.getElementById('guide'), KEY = 'burgersub-guide';
+    var btns = g.querySelectorAll('[data-guide]');
+    function set(prod) {
+      g.setAttribute('data-prod', prod);
+      btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.guide === prod ? 'true' : 'false'); });
+    }
+    var saved = null; try { saved = localStorage.getItem(KEY); } catch (e) {}
+    set(saved === 'studio' ? 'studio' : 'panel');
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (g.getAttribute('data-prod') === b.dataset.guide) return;
+        // 記住使用者正在看哪一步，切換後停在同一步，不要被彈回 STEP 01
+        var steps = g.querySelectorAll('.g2'), at = null;
+        steps.forEach(function (st) { if (st.getBoundingClientRect().top < 160) at = st; });
+        set(b.dataset.guide);
+        try { localStorage.setItem(KEY, b.dataset.guide); } catch (e) {}
+        window.dispatchEvent(new Event('resize'));                 // 讓示意視窗重新算縮放
+        document.dispatchEvent(new Event('guide:switch'));         // 動畫從頭播目前這個產品
+        if (at && at.getBoundingClientRect().top < 0) at.scrollIntoView();
+      });
+    });
+  })();
+  </script>
+
+  <section id="advanced">
+    <span id="new" class="anchor" aria-hidden="true"></span>
     <div class="head"><h2>進階功能</h2><span class="n">[動態示範]</span><hr></div>
     <div class="demos">
       <div class="demo-wrap">
         <div class="demo-txt">
+          <div class="tags"><span class="tg n">NEW · Panel 2.2.0 · Studio 1.1.0</span><span class="tg p">Panel</span><span class="tg s">Studio</span></div>
+          <h3>字幕斷句：斷句大升級！字幕變得超好讀der (≧▽≦)</h3>
+          <p>會在意思完整的地方換行，「人工／智慧」這種詞不會再被拆開，也幾乎不會再冒出只有一兩個字的小碎句。</p>
+          <p>長影音的句子就算放得下，也會在說話的段落自然切開；「設計／了對應的模板」這種「了」跑到下一句開頭的情況也修好囉 ヽ(・∀・)ノ</p>
+        </div>
+        <div class="segcmp" aria-label="斷句前後對照（示意）">
+          <div class="sc-col sc-old"><div class="sc-h">以前</div><ol><li class=""><i>1</i>我們今天來聊聊人工</li><li class="bad"><i>2</i>智慧怎麼幫剪輯師</li><li class="bad"><i>3</i>省</li><li class=""><i>4</i>時間</li><li class=""><i>5</i>這次也設計</li><li class="bad"><i>6</i>了對應的模板</li></ol></div>
+          <div class="sc-arrow" aria-hidden="true">→</div>
+          <div class="sc-col sc-new"><div class="sc-h">現在</div><ol><li class=""><i>1</i>我們今天來聊聊</li><li class=""><i>2</i>人工智慧怎麼幫剪輯師省時間</li><li class=""><i>3</i>這次也設計了對應的模板</li></ol></div>
+          <div class="sc-note">示意畫面，字幕內容是範例</div>
+        </div>
+      </div>
+      <div class="demo-wrap">
+        <div class="demo-txt">
+          <div class="tags"><span class="tg p">Panel</span><span class="tg s">Studio</span></div>
           <h3>填滿空隙：字幕不再一閃一閃</h3>
           <p>句子之間常有零點幾秒的停頓，字幕會一閃一閃。勾 <b>填滿空隙</b>，每句會延長到下一句開始。</p>
           <p>超過 <b>2 秒</b> 的停頓不會填：那是真的沒人在講話，硬把上一句延長只會讓字乾掛在畫面上。
@@ -1018,6 +1284,7 @@
       </div>
       <div class="demo-wrap">
         <div class="demo-txt">
+          <div class="tags"><span class="tg p">Panel</span><span class="tg s">Studio</span></div>
           <h3>加速：序列變速，字幕跟著對上</h3>
           <p>常見做法是把剪好的序列整條放進新序列、把新序列調成 120% 速度。影片變短了，但字幕還是原本的時間，越後面差越多。</p>
           <p>在編輯器按 <b>加速</b>，填跟 Premiere「速度/持續時間」一樣的百分比（例如 <b>120</b>），會先預覽總長怎麼變，
@@ -1033,37 +1300,37 @@
           <svg class="cursor" id="speed-cursor" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2l14 11-6.2 1 3.6 7.2-2.6 1.3-3.6-7.2L5 20z" fill="#fff" stroke="#000" stroke-width="1.3" stroke-linejoin="round"/></svg>
         </div>
       </div>
+      <div class="demo-wrap narrow">
+        <div class="demo-txt">
+          <div class="tags"><span class="tg n">NEW · 2.1.0</span><span class="tg p">Panel 限定</span></div>
+          <h3>讀回校正 SRT：AI 改了哪裡，一眼就看到 (≧▽≦)</h3>
+          <p>字幕有錯字超煩der？先按 <b>匯出 SRT</b>，整份丟給 AI 幫你改～改好再回來按 <b>讀回校正 SRT</b>，選 AI 給你的檔案就好啦！</p>
+          <p>哪些字被換掉，會直接標在字幕上：舊的劃掉、新的標橘色，按 <b>‹ ›</b> 一處一處看。
+            沒問題就按 <b>全部套用</b>，一鍵全部換好，時間點完全不會跑掉喔！AI 改錯的那句不想要？按右邊的 <b>✕</b> 跳過它就好 ヽ(・∀・)ノ（這是 Panel 限定的功能喔）</p>
+        </div>
+        <div class="demo" id="demo-proof" aria-label="讀回校正 SRT 的動態示範">
+          <div class="ui panel pv-ui"><div class="in">
+            <div class="pvbar" id="pv-bar"><b>AI 改了 2 句</b><span class="pvnav"><span class="b" id="pv-prev">‹</span><i id="pv-pos">1/2</i><span class="b" id="pv-next">›</span></span><span class="b pri" id="pv-apply">全部套用</span><span class="b">不套用</span></div>
+            <div class="cues" id="pv-cues"></div>
+            <div class="row3"><span class="b pri act-pr">送進 Premiere</span><span class="b">⇧ 匯出 SRT</span><span class="b" id="pv-btn">⇩ 讀回校正 SRT</span></div>
+          </div></div>
+          <div class="pvpick" id="pv-pick"><div class="pk-bar"><i></i><i></i><i></i><b>選擇校正後的 SRT</b></div>
+            <div class="pk-list"><div>📄 我的影片.srt</div><div id="pv-file">📄 我的影片_AI校正.srt</div></div>
+            <div class="pk-act"><span class="b">取消</span><span class="b pri" id="pv-open">打開</span></div></div>
+          <svg class="cursor" id="pv-cursor" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2l14 11-6.2 1 3.6 7.2-2.6 1.3-3.6-7.2L5 20z" fill="#fff" stroke="#000" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          <div class="say" id="pv-say"></div>
+        </div>
+      </div>
     </div>
   </section>
 
-
-  <section>
-    <div class="head"><h2>移除</h2><hr></div>
-    <article class="card">
-      <ul class="feat">
-        <li><span><b>Studio</b>：把「應用程式」裡的 burgerSub Studio 拖到垃圾桶。</span></li>
-        <li><span><b>Panel</b>：刪除 <code>~/Library/Application Support/Adobe/CEP/extensions/com.helenazeng.burgersub</code>，以及 <code>~/Library/Application Support/burgerSub/</code> 裡的 <code>runtime</code>、<code>engine</code> 兩個資料夾。</span></li>
-        <li><span><b>兩個都不用了</b>：再刪掉整個 <code>~/Library/Application Support/burgerSub/</code>（語音模型、字典、登入資料都在這裡）。只移除其中一個時請保留它。</span></li>
-      </ul>
-      <p class="desc">在 Finder 按 ⌘⇧G，貼上路徑就能找到這些資料夾。</p>
-    </article>
-  </section>
-
-  <footer>
-    <p>© 2026 BURGERHZZ ▪ burgerSub</p>
-    <p>
-      本頁與 APPLE、ADOBE、GOOGLE、聯發科 均無隸屬關係。安裝教學中的 MACOS 畫面為示意圖。PREMIERE PRO 為 ADOBE INC. 之商標。
-      語音辨識模型 Breeze-ASR-25 為聯發科研究院發布（Apache 2.0）。
-    </p>
-  </footer>
-</div>
-<!-- 版本更新：下載卡片右上角「按我！看「版本更新」」按鈕打開，Panel／Studio 各一份（新版放最上面、加 open 和「最新」） -->
-<dialog class="dlg notes-dlg" id="notes-dlg" aria-labelledby="notes-title">
-  <div class="dlg-head">
-    <h2 id="notes-title">版本更新</h2>
-    <button class="chip" type="button" id="notes-close" aria-label="關閉">✕ 關閉</button>
-  </div>
-  <div class="dlg-body rel">
+  <section id="notes">
+    <div class="head"><h2>版本更新</h2><span class="n">[各自的版本紀錄]</span><hr></div>
+    <div class="ptabs" role="group" aria-label="切換要看的版本紀錄">
+      <button type="button" data-ntab="panel" aria-pressed="true"><span class="pr xs" aria-hidden="true">Pr</span>Panel</button>
+      <button type="button" data-ntab="studio" aria-pressed="false"><img src="burgersub-studio.png" alt="" class="xs-ico">Studio</button>
+    </div>
+    <div class="rel notes-body">
     <div class="faq" data-notes-body="panel">
         <details open><summary><span class="ver">2.2.0</span><span class="date">2026.11.15</span><span class="new">最新</span></summary>
           <ul class="feat">
@@ -1140,8 +1407,44 @@
           </ul>
         </details>
     </div>
-  </div>
-</dialog>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="head"><h2>FAQ／安裝／移除</h2><hr></div>
+    <div class="faq lo">
+      <details><summary>要怎麼開通？誰可以用？</summary><p>目前採邀請制。受邀夥伴用 Google 帳號登入，帳號要在使用名單上才能辨識。還沒開通的帳號會看到「需要權限才能使用完整版」。登入後看右上角齒輪旁的小點：<b>綠色</b>是可以使用，<b>黃色</b>是帳號還沒開通，灰色是還沒登入。</p></details>
+      <details><summary>我的電腦能用嗎？</summary><p>需要 Apple Silicon（M 系列）的 Mac。Panel 要 Premiere Pro 2020（14.0）以上；Studio 要 macOS 11 以上。</p></details>
+      <details><summary>第一次辨識為什麼比較久？</summary><p>第一次辨識會下載語音辨識模型（約 3 GB），只會下載一次，Panel 和 Studio 共用。</p></details>
+      <details><summary>打開時 macOS 說「無法驗證」怎麼辦？</summary><p>這個版本還沒有 Apple 的開發者簽章，macOS 第一次會先擋下來，這是正常的。按「完成」後到 系統設定 → 隱私權與安全性，按「強制打開」，再輸入電腦的登入密碼就好。之後再打開就不會出現警告了。步驟圖在下方的安裝教學。</p></details>
+      <details><summary>影片會上傳到雲端嗎？</summary><p>語音辨識全程在你的 Mac 上進行，影音檔不需上傳雲端。產生字幕的時候要連網。</p></details>
+      <details><summary>支援哪些語言？</summary><p>繁體中文（台灣華語）、簡體中文、中英混合（晶晶體沒問題！）。English 即將推出。</p></details>
+      <details><summary>Panel 和 Studio 可以一起裝嗎？</summary><p>可以。兩個用同一個 Google 帳號，只要登入一次，語音模型也共用。Panel 裡按「開啟 burgerSub Studio 編輯」就能用 Studio 打字改稿。</p></details>
+      <details><summary>Panel 裝好之後在哪裡？</summary><p>安裝前請先完全結束 Premiere Pro（⌘Q）。裝好後重新打開 Premiere Pro，從 視窗 → 擴充功能 → burgerSub 打開面板。</p></details>
+      <details><summary>Studio 怎麼更新？</summary><p>有新版會自己提醒，按「立即更新」等它下載好，再按「重新啟動」就是新版。還在用 0.1.0 的話，要先到這頁手動下載一次新版，之後就輕鬆了。</p></details>
+    </div>
+    <div class="sub-h" id="install"><h3>安裝教學</h3><p class="lo">一步一步的圖解，從打開 DMG 到登入。</p></div>
+    <div class="dl"><button class="buy ghost" type="button" data-install="panel">▸ Panel 安裝教學</button><button class="buy ghost" type="button" data-install="studio">▸ Studio 安裝教學</button></div>
+    <div class="sub-h" id="remove"><h3>移除</h3></div>
+    <article class="card">
+      <ul class="feat">
+        <li><span><b>Studio</b>：把「應用程式」裡的 burgerSub Studio 拖到垃圾桶。</span></li>
+        <li><span><b>Panel</b>：刪除 <code>~/Library/Application Support/Adobe/CEP/extensions/com.helenazeng.burgersub</code>，以及 <code>~/Library/Application Support/burgerSub/</code> 裡的 <code>runtime</code>、<code>engine</code> 兩個資料夾。</span></li>
+        <li><span><b>兩個都不用了</b>：再刪掉整個 <code>~/Library/Application Support/burgerSub/</code>（語音模型、字典、登入資料都在這裡）。只移除其中一個時請保留它。</span></li>
+      </ul>
+      <p class="desc">在 Finder 按 ⌘⇧G，貼上路徑就能找到這些資料夾。</p>
+    </article>
+  </section>
+
+  <footer>
+    <p>© 2026 BURGERHZZ ▪ burgerSub</p>
+    <p>
+      本頁與 APPLE、ADOBE、GOOGLE、聯發科 均無隸屬關係。安裝教學中的 MACOS 畫面為示意圖。PREMIERE PRO 為 ADOBE INC. 之商標。
+      語音辨識模型 Breeze-ASR-25 為聯發科研究院發布（Apache 2.0）。
+    </p>
+  </footer>
+</div>
+<!-- 版本更新：下載卡片右上角「按我！看「版本更新」」按鈕打開，Panel／Studio 各一份（新版放最上面、加 open 和「最新」） -->
 
 <dialog class="dlg" id="install-dlg" aria-labelledby="install-title">
   <div class="dlg-head">
@@ -1318,25 +1621,28 @@
     if (location.hash === '#install-studio' || location.hash === '#install-panel') openInstall(location.hash.slice(9));
   })();
 
-  // 版本更新：下載卡片右上角的按鈕
+  // 版本更新：頁面上的 #notes 區，Panel／Studio 分頁。卡片上的「按我！看「版本更新」」跳到這裡並切到對應分頁。
+  // 舊連結 #changelog、#notes-panel、#notes-studio（面板、舊網址）一樣有效
   (function () {
-    var dlg = document.getElementById('notes-dlg');
-    function openNotes(prod) {
-      document.querySelectorAll('[data-notes-body]').forEach(function (el) { el.hidden = el.dataset.notesBody !== prod; });
-      document.getElementById('notes-title').textContent = '版本更新 · ' + (prod === 'panel' ? 'Panel' : 'Studio');
-      if (!dlg.open) dlg.showModal();
-      document.body.classList.add('dlg-open');
-      dlg.querySelector('.dlg-body').scrollTop = 0;
+    var sec = document.getElementById('notes'); if (!sec) return;
+    var tabs = sec.querySelectorAll('[data-ntab]');
+    function show(prod) {
+      sec.querySelectorAll('[data-notes-body]').forEach(function (el) { el.hidden = el.dataset.notesBody !== prod; });
+      tabs.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.ntab === prod ? 'true' : 'false'); });
     }
-    dlg.addEventListener('close', function () { document.body.classList.remove('dlg-open'); });
-    document.getElementById('notes-close').addEventListener('click', function () { dlg.close(); });
-    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });   // 點背景關閉
+    function go(prod) { show(prod); sec.scrollIntoView(); }
+    tabs.forEach(function (b) { b.addEventListener('click', function () { show(b.dataset.ntab); }); });
     document.querySelectorAll('[data-notes]').forEach(function (b) {
-      b.addEventListener('click', function () { openNotes(b.dataset.notes); });
+      b.addEventListener('click', function () { go(b.dataset.notes); });
     });
-    // 舊連結 #changelog 也開得到；#notes-panel／#notes-studio 直接開指定的
-    if (location.hash === '#changelog' || location.hash === '#notes-panel') openNotes('panel');
-    if (location.hash === '#notes-studio') openNotes('studio');
+    show('panel');
+    var h = location.hash;
+    if (h === '#changelog' || h === '#notes-panel' || h === '#notes-studio') {
+      var prod = h === '#notes-studio' ? 'studio' : 'panel';
+      show(prod);
+      // 等版面（示意畫面縮放、字型）穩定再捲，不然會停在錯的位置
+      window.addEventListener('load', function () { setTimeout(function () { sec.scrollIntoView(); }, 50); });
+    }
   })();
 
   // ── 進階功能的動態示範（規則照 burgerSub 編輯器：填滿空隙上限 2 秒；加速是時間 ÷ 倍率）──
@@ -1655,8 +1961,10 @@
       // 按鈕在面板下方（2.1.0 起），視窗往上開，整個 program_info.txt 都看得到
       txt.style.left = '12px'; txt.style.display = 'block';
       txt.style.top = Math.max(8, (b.top - w.top) / z - txt.offsetHeight - 6) + 'px'; }
+    var typing = [];   // 打字中的計時器：切換產品時要一起停掉，不然會在藏起來的欄位繼續打字
     function typeInto(el, text, ms) { el.textContent = ''; el.classList.add('typing'); var i = 0;
-      var t = setInterval(function () { i++; el.textContent = text.slice(0, i); if (i >= text.length) { clearInterval(t); setTimeout(function () { el.classList.remove('typing'); }, 200); } }, ms); }
+      var t = setInterval(function () { i++; el.textContent = text.slice(0, i); if (i >= text.length) { clearInterval(t); setTimeout(function () { el.classList.remove('typing'); }, 200); } }, ms);
+      typing.push(t); }
     if (reduce) { uis.forEach(function (ui) { ui._sel.textContent = LANGS[0]; ui._start.classList.add('hl'); }); cur.style.display = 'none'; return; }
     function center(el) { var b = el.getBoundingClientRect(), d = st.getBoundingClientRect();
       return { x: b.left - d.left + Math.min(b.width / 2, 60), y: b.top - d.top + b.height / 2 }; }
@@ -1689,32 +1997,39 @@
       uis.forEach(function (ui) { clearInterval(ui._timer); clearTimeout(ui._edT); ui.classList.remove('running'); ui._dd.classList.remove('open'); ui._sel.textContent = LANGS[2];
       var w = ui.parentNode; w.classList.remove('edit-on');
       }); }
+    // 每一步標記屬於哪個產品（0＝Panel、1＝Studio）；手機只顯示其中一個時，看不到的那邊整段跳過
+    var cols = st.querySelectorAll(':scope > .g2-col');
+    function vis(w) { return w == null || cols[w].offsetParent !== null; }
     var q = [];
-    function add(ms, fn) { q.push([ms, fn]); }
-    uis.forEach(function (ui) {
-      add(700, function () { aim(ui._sel); });
-      add(500, function () { press(ui._sel); openDd(ui); });
-      add(650, function () { aim(ui._dd.children[0]); hover(ui, 0); });
-      add(550, function () { press(ui._dd.children[0]); ui._sel.textContent = LANGS[0]; ui._dd.classList.remove('open'); });
+    function add(ms, fn, w) { q.push([ms, fn, w]); }
+    uis.forEach(function (ui, w) {
+      add(700, function () { aim(ui._sel); }, w);
+      add(500, function () { press(ui._sel); openDd(ui); }, w);
+      add(650, function () { aim(ui._dd.children[0]); hover(ui, 0); }, w);
+      add(550, function () { press(ui._dd.children[0]); ui._sel.textContent = LANGS[0]; ui._dd.classList.remove('open'); }, w);
       if (ui === uis[0]) {          // Panel：點「填寫節目資訊」→ 跳出 program_info.txt、逐欄打字 → 關掉
-        add(700, function () { aim(pPiBtn); });
-        add(550, function () { press(pPiBtn); openTxt(); });
-        PI.forEach(function (v, i) { add(i ? 650 : 600, function () { typeInto(txtVals[i], v, 70); }); });
-        add(900, function () { aim(txtClose); });
-        add(550, function () { press(txtClose); txt.style.display = 'none'; });
+        add(700, function () { aim(pPiBtn); }, w);
+        add(550, function () { press(pPiBtn); openTxt(); }, w);
+        PI.forEach(function (v, i) { add(i ? 650 : 600, function () { typeInto(txtVals[i], v, 70); }, w); });
+        add(900, function () { aim(txtClose); }, w);
+        add(550, function () { press(txtClose); txt.style.display = 'none'; }, w);
       } else {                      // Studio：點「節目資訊」展開欄位、逐欄打字
-        add(700, function () { aim(sPiHead); });
-        add(550, function () { press(sPiHead); sPi.classList.add('open'); sPiHead.textContent = '▼ 節目資訊'; });
-        PI.forEach(function (v, i) { add(i ? 650 : 600, function () { aim(sPiIns[i]); typeInto(sPiIns[i], v, 70); }); });
+        add(700, function () { aim(sPiHead); }, w);
+        add(550, function () { press(sPiHead); sPi.classList.add('open'); sPiHead.textContent = '▼ 節目資訊'; }, w);
+        PI.forEach(function (v, i) { add(i ? 650 : 600, function () { aim(sPiIns[i]); typeInto(sPiIns[i], v, 70); }, w); });
       }
-      add(800, function () { aim(ui._start); });
-      add(550, function () { press(ui._start); run(ui); });
+      add(800, function () { aim(ui._start); }, w);
+      add(550, function () { press(ui._start); run(ui); }, w);
     });
     add(5200, function () { rest(); });
     add(2600, function () { reset(); });
-    var k = 0;
-    function tick() { var it = q[k]; k = (k + 1) % q.length; it[1](); setTimeout(tick, (q[k] || q[0])[0]); }
-    reset(); rest(); setTimeout(tick, 900);
+    var k = 0, tm = null;
+    function skip() { for (var n = 0; n < q.length && !vis(q[k][2]); n++) k = (k + 1) % q.length; }
+    function tick() { var it = q[k]; k = (k + 1) % q.length; it[1](); skip(); tm = setTimeout(tick, q[k][0]); }
+    function start(ms) { clearTimeout(tm); typing.forEach(clearInterval); typing = []; reset(); rest(); k = 0; skip(); tm = setTimeout(tick, ms); }
+    start(900);
+    // 手機切換 Panel／Studio：從頭播放目前看得到的那一個
+    document.addEventListener('guide:switch', function () { start(500); });
   })();
 
   // ── STEP 02：編輯功能（Panel：Enter 切分、Backspace 合併、A−／A+、送進 Premiere；Studio：播放、點音波、匯出）──
@@ -1746,7 +2061,19 @@
     var list = pEd.querySelector('.cues'), count = byText(pEd, '.muted', '6 句') || byText(pEd, '.muted', '');
     // 清單高度固定：切分多出一句、A+ 放大字時，在清單裡面捲，不要把整個面板撐高
     // （視窗窄一點時面板高度會直接推動下面的版面，看起來像整塊在亂跑）
-    list.style.height = list.offsetHeight + 'px'; list.style.overflow = 'hidden';
+    // 手機只顯示一個產品時，另一邊在 display:none 量不到高度，所以等看得到時再鎖（lock()）
+    var sList = sEd.querySelector('.cues'), wave0 = sEd.querySelector('.wave'), waveD = 0;
+    function lock() {
+      if (!list.dataset.lock && list.offsetHeight) { list.style.height = list.offsetHeight + 'px'; list.style.overflow = 'hidden'; list.dataset.lock = 1; }
+      // Studio 清單也鎖高度：A+ 放大字、收起音波時視窗不變高，整頁不會跳（原本 STEP 02 會讓頁面上下跳約 120px）
+      if (!sList.dataset.lock && sList.offsetHeight) {
+        var cs = getComputedStyle(wave0);
+        waveD = wave0.offsetHeight + parseFloat(cs.marginTop) + parseFloat(cs.marginBottom);
+        sList.dataset.base = sList.offsetHeight; sList.style.height = sList.offsetHeight + 'px';
+        sList.style.overflow = 'hidden'; sList.style.transition = 'height .4s ease'; sList.dataset.lock = 1;
+      }
+    }
+    lock();
     var c1 = list.children[0], c1x = c1.querySelector('.x'), c1t = c1.querySelector('.t');
     var ORIG = [c1x.textContent, c1t.textContent], newCue = null, font = 13.5;
     var aPlus = byText(pEd, '.b', 'A+'), aMinus = byText(pEd, '.b', 'A−'), pSend = byText(pEd, '.b', '送進 Premiere');
@@ -1786,7 +2113,9 @@
       });
     }
     function sFont(px, label) { [].forEach.call(sEd.querySelectorAll('.cues .x'), function (x) { x.style.fontSize = px + 'px'; }); sFsz.textContent = label; }
-    function fold(on) { wave.classList.toggle('folded', on); sFold.textContent = on ? '▸ 展開音波' : '▾ 收起音波'; }
+    function fold(on) { wave.classList.toggle('folded', on); sFold.textContent = on ? '▸ 展開音波' : '▾ 收起音波';
+      // 音波收起多少，清單就長多少（同樣 .4s ease），視窗總高度不變
+      if (sList.dataset.lock) sList.style.height = (+sList.dataset.base + (on ? waveD : 0)) + 'px'; }
     var CT = [[0.75, 2.84], [2.84, 5.12], [5.12, 7.39], [7.39, 9.51]];
     function at(t) { var x = (t / 16 * 1000).toFixed(1); line.setAttribute('x1', x); line.setAttribute('x2', x);
       clock.textContent = '0:' + ('0' + Math.floor(t)).slice(-2) + '.' + Math.floor(t * 10 % 10) + ' / 0:14';
@@ -1798,49 +2127,56 @@
       var pane = pEd.closest('.pane'); pane.querySelector('.pr-c1').classList.remove('on'); pane.querySelector('.pr-cap').classList.remove('on');
       if (newCue) { newCue.remove(); newCue = null; } c1x.textContent = ORIG[0]; c1t.textContent = ORIG[1]; c1.classList.remove('editing'); renumber(); setFont(13.5); }
 
+    // 每一步標記屬於哪個產品（0＝Panel、1＝Studio）；手機只顯示其中一個時，看不到的那邊整段跳過
+    var cols = st.querySelectorAll(':scope > .g2-col');
+    function vis(w) { return w == null || cols[w].offsetParent !== null; }
     var q = [];
-    function add(ms, fn) { q.push([ms, fn]); }
+    function add(ms, fn, w) { q.push([ms, fn, w]); }
     // 游標點在「大家｜聊聊」之間 → 變成輸入框、直槓出現在那裡 → Enter 切開 → 直槓在下一句開頭 → Backspace 併回
-    add(700, function () { var c = setCaret(c1x, ORIG[0], CUT).getBoundingClientRect(), o = rel(c); moveTo(o.x + 1, o.y + c.height * 0.55); });
-    add(550, function () { press(); c1.classList.add('editing'); });
-    add(900, function () { key('Enter', c1x.querySelector('.caret')); });
-    add(250, function () { split(); });
-    add(1300, function () { key('Backspace', newCue.querySelector('.caret')); });
-    add(250, function () { merge(); });
-    add(1200, function () { c1.classList.remove('editing'); c1x.textContent = ORIG[0]; aim(aPlus); });
-    add(550, function () { press(); setFont(15.5); });
-    add(450, function () { press(); setFont(17.5); });
-    add(900, function () { aim(aMinus); });
-    add(550, function () { press(); setFont(15.5); });
-    add(450, function () { press(); setFont(13.5); });
-    add(800, function () { aim(pSend); });
+    add(700, function () { var c = setCaret(c1x, ORIG[0], CUT).getBoundingClientRect(), o = rel(c); moveTo(o.x + 1, o.y + c.height * 0.55); }, 0);
+    add(550, function () { press(); c1.classList.add('editing'); }, 0);
+    add(900, function () { key('Enter', c1x.querySelector('.caret')); }, 0);
+    add(250, function () { split(); }, 0);
+    add(1300, function () { key('Backspace', newCue.querySelector('.caret')); }, 0);
+    add(250, function () { merge(); }, 0);
+    add(1200, function () { c1.classList.remove('editing'); c1x.textContent = ORIG[0]; aim(aPlus); }, 0);
+    add(550, function () { press(); setFont(15.5); }, 0);
+    add(450, function () { press(); setFont(17.5); }, 0);
+    add(900, function () { aim(aMinus); }, 0);
+    add(550, function () { press(); setFont(15.5); }, 0);
+    add(450, function () { press(); setFont(13.5); }, 0);
+    add(800, function () { aim(pSend); }, 0);
     add(550, function () { press(); toast(pEd, '✓ 已送進 Premiere 時間軸');
       var pane = pEd.closest('.pane'); pane.querySelector('.pr-c1').classList.add('on');
-      var cap = pane.querySelector('.pr-cap'); cap.textContent = '今天想跟大家聊聊手沖咖啡'; cap.classList.add('on'); });
-    add(1000, function () { aim(sPlay); });
-    add(550, function () { press(); play(3.1, 3.6); });
-    add(2600, function () { var b = wave.getBoundingClientRect(), o = rel(b); moveTo(o.x + b.width * (8.2 / 16), o.y + b.height * 0.42); });
-    add(550, function () { press(); clearInterval(timer); sPlay.textContent = '▶'; at(8.2); });
+      var cap = pane.querySelector('.pr-cap'); cap.textContent = '今天想跟大家聊聊手沖咖啡'; cap.classList.add('on'); }, 0);
+    add(1000, function () { aim(sPlay); }, 1);
+    add(550, function () { press(); play(3.1, 3.6); }, 1);
+    add(2600, function () { var b = wave.getBoundingClientRect(), o = rel(b); moveTo(o.x + b.width * (8.2 / 16), o.y + b.height * 0.42); }, 1);
+    add(550, function () { press(); clearInterval(timer); sPlay.textContent = '▶'; at(8.2); }, 1);
     // 音波收起來、再展開（清單會變長，適合專心改字）
-    add(1000, function () { aim(sFill); });
-    add(550, function () { press(); sFillSet(true); });
-    add(1500, function () { aim(sAPlus); });
-    add(550, function () { press(); sFont(15.5, '16px'); });
-    add(450, function () { press(); sFont(17.5, '18px'); });
-    add(900, function () { aim(sAMinus); });
-    add(550, function () { press(); sFont(15.5, '16px'); });
-    add(450, function () { press(); sFont(13.5, '14px'); });
-    add(900, function () { aim(sFold); });
-    add(550, function () { press(); fold(true); });
-    add(1300, function () { aim(sFold); });
-    add(550, function () { press(); fold(false); });
-    add(1100, function () { aim(sExport); });
-    add(550, function () { press(); toast(sEd, '✓ 已匯出 手沖咖啡.srt'); });
+    add(1000, function () { aim(sFill); }, 1);
+    add(550, function () { press(); sFillSet(true); }, 1);
+    add(1500, function () { aim(sAPlus); }, 1);
+    add(550, function () { press(); sFont(15.5, '16px'); }, 1);
+    add(450, function () { press(); sFont(17.5, '18px'); }, 1);
+    add(900, function () { aim(sAMinus); }, 1);
+    add(550, function () { press(); sFont(15.5, '16px'); }, 1);
+    add(450, function () { press(); sFont(13.5, '14px'); }, 1);
+    add(900, function () { aim(sFold); }, 1);
+    add(550, function () { press(); fold(true); }, 1);
+    add(1300, function () { aim(sFold); }, 1);
+    add(550, function () { press(); fold(false); }, 1);
+    add(1100, function () { aim(sExport); }, 1);
+    add(550, function () { press(); toast(sEd, '✓ 已匯出 手沖咖啡.srt'); }, 1);
     add(1200, function () { rest(); });
     add(1500, function () { reset(); });
-    var k = 0;
-    function tick() { var it = q[k]; k = (k + 1) % q.length; it[1](); setTimeout(tick, (q[k] || q[0])[0]); }
-    reset(); rest(); setTimeout(tick, 900);
+    var k = 0, tm = null;
+    function skip() { for (var n = 0; n < q.length && !vis(q[k][2]); n++) k = (k + 1) % q.length; }
+    function tick() { var it = q[k]; k = (k + 1) % q.length; it[1](); skip(); tm = setTimeout(tick, q[k][0]); }
+    function start(ms) { clearTimeout(tm); lock(); reset(); rest(); k = 0; skip(); tm = setTimeout(tick, ms); }
+    start(900);
+    // 手機切換 Panel／Studio：從頭播放目前看得到的那一個
+    document.addEventListener('guide:switch', function () { start(500); });
   })();
 </script>
 <script src="/bgm.js"></script>
